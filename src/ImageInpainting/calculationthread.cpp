@@ -25,7 +25,7 @@ void CalculationThread::initAlgorithm(DataManager* dataManager, ParameterSet* pa
             mNoise = new Noise(dataManager, parameterSet);
             break;
         case kMaxwellHeavisideImageInpainting:
-            mImageInpaintingBase = new MaxwellHeavisideInpainting(dataManager, parameterSet);
+            mImageInpaintingBase = new MaxwellHeavisideImageInpainting(dataManager, parameterSet);
             break;
         default:
             break;

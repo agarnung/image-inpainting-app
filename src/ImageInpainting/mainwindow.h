@@ -43,7 +43,7 @@ class MainWindow : public QMainWindow
         QAction* mActionExit = nullptr;
 
         QAction* mActionNoise = nullptr;
-        QAction* mActionMaxwellHeavisideInpainting = nullptr;
+        QAction* mActionMaxwellHeavisideImageInpainting = nullptr;
 
         QAction* mActionAbout = nullptr;
 

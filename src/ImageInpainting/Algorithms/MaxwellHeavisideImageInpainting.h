@@ -3,15 +3,15 @@
 #include "ImageInpaintingBase.h"
 
 /**
- * @class MaxwellHeavisideInpainting
- * @brief Implements the Maxwell-Heaviside inpainting algorithm.
+ * @class MaxwellHeavisideImageInpainting
+ * @brief Implements the Maxwell-Heaviside image inpainting algorithm.
  * @see https://arxiv.org/abs/2412.11946
  */
-class MaxwellHeavisideInpainting : public ImageInpaintingBase
+class MaxwellHeavisideImageInpainting : public ImageInpaintingBase
 {
     public:
-        explicit MaxwellHeavisideInpainting(DataManager* dataManager = nullptr, ParameterSet* parameterSet = nullptr);
-        ~MaxwellHeavisideInpainting() {}
+        explicit MaxwellHeavisideImageInpainting(DataManager* dataManager = nullptr, ParameterSet* parameterSet = nullptr);
+        ~MaxwellHeavisideImageInpainting() {}
 
     public:
         void inpaint();

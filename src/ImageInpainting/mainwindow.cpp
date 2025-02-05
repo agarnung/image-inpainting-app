@@ -74,21 +74,21 @@ void MainWindow::createActions()
     mActionNoise->setStatusTip("Add noise to image using 'algorithm' -- Noise");
     QObject::connect(mActionNoise, &QAction::triggered, this, &MainWindow::showNoiseWidget);
 
-    mActionMaxwellHeavisideInpainting = new QAction(tr("Maxwell-Heaviside Inpainting"), this);
-    mActionExportImage->setStatusTip("Denoise image using algorithm -- Maxwell-Heaviside Inpainting");
+    mActionMaxwellHeavisideImageInpainting = new QAction(tr("Maxwell-Heaviside Image Inpainting"), this);
+    mActionExportImage->setStatusTip("Denoise image using algorithm -- Maxwell-Heaviside Image Inpainting");
     QObject::connect(mActionExportImage, &QAction::triggered, this, &MainWindow::showMaxwellHeavisideInpaintingWidget);
 
     mActionAbout = new QAction(QIcon(":/icons/about.ico"), tr("About"), this);
     mActionAbout->setStatusTip("Information about this application");
     QObject::connect(mActionAbout, &QAction::triggered, this, &MainWindow::about);
 
-    // mRenderPencil = new QAction(tr("Render pencil"), this);
-    // mRenderPencil->setStatusTip("Show or not the pencil drawing");
-    // QObject::connect(mRenderPencil, &QAction::triggered, mImageViewer, &mImageViewer::togglePencilDrawing);
+    mRenderPencil = new QAction(tr("Render pencil"), this);
+    mRenderPencil->setStatusTip("Show or not the pencil drawing");
+    QObject::connect(mRenderPencil, &QAction::triggered, mImageViewer, &ImageViewer::togglePencilDrawing);
 
-    // mPencilColor = new QAction(QIcon(":/icons/pencil_color.ico"), tr("Pencil color"), this);
-    // mPencilColor->setStatusTip("Specify the pencil color");
-    // QObject::connect(mPencilColor, &QAction::triggered, mImageViewer, &mImageViewer::setPencilColor);
+    mPencilColor = new QAction(QIcon(":/icons/pencil_color.ico"), tr("Pencil color"), this);
+    mPencilColor->setStatusTip("Specify the pencil color");
+    QObject::connect(mPencilColor, &QAction::triggered, mImageViewer, &ImageViewer::setPencilColor);
 
     mActionToNoisyImage = new QAction(this);
     mActionToNoisyImage->setText("Noisy image");
