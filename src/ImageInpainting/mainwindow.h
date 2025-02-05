@@ -48,6 +48,7 @@ class MainWindow : public QMainWindow
         QAction* mActionAbout = nullptr;
 
         QAction* mRenderPencil = nullptr;
+        QAction* mPencilColor = nullptr;
 
         QAction* mActionToNoisyImage = nullptr;
         QAction* mActionToOriginalImage = nullptr;
@@ -56,9 +57,11 @@ class MainWindow : public QMainWindow
 
         QToolBar* mToolbarFile = nullptr;
         QToolBar* mToolbarDrawInfo = nullptr;
-        QToolBar* mTtoolbarImageStatus = nullptr;
+        QToolBar* mToolbarImageStatus = nullptr;
 
         QLabel* mLabelOperationInfo = nullptr;
+
+        QMenu* mMenuAlgorithms = nullptr;
 
         void init();
         void createActions();
@@ -66,13 +69,26 @@ class MainWindow : public QMainWindow
         void createToolBars();
         void createStatusBar();
 
-        void SetActionStatus(bool value);
+        void setActionStatus(bool value);
+
+        void closeWidget();
+        void showWidget();
 
     private slots:
-        void ImportImage();
-        void ExportImage();
+        void importImage();
+        void exportImage();
+
+        void transToNoisyImage();
+        void transToOriginalImage();
+        void transToInpaintedImage();
+        void clearImage();
+
+        void applyAlgorithm(QString algorithmName);
+
+        void showNoiseWidget();
+        void showMaxwellHeavisideInpaintingWidget();
 
         void setActionAndWidget(bool value1, bool value2);
         void needToUpdate(bool value);
-        void About();
+        void about();
 };

@@ -58,11 +58,57 @@ void MainWindow::init()
 
 void MainWindow::createActions()
 {
-    mActionImportImage = new QAction(QIcon(":/icons/open.ico"),tr("Import image"),this);
+    mActionImportImage = new QAction(QIcon(":/icons/open.ico"), tr("Import image"), this);
     mActionImportImage->setStatusTip("Import image");
-    QObject::connect(mActionImportImage, &QAction::triggered, this, &MainWindow::ImportImage);
+    QObject::connect(mActionImportImage, &QAction::triggered, this, &MainWindow::importImage);
 
-    //...
+    mActionExportImage = new QAction(QIcon(":/icons/save.ico"), tr("Save image"), this);
+    mActionExportImage->setStatusTip("Save image");
+    QObject::connect(mActionExportImage, &QAction::triggered, this, &MainWindow::exportImage);
+
+    mActionExit = new QAction(tr("Exit"), this);
+    mActionExit->setStatusTip("Exit");
+    QObject::connect(mActionExit, &QAction::triggered, this, &MainWindow::close);
+
+    mActionNoise = new QAction(tr("Noise"), this);
+    mActionNoise->setStatusTip("Add noise to image using 'algorithm' -- Noise");
+    QObject::connect(mActionNoise, &QAction::triggered, this, &MainWindow::showNoiseWidget);
+
+    mActionMaxwellHeavisideInpainting = new QAction(tr("Maxwell-Heaviside Inpainting"), this);
+    mActionExportImage->setStatusTip("Denoise image using algorithm -- Maxwell-Heaviside Inpainting");
+    QObject::connect(mActionExportImage, &QAction::triggered, this, &MainWindow::showMaxwellHeavisideInpaintingWidget);
+
+    mActionAbout = new QAction(QIcon(":/icons/about.ico"), tr("About"), this);
+    mActionAbout->setStatusTip("Information about this application");
+    QObject::connect(mActionAbout, &QAction::triggered, this, &MainWindow::about);
+
+    // mRenderPencil = new QAction(tr("Render pencil"), this);
+    // mRenderPencil->setStatusTip("Show or not the pencil drawing");
+    // QObject::connect(mRenderPencil, &QAction::triggered, mImageViewer, &mImageViewer::togglePencilDrawing);
+
+    // mPencilColor = new QAction(QIcon(":/icons/pencil_color.ico"), tr("Pencil color"), this);
+    // mPencilColor->setStatusTip("Specify the pencil color");
+    // QObject::connect(mPencilColor, &QAction::triggered, mImageViewer, &mImageViewer::setPencilColor);
+
+    mActionToNoisyImage = new QAction(this);
+    mActionToNoisyImage->setText("Noisy image");
+    mActionToNoisyImage->setStatusTip("Show noisy image");
+    QObject::connect(mActionToNoisyImage, &QAction::triggered, this, &MainWindow::transToNoisyImage);
+
+    mActionToOriginalImage = new QAction(this);
+    mActionToOriginalImage->setText("Original image");
+    mActionToOriginalImage->setStatusTip("Show original image");
+    QObject::connect(mActionToOriginalImage, &QAction::triggered, this, &MainWindow::transToOriginalImage);
+
+    mActionToInpaintedImage = new QAction(this);
+    mActionToInpaintedImage->setText("Inpainted image");
+    mActionToInpaintedImage->setStatusTip("Show inpainted image");
+    QObject::connect(mActionToInpaintedImage, &QAction::triggered, this, &MainWindow::transToInpaintedImage);
+
+    mActionClearImage = new QAction(this);
+    mActionClearImage->setText("Clear");
+    mActionClearImage->setStatusTip("Clear image");
+    QObject::connect(mActionClearImage, &QAction::triggered, this, &MainWindow::clearImage);
 }
 
 void MainWindow::createMenus()
@@ -74,8 +120,20 @@ void MainWindow::createToolBars()
 {
     mToolbarFile = addToolBar(tr("File"));
     mToolbarFile->addAction(mActionImportImage);
+    mToolbarFile->addAction(mActionExportImage);
 
-    //...
+    mToolbarDrawInfo = addToolBar(tr("Draw"));
+    mToolbarDrawInfo->addAction(mRenderPencil);
+    mToolbarDrawInfo->addSeparator();
+    mToolbarDrawInfo->addAction(mPencilColor);
+
+    mToolbarImageStatus = addToolBar(tr("Status"));
+    mToolbarImageStatus->addAction(mActionToNoisyImage);
+    mToolbarImageStatus->addAction(mActionToOriginalImage);
+    mToolbarImageStatus->addAction(mActionToInpaintedImage);
+    mToolbarImageStatus->addSeparator();
+    mToolbarImageStatus->addAction(mActionClearImage);
+    mToolbarImageStatus->setEnabled(false);
 }
 
 void MainWindow::createStatusBar()
@@ -83,7 +141,33 @@ void MainWindow::createStatusBar()
     ;
 }
 
-void MainWindow::ImportImage()
+void MainWindow::setActionStatus(bool value)
+{
+    mActionImportImage->setEnabled(value);
+    mActionExportImage->setEnabled(value);
+
+    mMenuAlgorithms->setEnabled(value);
+
+    mToolbarImageStatus->setEnabled(value);
+}
+
+void MainWindow::closeWidget()
+{
+    DELETE(mParameterSetWidget)
+}
+
+void MainWindow::showWidget()
+{
+    mCalculationThread->initAlgorithm(mDataManager, mParameterSet);
+    mParameterSetWidget = new ParameterSetWidget(this, mParameterSet);
+
+    QObject::connect(mParameterSetWidget, &ParameterSetWidget::readyToApply, this, &MainWindow::applyAlgorithm);
+    connect(mParameterSetWidget, SIGNAL(ReadyToApply(QString)), this, SLOT(ApplyAlgorithms(QString)));
+    addDockWidget(Qt::RightDockWidgetArea, mParameterSetWidget);
+    mParameterSetWidget->showWidget();
+}
+
+void MainWindow::importImage()
 {
     QString filename = QFileDialog::getOpenFileName(this, tr("Import image"), ".", tr("Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)"));
 
@@ -94,7 +178,7 @@ void MainWindow::ImportImage()
     mIOThread->start();
 }
 
-void MainWindow::ExportImage()
+void MainWindow::exportImage()
 {
     QString filename = QFileDialog::getSaveFileName(this, tr("Export image"), ".", tr("Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)"));
 
@@ -103,6 +187,49 @@ void MainWindow::ExportImage()
     mIOThread->setFileName(filename);
     mIOThread->mIOType = IOThread::kExport;
     mIOThread->start();
+}
+
+void MainWindow::transToNoisyImage()
+{
+
+}
+
+void MainWindow::transToOriginalImage()
+{
+
+}
+
+void MainWindow::transToInpaintedImage()
+{
+
+}
+
+void MainWindow::clearImage()
+{
+    closeWidget();
+    // mDataManager->clearImage();
+    // mImageViewer->resetImage(mDataManager->getImage());
+    mImageViewer->update();
+    setActionStatus(false);
+    mActionImportImage->setEnabled(true);
+}
+
+void MainWindow::applyAlgorithm(QString algorithmName)
+{
+    mCalculationThread->setAlgorithmName(algorithmName);
+    mCalculationThread->start();
+}
+
+void MainWindow::showNoiseWidget()
+{
+    mCalculationThread->mAlgorithmType = CalculationThread::kNoise;
+    closeWidget();
+    showWidget();
+}
+
+void MainWindow::showMaxwellHeavisideInpaintingWidget()
+{
+
 }
 
 void MainWindow::setActionAndWidget(bool value1, bool value2)
@@ -115,7 +242,7 @@ void MainWindow::needToUpdate(bool value)
     ;
 }
 
-void MainWindow::About()
+void MainWindow::about()
 {
     QMessageBox::about(this, tr("About ImageInpainting App"),
                        tr("Here goes the info. "
