@@ -38,10 +38,40 @@ class MainWindow : public QMainWindow
         CalculationThread* mCalculationThread = nullptr;
         IOThread* mIOThread = nullptr;
 
+        QAction* mActionImportImage = nullptr;
+        QAction* mActionExportImage = nullptr;
+        QAction* mActionExit = nullptr;
+
+        QAction* mActionNoise = nullptr;
+        QAction* mActionMaxwellHeavisideInpainting = nullptr;
+
+        QAction* mActionAbout = nullptr;
+
+        QAction* mRenderPencil = nullptr;
+
+        QAction* mActionToNoisyImage = nullptr;
+        QAction* mActionToOriginalImage = nullptr;
+        QAction* mActionToInpaintedImage = nullptr;
+        QAction* mActionClearImage = nullptr;
+
+        QToolBar* mToolbarFile = nullptr;
+        QToolBar* mToolbarDrawInfo = nullptr;
+        QToolBar* mTtoolbarImageStatus = nullptr;
+
+        QLabel* mLabelOperationInfo = nullptr;
+
         void init();
+        void createActions();
+        void createMenus();
+        void createToolBars();
+        void createStatusBar();
+
         void SetActionStatus(bool value);
 
     private slots:
+        void ImportImage();
+        void ExportImage();
+
         void setActionAndWidget(bool value1, bool value2);
         void needToUpdate(bool value);
         void About();
