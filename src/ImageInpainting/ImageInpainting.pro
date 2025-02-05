@@ -17,3 +17,6 @@ FORMS += \
 HEADERS += \
         mainwindow.h \
         utils.h
+
+RESOURCES += \
+    icons.qrc
