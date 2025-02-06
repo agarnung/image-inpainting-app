@@ -19,6 +19,9 @@ SOURCES += \
         Algorithms/Noise.cpp \
         Algorithms/ImageInpaintingBase.cpp \
         Algorithms/MaxwellHeavisideImageInpainting.cpp \
+        Algorithms/BurgersViscousImageInpainting.cpp \
+        Algorithms/CahnHilliardImageInpainting.cpp \
+        Algorithms/NavierStokesImageInpainting.cpp \
         Algorithms/TeleaImageInpainting.cpp \
 
 FORMS += \
@@ -36,6 +39,9 @@ HEADERS += \
         Algorithms/Noise.h \
         Algorithms/ImageInpaintingBase.h \
         Algorithms/MaxwellHeavisideImageInpainting.h \
+        Algorithms/BurgersViscousImageInpainting.h \
+        Algorithms/CahnHilliardImageInpainting.h \
+        Algorithms/NavierStokesImageInpainting.h \
         Algorithms/TeleaImageInpainting.h \
 
 RESOURCES += \

@@ -8,6 +8,8 @@
  */
 class TeleaImageInpainting : public ImageInpaintingBase
 {
+    Q_OBJECT
+
     public:
         explicit TeleaImageInpainting(DataManager* dataManager = nullptr, ParameterSet* parameterSet = nullptr);
         ~TeleaImageInpainting() {}

@@ -52,6 +52,9 @@ class DataManager
         static QPixmap matToPixmap(const cv::Mat& mat);
         static cv::Mat pixmapToMat(const QPixmap& pixmap);
 
+    public slots:
+        void receiveProcessImage(const cv::Mat& img);
+
     private:
         cv::Mat mImage;
         cv::Mat mNoisyImage;

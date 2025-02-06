@@ -5,6 +5,8 @@
 
 class ImageInpaintingBase
 {
+    Q_OBJECT
+
     public:
         explicit ImageInpaintingBase(DataManager* dataManager = nullptr, ParameterSet* parameterSet = nullptr);
         virtual ~ImageInpaintingBase() {}
@@ -19,5 +21,8 @@ class ImageInpaintingBase
     protected:
         ParameterSet* mParameterSet = nullptr;
         DataManager* mDataManager = nullptr;
+
+    signals:
+        void sendImageProcess(const cv::Mat& img);
 };
 

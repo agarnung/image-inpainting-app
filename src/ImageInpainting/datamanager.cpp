@@ -106,3 +106,9 @@ cv::Mat DataManager::pixmapToMat(const QPixmap &pixmap)
     return mat.clone();
 }
 
+void DataManager::receiveProcessImage(const cv::Mat& img)
+{
+    mInpaintedImage = img.clone();
+    // TODO Y QUE SE MUESTRE EN IMAGEVIEWER...
+}
+
