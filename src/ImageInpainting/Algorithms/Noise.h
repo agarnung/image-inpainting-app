@@ -3,9 +3,6 @@
 #include "../parameterset.h"
 #include "../datamanager.h"
 
-#include <vector>
-#include <utility>
-#include <algorithm>
 #include <QList>
 
 class Noise
@@ -14,11 +11,14 @@ class Noise
         explicit Noise(DataManager* dataManager = nullptr, ParameterSet* parameterSet = nullptr);
         ~Noise() {}
 
-    public:
         void addNoise();
 
     private:
+        enum NoiseType{kRandomMask};
+
         void initParameters();
+
+        void createRandomMask(double occlusionRatio, cv::Mat& mask);
 
     private:
         ParameterSet* mParameterSet = nullptr;

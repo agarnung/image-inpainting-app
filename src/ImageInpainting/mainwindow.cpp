@@ -50,7 +50,7 @@ void MainWindow::init()
     mParameterSetWidget = new ParameterSetWidget();
     mCalculationThread = new CalculationThread();
     mCalculationThread->mAlgorithmType = CalculationThread::kNone;
-    connect(mCalculationThread, &CalculationThread::needToResetImage, this, &MainWindow::needToResetImage);
+    QObject::connect(mCalculationThread, &CalculationThread::needToResetImage, this, &MainWindow::needToResetImage);
     QObject::connect(mCalculationThread, &CalculationThread::setActionAndWidget, this, &MainWindow::setActionAndWidget);
     mIOThread = new IOThread(mDataManager);
     mIOThread->mIOType = IOThread::kNone;
@@ -92,15 +92,15 @@ void MainWindow::createActions()
     mPencilProperties->setStatusTip("Specify the pencil properties");
     QObject::connect(mPencilProperties, &QAction::triggered, mImageViewer, &ImageViewer::showPencilSettingsDialog);
 
-    mActionToNoisyImage = new QAction(this);
-    mActionToNoisyImage->setText("Noisy image");
-    mActionToNoisyImage->setStatusTip("Show noisy image");
-    QObject::connect(mActionToNoisyImage, &QAction::triggered, this, &MainWindow::transToNoisyImage);
-
     mActionToOriginalImage = new QAction(this);
     mActionToOriginalImage->setText("Original image");
     mActionToOriginalImage->setStatusTip("Show original image");
     QObject::connect(mActionToOriginalImage, &QAction::triggered, this, &MainWindow::transToOriginalImage);
+
+    mActionToNoisyImage = new QAction(this);
+    mActionToNoisyImage->setText("Noisy image");
+    mActionToNoisyImage->setStatusTip("Show noisy image");
+    QObject::connect(mActionToNoisyImage, &QAction::triggered, this, &MainWindow::transToNoisyImage);
 
     mActionToInpaintedImage = new QAction(this);
     mActionToInpaintedImage->setText("Inpainted image");
@@ -183,7 +183,6 @@ void MainWindow::showWidget()
     mParameterSetWidget = new ParameterSetWidget(this, mParameterSet);
 
     QObject::connect(mParameterSetWidget, &ParameterSetWidget::readyToApply, this, &MainWindow::applyAlgorithm);
-    connect(mParameterSetWidget, SIGNAL(ReadyToApply(QString)), this, SLOT(ApplyAlgorithms(QString)));
     addDockWidget(Qt::RightDockWidgetArea, mParameterSetWidget);
     mParameterSetWidget->showWidget();
 }
@@ -227,6 +226,7 @@ void MainWindow::exportImage()
 
 void MainWindow::transToNoisyImage()
 {
+    qDebug() << "transToNoisyImage";
     mDataManager->imageToNoisyImage();
     mImageViewer->resetImage(mDataManager->getImagePixmap());
     mImageViewer->update();
@@ -234,6 +234,7 @@ void MainWindow::transToNoisyImage()
 
 void MainWindow::transToOriginalImage()
 {
+    qDebug() << "transToOriginalImage";
     mDataManager->imageToOriginalImage();
     mImageViewer->resetImage(mDataManager->getImagePixmap());
     mImageViewer->update();
@@ -241,6 +242,7 @@ void MainWindow::transToOriginalImage()
 
 void MainWindow::transToInpaintedImage()
 {
+    qDebug() << "transToInpaintedImage";
     mDataManager->imageToInpaintedImage();
     mImageViewer->resetImage(mDataManager->getImagePixmap());
     mImageViewer->update();
@@ -287,7 +289,7 @@ void MainWindow::setActionAndWidget(bool value1, bool value2)
     }
 }
 
-void MainWindow::needToResetImage(bool value)
+void MainWindow::needToResetImage()
 {
     mImageViewer->resetImage(mDataManager->getImagePixmap());
     mImageViewer->update();

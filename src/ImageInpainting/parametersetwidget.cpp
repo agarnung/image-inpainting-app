@@ -205,8 +205,8 @@ ParameterSetWidget::ParameterSetWidget(QWidget* parent, ParameterSet* parameterS
     mLabel->setWordWrap(true);
     mVBoxLayout->addWidget(mLabel);
 
-    QPushButton *apply = new QPushButton(tr("Apply"), this);
-    connect(apply, SIGNAL(clicked()), this, SLOT(OnApplyClick()));
+    QPushButton* apply = new QPushButton(tr("Apply"), this);
+    QObject::connect(apply, &QPushButton::clicked, this, &ParameterSetWidget::onApplyClick);
     mVBoxLayout->addWidget(apply);
 
     this->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);

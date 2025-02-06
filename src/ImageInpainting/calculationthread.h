@@ -35,7 +35,7 @@ class CalculationThread: public QThread
         void run();
 
     signals:
-        void needToResetImage(bool value);
+        void needToResetImage();
         void setActionAndWidget(bool, bool);
         void statusShowMessage(QString message);
 };

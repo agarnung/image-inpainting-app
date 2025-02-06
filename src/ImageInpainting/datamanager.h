@@ -20,22 +20,24 @@ class DataManager
         bool importImageFromFile(const std::string& filename);
         bool exportImageToFile(const std::string& filename);
 
-        cv::Mat getImage() const { return mImage; }
-        cv::Mat getNoisyImage() const { return mNoisyImage; }
-        cv::Mat getOriginalImage() const { return mOriginalImage; }
-        cv::Mat getInpaintedImage() const { return mInpaintedImage; }
-        QPixmap getImagePixmap() const { return matToPixmap(mImage); }
-        QPixmap getNoisyImagePixmap() const { return matToPixmap(mNoisyImage); }
-        QPixmap getOriginalImagePixmap() const { return matToPixmap(mOriginalImage); }
-        QPixmap getInpaintedImagePixmap() const { return matToPixmap(mInpaintedImage); }
-        void setImage(const cv::Mat& image) { mImage = image; }
-        void setNoisyImage(const cv::Mat& noisyImage) { mNoisyImage = noisyImage; }
-        void setOriginalImage(const cv::Mat& originalImage) { mOriginalImage = originalImage; }
-        void setInpaintedImage(const cv::Mat& inpaintedImage) { mInpaintedImage = inpaintedImage; }
+        inline cv::Mat getImage() const { return mImage; }
+        inline cv::Mat getNoisyImage() const { return mNoisyImage; }
+        inline cv::Mat getOriginalImage() const { return mOriginalImage; }
+        inline cv::Mat getInpaintedImage() const { return mInpaintedImage; }
+        inline QPixmap getImagePixmap() const { return matToPixmap(mImage); }
+        inline QPixmap getNoisyImagePixmap() const { return matToPixmap(mNoisyImage); }
+        inline QPixmap getOriginalImagePixmap() const { return matToPixmap(mOriginalImage); }
+        inline QPixmap getInpaintedImagePixmap() const { return matToPixmap(mInpaintedImage); }
+        inline void setImage(const cv::Mat& image) { mImage = image; }
+        inline void setNoisyImage(const cv::Mat& noisyImage) { mNoisyImage = noisyImage; }
+        inline void setOriginalImage(const cv::Mat& originalImage) { mOriginalImage = originalImage; }
+        inline void setInpaintedImage(const cv::Mat& inpaintedImage) { mInpaintedImage = inpaintedImage; }
+        inline void setMask(const cv::Mat& mask) { mMask = mask; }
 
-        void imageToNoisyImage() { mImage = mNoisyImage; }
-        void imageToOriginalImage() { mImage = mOriginalImage; }
-        void imageToInpaintedImage() { mImage = mInpaintedImage; }
+        inline void imageToNoisyImage() { mImage = mNoisyImage; }
+        inline void imageToOriginalImage() { mImage = mOriginalImage; }
+        inline void imageToInpaintedImage() { mImage = mInpaintedImage; }
+
         void clearImage();
 
         static QPixmap matToPixmap(const cv::Mat& mat);
@@ -45,4 +47,5 @@ class DataManager
         cv::Mat mNoisyImage;
         cv::Mat mOriginalImage;
         cv::Mat mInpaintedImage;
+        cv::Mat mMask;
 };

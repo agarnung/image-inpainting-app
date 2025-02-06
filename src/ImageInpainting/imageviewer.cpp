@@ -17,6 +17,8 @@ void ImageViewer::init()
     mScene = new QGraphicsScene(this);
     setScene(mScene);
 
+    this->setContentsMargins(5, 5, 5, 5);
+
     mPencilSettingsDialog = new PencilSettingsDialog(this);
 
     setDragMode(QGraphicsView::NoDrag);
@@ -48,6 +50,9 @@ void ImageViewer::resetImage(const QPixmap& image)
     {
         mImageItem = mScene->addPixmap(image);
         setSceneRect(image.rect());
+
+        mInpaintingMask = QPixmap(image.size());
+        mInpaintingMask.fill(Qt::white);
     }
 }
 
@@ -94,8 +99,8 @@ void ImageViewer::mouseMoveEvent(QMouseEvent* event)
         QPoint delta = event->pos() - mPanStartPoint.toPoint();
         mPanStartPoint = event->pos();
 
-        QScrollBar *hBar = horizontalScrollBar();
-        QScrollBar *vBar = verticalScrollBar();
+        QScrollBar* hBar = horizontalScrollBar();
+        QScrollBar* vBar = verticalScrollBar();
         hBar->setValue(hBar->value() - delta.x());
         vBar->setValue(vBar->value() - delta.y());
     }
@@ -105,6 +110,9 @@ void ImageViewer::mouseMoveEvent(QMouseEvent* event)
         QPoint currentPoint = mapToScene(event->pos()).toPoint();
         mPath.lineTo(currentPoint);
         mPathItem->setPath(mPath);
+
+        updateInpaintingMask(mLastPoint, currentPoint);
+        mLastPoint = currentPoint;
     }
 }
 
@@ -189,4 +197,14 @@ void ImageViewer::horizontalTranslation(int deltaX)
 void ImageViewer::verticalTranslation(int deltaY)
 {
     verticalScrollBar()->setValue(verticalScrollBar()->value() - deltaY / 12);
+}
+
+void ImageViewer::updateInpaintingMask(const QPoint& from, const QPoint& to)
+{
+    if (mInpaintingMask.isNull())
+        return;
+
+    QPainter painter(&mInpaintingMask);
+    painter.setPen(QPen(Qt::black, mPen.width(), Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin)); // Negro = 0 (píxeles a inpaint)
+    painter.drawLine(from, to);
 }

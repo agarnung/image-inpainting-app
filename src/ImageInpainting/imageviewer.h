@@ -196,6 +196,7 @@ class ImageViewer : public QGraphicsView
         QGraphicsPixmapItem* mImageItem = nullptr;
         QGraphicsPathItem* mPathItem = nullptr;
         QPixmap mPixmap;
+        QPixmap mInpaintingMask;
         QPen mPen;
         QPoint mLastPoint;
         QPointF mPanStartPoint;
@@ -210,6 +211,8 @@ class ImageViewer : public QGraphicsView
 
         void horizontalTranslation(int deltaX);
         void verticalTranslation(int deltaY);
+
+        void updateInpaintingMask(const QPoint& from, const QPoint& to);
 
     public slots:
         void togglePencilDrawing();
