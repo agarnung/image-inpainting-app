@@ -163,6 +163,47 @@ class PencilSettingsDialog : public QDialog
         QComboBox* mBrushComboBox;
 };
 
+#include <QThread>
+
+class MaskUpdater : public QThread
+{
+    Q_OBJECT
+
+    public:
+        MaskUpdater(QObject* parent = nullptr)
+            : QThread(parent), mMask(nullptr) {}
+
+        void setMask(QPixmap* mask, const QPoint& from, const QPoint& to, int penWidth)
+        {
+            mMask = mask;
+            mFrom = from;
+            mTo = to;
+            mPenWidth = penWidth;
+        }
+
+    signals:
+        void maskUpdated(const QPixmap& newMask);
+
+    protected:
+        void run() override
+        {
+            if (!mMask)
+                return;
+
+            QPixmap updatedMask = *mMask;
+            QPainter painter(&updatedMask);
+            painter.setPen(QPen(Qt::black, mPenWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+            painter.drawLine(mFrom, mTo);
+
+            emit maskUpdated(updatedMask);
+        }
+
+    private:
+        QPixmap* mMask;
+        QPoint mFrom, mTo;
+        int mPenWidth;
+};
+
 /**
  * @class ImageViewer
  * @brief Provides an Qt-based dynamic visualization of images.
@@ -192,6 +233,7 @@ class ImageViewer : public QGraphicsView
 
     private:
         PencilSettingsDialog* mPencilSettingsDialog = nullptr;
+        MaskUpdater* mMaskUpdater = nullptr;
         QGraphicsScene* mScene = nullptr;
         QGraphicsPixmapItem* mImageItem = nullptr;
         QGraphicsPathItem* mPathItem = nullptr;
@@ -217,4 +259,5 @@ class ImageViewer : public QGraphicsView
     public slots:
         void togglePencilDrawing();
         void showPencilSettingsDialog();
+        void onMaskUpdated(const QPixmap& newMask);
 };

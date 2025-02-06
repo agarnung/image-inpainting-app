@@ -31,6 +31,7 @@ void DataManager::clearImage()
     mOriginalImage.release();
     mNoisyImage.release();
     mInpaintedImage.release();
+    // mInpaintingMask.release();
 }
 
 QPixmap DataManager::matToPixmap(const cv::Mat& mat)
@@ -43,7 +44,9 @@ QPixmap DataManager::matToPixmap(const cv::Mat& mat)
     else matRGB = mat.clone();
 
     QImage img(matRGB.data, matRGB.cols, matRGB.rows, matRGB.step,
-               mat.channels() == 4 ? QImage::Format_RGBA8888 : QImage::Format_RGB888);
+               matRGB.channels() == 4 ? QImage::Format_RGBA8888 :
+               matRGB.channels() == 3 ? QImage::Format_RGB888 :
+               matRGB.channels() == 1 ? QImage::Format_Grayscale8 : QImage::Format_Invalid);
 
     return QPixmap::fromImage(img);
 }

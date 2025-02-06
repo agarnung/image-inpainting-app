@@ -47,8 +47,8 @@ class MainWindow : public QMainWindow
 
         QAction* mActionAbout = nullptr;
 
-        QAction* mRenderPencil = nullptr;
-        QAction* mPencilProperties = nullptr;
+        QAction* mActionRenderPencil = nullptr;
+        QAction* mActionPencilProperties = nullptr;
 
         QAction* mActionToNoisyImage = nullptr;
         QAction* mActionToOriginalImage = nullptr;

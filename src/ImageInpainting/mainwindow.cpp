@@ -84,13 +84,14 @@ void MainWindow::createActions()
     mActionAbout->setStatusTip("Information about this application");
     QObject::connect(mActionAbout, &QAction::triggered, this, &MainWindow::about);
 
-    mRenderPencil = new QAction(tr("Render pencil"), this);
-    mRenderPencil->setStatusTip("Show or not the pencil drawing");
-    QObject::connect(mRenderPencil, &QAction::triggered, mImageViewer, &ImageViewer::togglePencilDrawing);
+    mActionRenderPencil = new QAction(tr("Draw mode"), this);
+    mActionRenderPencil->setStatusTip("Enable or disable the pencil");
+    mActionRenderPencil->setCheckable(true);
+    QObject::connect(mActionRenderPencil, &QAction::triggered, mImageViewer, &ImageViewer::togglePencilDrawing);
 
-    mPencilProperties = new QAction(QIcon(":/icons/pencil_color.ico"), tr("Pencil properties"), this);
-    mPencilProperties->setStatusTip("Specify the pencil properties");
-    QObject::connect(mPencilProperties, &QAction::triggered, mImageViewer, &ImageViewer::showPencilSettingsDialog);
+    mActionPencilProperties = new QAction(QIcon(":/icons/pencil_color.ico"), tr("Pencil properties"), this);
+    mActionPencilProperties->setStatusTip("Specify the pencil properties");
+    QObject::connect(mActionPencilProperties, &QAction::triggered, mImageViewer, &ImageViewer::showPencilSettingsDialog);
 
     mActionToOriginalImage = new QAction(this);
     mActionToOriginalImage->setText("Original image");
@@ -143,14 +144,15 @@ void MainWindow::createToolBars()
     mToolbarFile->addAction(mActionExportImage);
 
     mToolbarDrawInfo = addToolBar(tr("Draw"));
-    mToolbarDrawInfo->addAction(mRenderPencil);
+    mToolbarDrawInfo->addAction(mActionRenderPencil);
     mToolbarDrawInfo->addSeparator();
-    mToolbarDrawInfo->addAction(mPencilProperties);
+    mToolbarDrawInfo->addAction(mActionPencilProperties);
 
     mToolbarImageStatus = addToolBar(tr("Status"));
     mToolbarImageStatus->addAction(mActionToOriginalImage);
     mToolbarImageStatus->addAction(mActionToNoisyImage);
     mToolbarImageStatus->addAction(mActionToInpaintedImage);
+    mToolbarImageStatus->addAction(mActionToMask);
     mToolbarImageStatus->addSeparator();
     mToolbarImageStatus->addAction(mActionClearImage);
     mToolbarImageStatus->setEnabled(false);

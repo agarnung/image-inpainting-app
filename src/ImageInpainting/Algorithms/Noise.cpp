@@ -125,6 +125,7 @@ void Noise::addNoise()
 
             imageConverted.convertTo(image, originalType);
 
+            mask.convertTo(mask, CV_8UC1, 255.0, 0.0);
             mDataManager->setMask(mask);
 
             break;

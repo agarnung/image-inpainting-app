@@ -10,6 +10,9 @@ ImageViewer::ImageViewer(QWidget* parent)
     , mIsShiftPressed{false}
 {
     init();
+
+    mMaskUpdater = new MaskUpdater(nullptr);
+    connect(mMaskUpdater, &MaskUpdater::maskUpdated, this, &ImageViewer::onMaskUpdated);
 }
 
 void ImageViewer::init()
@@ -67,6 +70,11 @@ void ImageViewer::showPencilSettingsDialog()
 
     if (mPencilSettingsDialog->exec() == QDialog::Accepted)
         mPencilSettingsDialog->setPen(mPen);
+}
+
+void ImageViewer::onMaskUpdated(const QPixmap &newMask)
+{
+    mInpaintingMask = newMask;
 }
 
 void ImageViewer::mousePressEvent(QMouseEvent* event)
@@ -198,10 +206,9 @@ void ImageViewer::verticalTranslation(int deltaY)
 
 void ImageViewer::updateInpaintingMask(const QPoint& from, const QPoint& to)
 {
-    if (mInpaintingMask.isNull())
+    if (mInpaintingMask.isNull() || mMaskUpdater->isRunning())
         return;
 
-    QPainter painter(&mInpaintingMask);
-    painter.setPen(QPen(Qt::black, mPen.width(), Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin)); // Negro = 0 (píxeles a inpaint)
-    painter.drawLine(from, to);
+    mMaskUpdater->setMask(&mInpaintingMask, from, to, mPen.width());
+    mMaskUpdater->start();
 }
