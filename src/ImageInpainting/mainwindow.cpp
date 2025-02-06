@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     setGeometry(250, 50, 880, 660);
 
+    setStyle();
+
     init();
     createActions();
     createMenus();
@@ -113,7 +115,20 @@ void MainWindow::createActions()
 
 void MainWindow::createMenus()
 {
-    ;
+    mMenuFile = menuBar()->addMenu(tr("File"));
+    mMenuFile->addAction(mActionImportImage);
+    mMenuFile->addAction(mActionExportImage);
+    mMenuFile->addSeparator();
+    mMenuFile->addAction(mActionExit);
+
+    mMenuAlgorithms = menuBar()->addMenu(tr("Algorithms"));
+    mMenuAlgorithms->addAction(mActionNoise);
+    mMenuAlgorithms->addSeparator();
+    mMenuAlgorithms->addAction(mActionMaxwellHeavisideImageInpainting);
+    mMenuAlgorithms->setEnabled(false);
+
+    mMenuHelp = menuBar()->addMenu(tr("Help"));
+    mMenuHelp->addAction(mActionAbout);
 }
 
 void MainWindow::createToolBars()
@@ -138,7 +153,13 @@ void MainWindow::createToolBars()
 
 void MainWindow::createStatusBar()
 {
-    ;
+    mLabelOperationInfo = new QLabel();
+    mLabelOperationInfo->setAlignment(Qt::AlignCenter);
+    mLabelOperationInfo->setMinimumSize(mLabelOperationInfo->sizeHint());
+
+    statusBar()->addWidget(mLabelOperationInfo);
+    connect(mIOThread, &IOThread::statusShowMessage, mLabelOperationInfo, &QLabel::setText);
+    connect(mCalculationThread, &CalculationThread::statusShowMessage, mLabelOperationInfo, &QLabel::setText);
 }
 
 void MainWindow::setActionStatus(bool value)
@@ -167,6 +188,21 @@ void MainWindow::showWidget()
     mParameterSetWidget->showWidget();
 }
 
+void MainWindow::setStyle()
+{
+    QFile styleFile(":/style.qss");
+    if (styleFile.open(QFile::ReadOnly | QFile::Text))
+    {
+        QTextStream stream(&styleFile);
+        QString styleSheet = stream.readAll();
+        this->setStyleSheet(styleSheet);
+
+        styleFile.close();
+    }
+    else
+        qCritical() << QObject::tr("%1 - %2 - Could not open style sheet").arg(this->metaObject()->className()).arg(__func__);
+}
+
 void MainWindow::importImage()
 {
     QString filename = QFileDialog::getOpenFileName(this, tr("Import image"), ".", tr("Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)"));
@@ -191,24 +227,30 @@ void MainWindow::exportImage()
 
 void MainWindow::transToNoisyImage()
 {
-
+    mDataManager->imageToNoisyImage();
+    mImageViewer->resetImage(mDataManager->getImagePixmap());
+    mImageViewer->update();
 }
 
 void MainWindow::transToOriginalImage()
 {
-
+    mDataManager->imageToOriginalImage();
+    mImageViewer->resetImage(mDataManager->getImagePixmap());
+    mImageViewer->update();
 }
 
 void MainWindow::transToInpaintedImage()
 {
-
+    mDataManager->imageToInpaintedImage();
+    mImageViewer->resetImage(mDataManager->getImagePixmap());
+    mImageViewer->update();
 }
 
 void MainWindow::clearImage()
 {
     closeWidget();
-    // mDataManager->clearImage();
-    // mImageViewer->resetImage(mDataManager->getImage());
+    mDataManager->clearImage();
+    mImageViewer->resetImage(mDataManager->getImagePixmap());
     mImageViewer->update();
     setActionStatus(false);
     mActionImportImage->setEnabled(true);
@@ -229,23 +271,32 @@ void MainWindow::showNoiseWidget()
 
 void MainWindow::showMaxwellHeavisideInpaintingWidget()
 {
-
+    mCalculationThread->mAlgorithmType = CalculationThread::kMaxwellHeavisideImageInpainting;
+    closeWidget();
+    showWidget();
 }
 
 void MainWindow::setActionAndWidget(bool value1, bool value2)
 {
-    ;
+    setActionStatus(value1);
+
+    if(mParameterSetWidget && value2)
+    {
+        closeWidget();
+        showWidget();
+    }
 }
 
 void MainWindow::needToUpdate(bool value)
 {
-    ;
+    mImageViewer->resetImage(mDataManager->getImagePixmap());
+    mImageViewer->update();
 }
 
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About ImageInpainting App"),
-                       tr("Here goes the info. "
+                       tr("Here goes the info. <br>"
                           "May add HTML and CSS in a Scrollable pop-up with instruction."));
 }
 

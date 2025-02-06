@@ -61,7 +61,9 @@ class MainWindow : public QMainWindow
 
         QLabel* mLabelOperationInfo = nullptr;
 
+        QMenu* mMenuFile= nullptr;
         QMenu* mMenuAlgorithms = nullptr;
+        QMenu* mMenuHelp = nullptr;
 
         void init();
         void createActions();
@@ -73,6 +75,8 @@ class MainWindow : public QMainWindow
 
         void closeWidget();
         void showWidget();
+
+        void setStyle();
 
     private slots:
         void importImage();

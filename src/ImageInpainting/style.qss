@@ -1,0 +1,142 @@
+QWidget {
+    background-color: #EAEAEA;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    color: #333333;
+}
+
+QPushButton {
+    background-color: #4A90E2;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+QPushButton:hover {
+    background-color: #357ABD;
+}
+
+QPushButton:pressed {
+    background-color: #2A5D9F;
+}
+
+/* Toolbars y menús */
+QMenuBar {
+    background-color: #DADADA;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+QMenuBar::item {
+    background: transparent;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+QMenuBar::item:selected {
+    background: #B0B0B0;
+}
+
+QMenu {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+}
+
+QMenu::item {
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+QMenu::item:selected {
+    background-color: #4A90E2;
+    color: #FFFFFF;
+}
+
+/* Etiquetas */
+QLabel {
+    color: #555555;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+QLineEdit, QTextEdit {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 14px;
+    color: #333333;
+}
+
+QComboBox {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 6px;
+    padding: 6px;
+    font-size: 14px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid #CCCCCC;
+    selection-background-color: #4A90E2;
+    selection-color: #FFFFFF;
+    border-radius: 6px;
+}
+
+QSlider::groove:horizontal {
+    height: 6px;
+    background: #CCCCCC;
+    border-radius: 3px;
+}
+
+QSlider::handle:horizontal {
+    background: #4A90E2;
+    width: 18px;
+    height: 18px;
+    margin: -6px 0;
+    border-radius: 9px;
+}
+
+QStatusBar {
+    border-top: 1px solid #B0B0B0;
+    padding: 5px;
+}
+
+QStatusBar::item {
+    border: 0px;
+}
+
+QTabWidget::pane {
+    border: 1px solid #CCCCCC;
+    border-radius: 6px;
+    background-color: #FFFFFF;
+}
+
+QTabBar::tab {
+    background: #DADADA;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+QTabBar::tab:selected {
+    background: #4A90E2;
+    color: #FFFFFF;
+}
+
+QProgressBar {
+    border: 1px solid #CCCCCC;
+    border-radius: 6px;
+    background: #EAEAEA;
+    text-align: center;
+}
+
+QProgressBar::chunk {
+    background: #4A90E2;
+    border-radius: 6px;
+}
