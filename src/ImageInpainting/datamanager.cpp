@@ -7,32 +7,30 @@ DataManager::DataManager() {}
 bool DataManager::importImageFromFile(const std::string& filename)
 {
     mImage = cv::imread(filename, cv::IMREAD_UNCHANGED);
+    if (mImage.empty()) return false;
 
-    if (mImage.empty())
-        return false;
-
-    mOriginalImage = mImage;
-    mNoisyImage = mImage;
-    mInpaintedImage = mImage;
+    mOriginalImage = mImage.clone();
+    mNoisyImage = mImage.clone();
+    mInpaintedImage = mImage.clone();
 
     return true;
 }
 
 bool DataManager::exportImageToFile(const std::string& filename)
 {
-    if (mImage.empty())
-        return false;
+    if (mImage.empty()) return false;
 
-    return cv::imwrite(filename, mImage);
+    cv::Mat outputImage;
+    cv::cvtColor(mImage, outputImage, cv::COLOR_RGB2BGR);
+    return cv::imwrite(filename, outputImage);
 }
 
 void DataManager::clearImage()
 {
-    cv::Mat newImage;
-    setImage(newImage);
-    setOriginalImage(newImage);
-    setNoisyImage(newImage);
-    setInpaintedImage(newImage);
+    mImage.release();
+    mOriginalImage.release();
+    mNoisyImage.release();
+    mInpaintedImage.release();
 }
 
 QPixmap DataManager::matToPixmap(const cv::Mat& mat)
@@ -44,7 +42,8 @@ QPixmap DataManager::matToPixmap(const cv::Mat& mat)
     else if (mat.channels() == 4) cv::cvtColor(mat, matRGB, cv::COLOR_BGRA2RGBA);
     else matRGB = mat.clone();
 
-    QImage img(matRGB.data, matRGB.cols, matRGB.rows, matRGB.step, QImage::Format_RGB888);
+    QImage img(matRGB.data, matRGB.cols, matRGB.rows, matRGB.step,
+               mat.channels() == 4 ? QImage::Format_RGBA8888 : QImage::Format_RGB888);
 
     return QPixmap::fromImage(img);
 }
