@@ -1,6 +1,7 @@
 #include "calculationthread.h"
 #include "utils.h"
 #include "Algorithms/MaxwellHeavisideImageInpainting.h"
+#include "Algorithms/TeleaImageInpainting.h"
 
 CalculationThread::CalculationThread()
     : mAlgorithmName{""}
@@ -26,6 +27,9 @@ void CalculationThread::initAlgorithm(DataManager* dataManager, ParameterSet* pa
             break;
         case kMaxwellHeavisideImageInpainting:
             mImageInpaintingBase = new MaxwellHeavisideImageInpainting(dataManager, parameterSet);
+            break;
+        case kTeleaImageInpainting:
+            mImageInpaintingBase = new TeleaImageInpainting(dataManager, parameterSet);
             break;
         default:
             break;

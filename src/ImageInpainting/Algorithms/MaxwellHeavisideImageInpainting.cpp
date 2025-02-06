@@ -24,6 +24,5 @@ void MaxwellHeavisideImageInpainting::initParameters()
 void MaxwellHeavisideImageInpainting::inpaint()
 {
     cv::Mat image = mDataManager->getImage();
-
     //...
 }

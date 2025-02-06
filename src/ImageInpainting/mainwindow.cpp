@@ -77,8 +77,12 @@ void MainWindow::createActions()
     QObject::connect(mActionNoise, &QAction::triggered, this, &MainWindow::showNoiseWidget);
 
     mActionMaxwellHeavisideImageInpainting = new QAction(tr("Maxwell-Heaviside Image Inpainting"), this);
-    mActionExportImage->setStatusTip("Denoise image using algorithm -- Maxwell-Heaviside Image Inpainting");
-    QObject::connect(mActionExportImage, &QAction::triggered, this, &MainWindow::showMaxwellHeavisideInpaintingWidget);
+    mActionMaxwellHeavisideImageInpainting->setStatusTip("Inpaint image using algorithm -- Maxwell-Heaviside Image Inpainting");
+    QObject::connect(mActionMaxwellHeavisideImageInpainting, &QAction::triggered, this, &MainWindow::showMaxwellHeavisideInpaintingWidget);
+
+    mActionTeleaImageInpainting = new QAction(tr("Telea Image Inpainting"), this);
+    mActionTeleaImageInpainting->setStatusTip("Inpaint image using algorithm -- Telea Image Inpainting");
+    QObject::connect(mActionTeleaImageInpainting, &QAction::triggered, this, &MainWindow::showTeleaInpaintingWidget);
 
     mActionAbout = new QAction(QIcon(":/icons/about.ico"), tr("About"), this);
     mActionAbout->setStatusTip("Information about this application");
@@ -142,6 +146,7 @@ void MainWindow::createMenus()
     mMenuAlgorithms->addAction(mActionNoise);
     mMenuAlgorithms->addSeparator();
     mMenuAlgorithms->addAction(mActionMaxwellHeavisideImageInpainting);
+    mMenuAlgorithms->addAction(mActionTeleaImageInpainting);
     mMenuAlgorithms->setEnabled(false);
 
     mMenuHelp = menuBar()->addMenu(tr("Help"));
@@ -297,6 +302,13 @@ void MainWindow::showNoiseWidget()
 void MainWindow::showMaxwellHeavisideInpaintingWidget()
 {
     mCalculationThread->mAlgorithmType = CalculationThread::kMaxwellHeavisideImageInpainting;
+    closeWidget();
+    showWidget();
+}
+
+void MainWindow::showTeleaInpaintingWidget()
+{
+    mCalculationThread->mAlgorithmType = CalculationThread::kTeleaImageInpainting;
     closeWidget();
     showWidget();
 }

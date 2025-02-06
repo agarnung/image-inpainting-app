@@ -76,7 +76,6 @@ void Noise::addNoise()
 
     double occlusionRatio;
     int noiseTypeIndex;
-
     if (!mParameterSet->getValue(QString("Occlusion ratio"), occlusionRatio))
     {
         qWarning() << "Did not find 'Occlusion ratio'";
@@ -88,7 +87,7 @@ void Noise::addNoise()
         return;
     }
 
-    mDataManager->imageToOriginalImage();
+    // mDataManager->imageToOriginalImage();
     NoiseType noiseType = static_cast<NoiseType>(noiseTypeIndex);
 
     switch (noiseType)

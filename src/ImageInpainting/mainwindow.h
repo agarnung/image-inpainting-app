@@ -44,6 +44,7 @@ class MainWindow : public QMainWindow
 
         QAction* mActionNoise = nullptr;
         QAction* mActionMaxwellHeavisideImageInpainting = nullptr;
+        QAction* mActionTeleaImageInpainting = nullptr;
 
         QAction* mActionAbout = nullptr;
 
@@ -93,6 +94,7 @@ class MainWindow : public QMainWindow
 
         void showNoiseWidget();
         void showMaxwellHeavisideInpaintingWidget();
+        void showTeleaInpaintingWidget();
 
         void setActionAndWidget(bool value1, bool value2);
         void needToResetImage();

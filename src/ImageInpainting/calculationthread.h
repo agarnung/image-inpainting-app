@@ -22,7 +22,7 @@ class CalculationThread: public QThread
         ~CalculationThread();
 
         enum AlgorithmsType{kNone, kNoise,
-                            kMaxwellHeavisideImageInpainting};
+                            kMaxwellHeavisideImageInpainting, kTeleaImageInpainting};
 
         QString mAlgorithmName;
         AlgorithmsType mAlgorithmType;

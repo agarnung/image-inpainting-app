@@ -57,9 +57,9 @@ class PencilSettingsDialog : public QDialog
             QLabel* joinLabel = new QLabel("Join Style:");
             layout->addWidget(joinLabel);
             mJoinComboBox = new QComboBox();
+            mJoinComboBox->addItem("Round", Qt::RoundJoin);
             mJoinComboBox->addItem("Miter", Qt::MiterJoin);
             mJoinComboBox->addItem("Bevel", Qt::BevelJoin);
-            mJoinComboBox->addItem("Round", Qt::RoundJoin);
             layout->addWidget(mJoinComboBox);
 
             QLabel* brushLabel = new QLabel("Brush Style:");

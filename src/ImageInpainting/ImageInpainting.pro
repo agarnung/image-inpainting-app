@@ -19,6 +19,7 @@ SOURCES += \
         Algorithms/Noise.cpp \
         Algorithms/ImageInpaintingBase.cpp \
         Algorithms/MaxwellHeavisideImageInpainting.cpp \
+        Algorithms/TeleaImageInpainting.cpp \
 
 FORMS += \
         mainwindow.ui
@@ -35,6 +36,7 @@ HEADERS += \
         Algorithms/Noise.h \
         Algorithms/ImageInpaintingBase.h \
         Algorithms/MaxwellHeavisideImageInpainting.h \
+        Algorithms/TeleaImageInpainting.h \
 
 RESOURCES += \
     icons.qrc
