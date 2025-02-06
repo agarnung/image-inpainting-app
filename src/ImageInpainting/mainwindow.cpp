@@ -50,11 +50,11 @@ void MainWindow::init()
     mParameterSetWidget = new ParameterSetWidget();
     mCalculationThread = new CalculationThread();
     mCalculationThread->mAlgorithmType = CalculationThread::kNone;
-    connect(mCalculationThread, &CalculationThread::needToUpdate, this, &MainWindow::needToUpdate);
+    connect(mCalculationThread, &CalculationThread::needToResetImage, this, &MainWindow::needToResetImage);
     QObject::connect(mCalculationThread, &CalculationThread::setActionAndWidget, this, &MainWindow::setActionAndWidget);
     mIOThread = new IOThread(mDataManager);
     mIOThread->mIOType = IOThread::kNone;
-    QObject::connect(mIOThread, &IOThread::needToUpdate, this, &MainWindow::needToUpdate);
+    QObject::connect(mIOThread, &IOThread::needToResetImage, this, &MainWindow::needToResetImage);
     QObject::connect(mIOThread, &IOThread::setActionAndWidget, this, &MainWindow::setActionAndWidget);
 }
 
@@ -280,14 +280,14 @@ void MainWindow::setActionAndWidget(bool value1, bool value2)
 {
     setActionStatus(value1);
 
-    if(mParameterSetWidget && value2)
+    if (mParameterSetWidget && value2)
     {
         closeWidget();
         showWidget();
     }
 }
 
-void MainWindow::needToUpdate(bool value)
+void MainWindow::needToResetImage(bool value)
 {
     mImageViewer->resetImage(mDataManager->getImagePixmap());
     mImageViewer->update();

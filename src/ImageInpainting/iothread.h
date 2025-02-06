@@ -36,5 +36,5 @@ class IOThread : public QThread
     signals:
         void statusShowMessage(QString);
         void setActionAndWidget(bool, bool);
-        void needToUpdate(bool);
+        void needToResetImage(bool);
 };

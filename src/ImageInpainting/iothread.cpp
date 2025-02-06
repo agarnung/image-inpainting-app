@@ -22,7 +22,19 @@ void IOThread::run()
 
 void IOThread::importImage(QString& fileName)
 {
-    ;
+    emit setActionAndWidget(false, false);
+    emit statusShowMessage("Now loading image " + fileName + " ...");
+    if (!mDataManager->importImageFromFile(fileName.toStdString()))
+    {
+        emit statusShowMessage("Loading image " + fileName + " failed.");
+
+        return;
+    }
+    else
+        emit statusShowMessage("Loading image " + fileName + " successful.");
+
+    emit needToResetImage(true);
+    emit setActionAndWidget(true, true);
 }
 
 void IOThread::exportImage(QString& fileName)

@@ -1,6 +1,30 @@
 #include "datamanager.h"
 
+#include <opencv4/opencv2/imgcodecs.hpp>
+
 DataManager::DataManager() {}
+
+bool DataManager::importImageFromFile(const std::string& filename)
+{
+    mImage = cv::imread(filename, cv::IMREAD_UNCHANGED);
+
+    if (mImage.empty())
+        return false;
+
+    mOriginalImage = mImage;
+    mNoisyImage = mImage;
+    mInpaintedImage = mImage;
+
+    return true;
+}
+
+bool DataManager::exportImageToFile(const std::string& filename)
+{
+    if (mImage.empty())
+        return false;
+
+    return cv::imwrite(filename, mImage);
+}
 
 void DataManager::clearImage()
 {

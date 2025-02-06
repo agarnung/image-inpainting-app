@@ -43,6 +43,6 @@ void CalculationThread::run()
     emit setActionAndWidget(true, false);
     emit statusShowMessage("Applying algorithm --" + mAlgorithmName + "-- done.");
 
-    emit needToUpdate(false);
+    emit needToResetImage(false);
 }
 

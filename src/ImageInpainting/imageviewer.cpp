@@ -11,12 +11,16 @@ ImageViewer::ImageViewer(QWidget* parent)
 
 void ImageViewer::updateImage(const QPixmap& image)
 {
-
+    mPixmap = image;
 }
 
 void ImageViewer::resetImage(const QPixmap& image)
 {
-
+    if (!image.isNull())
+    {
+        mImageItem = mScene->addPixmap(image);
+        setSceneRect(image.rect());
+    }
 }
 
 void ImageViewer::init()

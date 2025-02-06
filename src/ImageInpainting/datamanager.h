@@ -15,6 +15,10 @@ class DataManager
 {
     public:
         DataManager();
+        ~DataManager() {};
+
+        bool importImageFromFile(const std::string& filename);
+        bool exportImageToFile(const std::string& filename);
 
         cv::Mat getImage() const { return mImage; }
         cv::Mat getNoisyImage() const { return mNoisyImage; }

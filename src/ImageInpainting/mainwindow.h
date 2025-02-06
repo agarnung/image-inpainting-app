@@ -93,6 +93,6 @@ class MainWindow : public QMainWindow
         void showMaxwellHeavisideInpaintingWidget();
 
         void setActionAndWidget(bool value1, bool value2);
-        void needToUpdate(bool value);
+        void needToResetImage(bool value);
         void about();
 };
