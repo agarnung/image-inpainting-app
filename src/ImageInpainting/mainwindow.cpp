@@ -255,7 +255,7 @@ void MainWindow::transToInpaintedImage()
 void MainWindow::transToMask()
 {
     mDataManager->imageToMask();
-    mImageViewer->resetImage(mDataManager->getImagePixmap());
+    mImageViewer->resetImage(mDataManager->getMaskPixmap());
     mImageViewer->update();
 }
 

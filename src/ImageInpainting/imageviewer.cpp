@@ -83,7 +83,10 @@ void ImageViewer::mousePressEvent(QMouseEvent* event)
     if (mDrawingActivated && event->button() == Qt::LeftButton)
     {
         if (mDataManager->getCurrentViewMode() != DataManager::Noisy)
+        {
+            qInfo() << "Draw in the noisy image, please";
             return;
+        }
 
         mLastPoint = mapToScene(event->pos()).toPoint();
         mPath = QPainterPath();
@@ -138,14 +141,14 @@ void ImageViewer::mouseReleaseEvent(QMouseEvent* event)
             return;
         }
 
-        QPixmap noisyPixmap = mDataManager->getNoisyImagePixmap();
-        QPainter painter(&noisyPixmap);
-        painter.setPen(mPen);
-        painter.drawPath(mPath);
-        painter.end();
+        // Actualizar mNoisyImage con el path total existente, guardado en mPath (no??) Así, se puede salir a ver otra imagen y cuando se vuelva a pulsar en noisyimage, se dibuja de nuevo todo el trazado en ella
+        //...
 
-        mDataManager->setNoisyImage(DataManager::pixmapToMat(noisyPixmap));
+        // Actualizar máscara <= DEBE ESTAR MAL LA CONVERSIÓN DE PIXMAP A CV MAT, PORQUE EL BLACKMASK SE VE BIEN
         mDataManager->setMask(mInpaintingMask);
+        mInpaintingMask.save("/opt/proyectos/image-inpainting-app/src/ImageInpainting/icons/mask.png", "PNG");
+        // cv::Mat blackMask(mPixmap.size().height(), mPixmap.size().width(), CV_8UC1, cv::Scalar(0));
+        // mDataManager->setMask(blackMask);
 
         mIsUserDrawing = false;
     }
@@ -162,6 +165,9 @@ void ImageViewer::clearDrawing()
     mScene->clear();
     if (!mPixmap.isNull())
         mImageItem = mScene->addPixmap(mPixmap);
+
+    // Además, vaciar el path total, para volverlo a empezar de nuevo
+    //...
 }
 
 void ImageViewer::wheelEvent(QWheelEvent* event)
