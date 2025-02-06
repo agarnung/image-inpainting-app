@@ -197,7 +197,8 @@ class MaskUpdater : public QThread
             painter.setPen(QPen(Qt::black, mPenWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
             painter.drawLine(mFrom, mTo);
 
-            emit maskUpdated(updatedMask);
+            if (!updatedMask.isNull())
+                emit maskUpdated(updatedMask);
         }
 
     private:

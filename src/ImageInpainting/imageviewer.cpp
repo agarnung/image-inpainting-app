@@ -57,6 +57,21 @@ void ImageViewer::resetImage(const QPixmap& image)
 
         mInpaintingMask = QPixmap(image.size());
         mInpaintingMask.fill(Qt::white);
+        // mInpaintingMask = mSavedMask; // Restaurar la máscara guardada.
+
+        if (mDataManager->getCurrentViewMode() == DataManager::Noisy ||
+            mDataManager->getCurrentViewMode() == DataManager::Mask)
+        {
+            for (const QPainterPath& path : mDrawnPaths)
+            {
+                QPen pen = mPen;
+                QGraphicsPathItem* pathItem = new QGraphicsPathItem();
+                pen.setColor((mDataManager->getCurrentViewMode() == DataManager::Mask) ? Qt::black : mPen.color());
+                pathItem->setPen(pen);
+                pathItem->setPath(path);
+                mScene->addItem(pathItem);
+            }
+        }
     }
 }
 
@@ -75,6 +90,7 @@ void ImageViewer::showPencilSettingsDialog()
 
 void ImageViewer::onMaskUpdated(const QPixmap &newMask)
 {
+    qInfo() << "Mask updated";
     mInpaintingMask = newMask;
 }
 
@@ -141,14 +157,12 @@ void ImageViewer::mouseReleaseEvent(QMouseEvent* event)
             return;
         }
 
-        // Actualizar mNoisyImage con el path total existente, guardado en mPath (no??) Así, se puede salir a ver otra imagen y cuando se vuelva a pulsar en noisyimage, se dibuja de nuevo todo el trazado en ella
-        //...
+        mDrawnPaths.append(mPath); // Añadir el camino actual a la lista de caminos.
 
-        // Actualizar máscara <= DEBE ESTAR MAL LA CONVERSIÓN DE PIXMAP A CV MAT, PORQUE EL BLACKMASK SE VE BIEN
+        // mSavedMask = mInpaintingMask; // Guardar la máscara actual.
+
         mDataManager->setMask(mInpaintingMask);
         mInpaintingMask.save("/opt/proyectos/image-inpainting-app/src/ImageInpainting/icons/mask.png", "PNG");
-        // cv::Mat blackMask(mPixmap.size().height(), mPixmap.size().width(), CV_8UC1, cv::Scalar(0));
-        // mDataManager->setMask(blackMask);
 
         mIsUserDrawing = false;
     }
@@ -166,9 +180,11 @@ void ImageViewer::clearDrawing()
     if (!mPixmap.isNull())
         mImageItem = mScene->addPixmap(mPixmap);
 
-    // Además, vaciar el path total, para volverlo a empezar de nuevo
-    //...
+    mDrawnPaths.clear();
+    // mInpaintingMask.fill(Qt::white); // Limpiar la máscara.
+    // mDataManager->setMask(mInpaintingMask);
 }
+
 
 void ImageViewer::wheelEvent(QWheelEvent* event)
 {
@@ -233,8 +249,16 @@ void ImageViewer::verticalTranslation(int deltaY)
 
 void ImageViewer::updateInpaintingMask(const QPoint& from, const QPoint& to)
 {
-    if (mInpaintingMask.isNull() || mMaskUpdater->isRunning())
+    if (mInpaintingMask.isNull())
+    {
+        qInfo() << "Mask is null";
         return;
+    }
+    if (mMaskUpdater->isRunning())
+    {
+        qInfo() << "MaskUpdater is running";
+        return;
+    }
 
     mMaskUpdater->setMask(&mInpaintingMask, from, to, mPen.width());
     mMaskUpdater->start();
