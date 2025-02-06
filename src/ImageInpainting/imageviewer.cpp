@@ -3,9 +3,7 @@
 
 ImageViewer::ImageViewer(QWidget* parent)
     : QGraphicsView{parent}
-    , mPencilColor{Qt::red}
-    , mPencilSize{5}
-    , mDrawingActvated{false}
+    , mDrawingActivated{false}
     , mIsUserDrawing{false}
     , mIsMiddleButtonPressed{false}
     , mIsAltPressed{false}
@@ -19,6 +17,8 @@ void ImageViewer::init()
     mScene = new QGraphicsScene(this);
     setScene(mScene);
 
+    mPencilSettingsDialog = new PencilSettingsDialog(this);
+
     setDragMode(QGraphicsView::NoDrag);
     setRenderHint(QPainter::SmoothPixmapTransform);
 
@@ -27,8 +27,8 @@ void ImageViewer::init()
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
-    mPen.setColor(mPencilColor);
-    mPen.setWidth(mPencilSize);
+    mPen.setColor(Qt::red);
+    mPen.setWidth(5);
     mPen.setCapStyle(Qt::RoundCap);
     mPen.setJoinStyle(Qt::RoundJoin);
 }
@@ -53,22 +53,20 @@ void ImageViewer::resetImage(const QPixmap& image)
 
 void ImageViewer::togglePencilDrawing()
 {
-    mDrawingActvated = !mDrawingActvated;
+    mDrawingActivated = !mDrawingActivated;
 }
 
-void ImageViewer::setPencilColor()
+void ImageViewer::showPencilSettingsDialog()
 {
-    QColor color = QColorDialog::getColor(mPencilColor, this, tr("Select Pencil Color"));
-    if (color.isValid())
-    {
-        mPencilColor = color;
-        mPen.setColor(color);
-    }
+    mPencilSettingsDialog->setSettings(mPen);
+
+    if (mPencilSettingsDialog->exec() == QDialog::Accepted)
+        mPencilSettingsDialog->setPen(mPen);
 }
 
 void ImageViewer::mousePressEvent(QMouseEvent* event)
 {
-    if (mDrawingActvated && event->button() == Qt::LeftButton)
+    if (mDrawingActivated && event->button() == Qt::LeftButton)
     {
         mLastPoint = mapToScene(event->pos()).toPoint();
         mPath = QPainterPath();
@@ -102,7 +100,7 @@ void ImageViewer::mouseMoveEvent(QMouseEvent* event)
         vBar->setValue(vBar->value() - delta.y());
     }
 
-    if (mDrawingActvated && mIsUserDrawing)
+    if (mDrawingActivated && mIsUserDrawing)
     {
         QPoint currentPoint = mapToScene(event->pos()).toPoint();
         mPath.lineTo(currentPoint);
@@ -112,7 +110,7 @@ void ImageViewer::mouseMoveEvent(QMouseEvent* event)
 
 void ImageViewer::mouseReleaseEvent(QMouseEvent* event)
 {
-    if (mDrawingActvated && event->button() == Qt::LeftButton)
+    if (mDrawingActivated && event->button() == Qt::LeftButton)
         mIsUserDrawing = false;
 
     if (event->button() == Qt::MiddleButton)
@@ -161,6 +159,7 @@ void ImageViewer::wheelEvent(QWheelEvent* event)
 
 void ImageViewer::mouseDoubleClickEvent(QMouseEvent* event)
 {
+    (void) event;
     resetTransform();
     setSceneRect(mPixmap.rect());
     centerOn(mPixmap.rect().center());

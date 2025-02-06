@@ -88,9 +88,9 @@ void MainWindow::createActions()
     mRenderPencil->setStatusTip("Show or not the pencil drawing");
     QObject::connect(mRenderPencil, &QAction::triggered, mImageViewer, &ImageViewer::togglePencilDrawing);
 
-    mPencilColor = new QAction(QIcon(":/icons/pencil_color.ico"), tr("Pencil color"), this);
-    mPencilColor->setStatusTip("Specify the pencil color");
-    QObject::connect(mPencilColor, &QAction::triggered, mImageViewer, &ImageViewer::setPencilColor);
+    mPencilProperties = new QAction(QIcon(":/icons/pencil_color.ico"), tr("Pencil properties"), this);
+    mPencilProperties->setStatusTip("Specify the pencil properties");
+    QObject::connect(mPencilProperties, &QAction::triggered, mImageViewer, &ImageViewer::showPencilSettingsDialog);
 
     mActionToNoisyImage = new QAction(this);
     mActionToNoisyImage->setText("Noisy image");
@@ -140,7 +140,7 @@ void MainWindow::createToolBars()
     mToolbarDrawInfo = addToolBar(tr("Draw"));
     mToolbarDrawInfo->addAction(mRenderPencil);
     mToolbarDrawInfo->addSeparator();
-    mToolbarDrawInfo->addAction(mPencilColor);
+    mToolbarDrawInfo->addAction(mPencilProperties);
 
     mToolbarImageStatus = addToolBar(tr("Status"));
     mToolbarImageStatus->addAction(mActionToNoisyImage);
