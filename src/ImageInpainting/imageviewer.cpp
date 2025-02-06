@@ -1,8 +1,9 @@
 #include "imageviewer.h"
 #include "qscrollbar.h"
 
-ImageViewer::ImageViewer(QWidget* parent)
+ImageViewer::ImageViewer(QWidget* parent, DataManager* dataManager)
     : QGraphicsView{parent}
+    , mDataManager{dataManager}
     , mDrawingActivated{false}
     , mIsUserDrawing{false}
     , mIsMiddleButtonPressed{false}
@@ -81,6 +82,9 @@ void ImageViewer::mousePressEvent(QMouseEvent* event)
 {
     if (mDrawingActivated && event->button() == Qt::LeftButton)
     {
+        if (mDataManager->getCurrentViewMode() != DataManager::Noisy)
+            return;
+
         mLastPoint = mapToScene(event->pos()).toPoint();
         mPath = QPainterPath();
         mPath.moveTo(mLastPoint);
@@ -127,7 +131,24 @@ void ImageViewer::mouseMoveEvent(QMouseEvent* event)
 void ImageViewer::mouseReleaseEvent(QMouseEvent* event)
 {
     if (mDrawingActivated && event->button() == Qt::LeftButton)
+    {
+        if (mDataManager->getCurrentViewMode() != DataManager::Noisy)
+        {
+            mIsUserDrawing = false;
+            return;
+        }
+
+        QPixmap noisyPixmap = mDataManager->getNoisyImagePixmap();
+        QPainter painter(&noisyPixmap);
+        painter.setPen(mPen);
+        painter.drawPath(mPath);
+        painter.end();
+
+        mDataManager->setNoisyImage(DataManager::pixmapToMat(noisyPixmap));
+        mDataManager->setMask(mInpaintingMask);
+
         mIsUserDrawing = false;
+    }
 
     if (event->button() == Qt::MiddleButton)
     {
@@ -211,4 +232,6 @@ void ImageViewer::updateInpaintingMask(const QPoint& from, const QPoint& to)
 
     mMaskUpdater->setMask(&mInpaintingMask, from, to, mPen.width());
     mMaskUpdater->start();
+
+    mDataManager->setMask(mInpaintingMask);
 }

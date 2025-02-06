@@ -44,8 +44,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
-    mImageViewer = new ImageViewer();
     mDataManager = new DataManager();
+    mImageViewer = new ImageViewer(nullptr, mDataManager);
     mParameterSet = new ParameterSet();
     mParameterSetWidget = new ParameterSetWidget();
     mCalculationThread = new CalculationThread();

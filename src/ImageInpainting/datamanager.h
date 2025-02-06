@@ -17,8 +17,13 @@ class DataManager
         DataManager();
         ~DataManager() {};
 
+        enum ViewMode { Original, Noisy, Inpainted, Mask };
+
         bool importImageFromFile(const std::string& filename);
         bool exportImageToFile(const std::string& filename);
+
+        ViewMode getCurrentViewMode() const { return mCurrentViewMode; }
+        void setCurrentViewMode(ViewMode mode) { mCurrentViewMode = mode; }
 
         inline cv::Mat getImage() const { return mImage; }
         inline cv::Mat getNoisyImage() const { return mNoisyImage; }
@@ -35,15 +40,17 @@ class DataManager
         inline void setOriginalImage(const cv::Mat& originalImage) { mOriginalImage = originalImage; }
         inline void setInpaintedImage(const cv::Mat& inpaintedImage) { mInpaintedImage = inpaintedImage; }
         inline void setMask(const cv::Mat& mask) { mInpaintingMask = mask; }
+        inline void setMask(const QPixmap& pixmap) { mInpaintingMask = pixmapToMat(pixmap); }
 
-        inline void imageToNoisyImage() { mImage = mNoisyImage; }
-        inline void imageToOriginalImage() { mImage = mOriginalImage; }
-        inline void imageToInpaintedImage() { mImage = mInpaintedImage; }
-        inline void imageToMask() { mImage = mInpaintingMask; }
+        inline void imageToNoisyImage() { mImage = mNoisyImage; setCurrentViewMode(ViewMode::Noisy); }
+        inline void imageToOriginalImage() { mImage = mOriginalImage; setCurrentViewMode(ViewMode::Original); }
+        inline void imageToInpaintedImage() { mImage = mInpaintedImage; setCurrentViewMode(ViewMode::Inpainted); }
+        inline void imageToMask() { mImage = mInpaintingMask; setCurrentViewMode(ViewMode::Mask); }
 
         void clearImage();
 
         static QPixmap matToPixmap(const cv::Mat& mat);
+        static cv::Mat pixmapToMat(const QPixmap& pixmap);
 
     private:
         cv::Mat mImage;
@@ -51,4 +58,6 @@ class DataManager
         cv::Mat mOriginalImage;
         cv::Mat mInpaintedImage;
         cv::Mat mInpaintingMask;
+
+        ViewMode mCurrentViewMode = Original;
 };

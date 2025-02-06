@@ -1,5 +1,7 @@
 #pragma once
 
+#include "datamanager.h"
+
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
@@ -215,7 +217,7 @@ class ImageViewer : public QGraphicsView
     Q_OBJECT
 
     public:
-        explicit ImageViewer(QWidget* parent = nullptr);
+    explicit ImageViewer(QWidget* parent = nullptr, DataManager* dataManager = nullptr);
         ~ImageViewer() {};
 
         void updateImage(const QPixmap& image);
@@ -234,6 +236,7 @@ class ImageViewer : public QGraphicsView
     private:
         PencilSettingsDialog* mPencilSettingsDialog = nullptr;
         MaskUpdater* mMaskUpdater = nullptr;
+        DataManager* mDataManager = nullptr;
         QGraphicsScene* mScene = nullptr;
         QGraphicsPixmapItem* mImageItem = nullptr;
         QGraphicsPathItem* mPathItem = nullptr;
