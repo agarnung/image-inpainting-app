@@ -107,6 +107,11 @@ void MainWindow::createActions()
     mActionToInpaintedImage->setStatusTip("Show inpainted image");
     QObject::connect(mActionToInpaintedImage, &QAction::triggered, this, &MainWindow::transToInpaintedImage);
 
+    mActionToMask = new QAction(this);
+    mActionToMask->setText("Inpainting mask");
+    mActionToMask->setStatusTip("Show inpainting mask");
+    QObject::connect(mActionToMask, &QAction::triggered, this, &MainWindow::transToMask);
+
     mActionClearImage = new QAction(this);
     mActionClearImage->setText("Clear");
     mActionClearImage->setStatusTip("Clear image");
@@ -143,8 +148,8 @@ void MainWindow::createToolBars()
     mToolbarDrawInfo->addAction(mPencilProperties);
 
     mToolbarImageStatus = addToolBar(tr("Status"));
-    mToolbarImageStatus->addAction(mActionToNoisyImage);
     mToolbarImageStatus->addAction(mActionToOriginalImage);
+    mToolbarImageStatus->addAction(mActionToNoisyImage);
     mToolbarImageStatus->addAction(mActionToInpaintedImage);
     mToolbarImageStatus->addSeparator();
     mToolbarImageStatus->addAction(mActionClearImage);
@@ -226,7 +231,6 @@ void MainWindow::exportImage()
 
 void MainWindow::transToNoisyImage()
 {
-    qDebug() << "transToNoisyImage";
     mDataManager->imageToNoisyImage();
     mImageViewer->resetImage(mDataManager->getImagePixmap());
     mImageViewer->update();
@@ -234,7 +238,6 @@ void MainWindow::transToNoisyImage()
 
 void MainWindow::transToOriginalImage()
 {
-    qDebug() << "transToOriginalImage";
     mDataManager->imageToOriginalImage();
     mImageViewer->resetImage(mDataManager->getImagePixmap());
     mImageViewer->update();
@@ -242,8 +245,14 @@ void MainWindow::transToOriginalImage()
 
 void MainWindow::transToInpaintedImage()
 {
-    qDebug() << "transToInpaintedImage";
     mDataManager->imageToInpaintedImage();
+    mImageViewer->resetImage(mDataManager->getImagePixmap());
+    mImageViewer->update();
+}
+
+void MainWindow::transToMask()
+{
+    mDataManager->imageToMask();
     mImageViewer->resetImage(mDataManager->getImagePixmap());
     mImageViewer->update();
 }

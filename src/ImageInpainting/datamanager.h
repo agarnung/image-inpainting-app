@@ -24,10 +24,12 @@ class DataManager
         inline cv::Mat getNoisyImage() const { return mNoisyImage; }
         inline cv::Mat getOriginalImage() const { return mOriginalImage; }
         inline cv::Mat getInpaintedImage() const { return mInpaintedImage; }
+        inline cv::Mat getMask() const { return mMask; }
         inline QPixmap getImagePixmap() const { return matToPixmap(mImage); }
         inline QPixmap getNoisyImagePixmap() const { return matToPixmap(mNoisyImage); }
         inline QPixmap getOriginalImagePixmap() const { return matToPixmap(mOriginalImage); }
         inline QPixmap getInpaintedImagePixmap() const { return matToPixmap(mInpaintedImage); }
+        inline QPixmap getMaskPixmap() const { return matToPixmap(mMask); }
         inline void setImage(const cv::Mat& image) { mImage = image; }
         inline void setNoisyImage(const cv::Mat& noisyImage) { mNoisyImage = noisyImage; }
         inline void setOriginalImage(const cv::Mat& originalImage) { mOriginalImage = originalImage; }
@@ -37,6 +39,7 @@ class DataManager
         inline void imageToNoisyImage() { mImage = mNoisyImage; }
         inline void imageToOriginalImage() { mImage = mOriginalImage; }
         inline void imageToInpaintedImage() { mImage = mInpaintedImage; }
+        inline void imageToMask() { mImage = mMask; }
 
         void clearImage();
 

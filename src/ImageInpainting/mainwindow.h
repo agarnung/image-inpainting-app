@@ -53,6 +53,7 @@ class MainWindow : public QMainWindow
         QAction* mActionToNoisyImage = nullptr;
         QAction* mActionToOriginalImage = nullptr;
         QAction* mActionToInpaintedImage = nullptr;
+        QAction* mActionToMask = nullptr;
         QAction* mActionClearImage = nullptr;
 
         QToolBar* mToolbarFile = nullptr;
@@ -85,6 +86,7 @@ class MainWindow : public QMainWindow
         void transToNoisyImage();
         void transToOriginalImage();
         void transToInpaintedImage();
+        void transToMask();
         void clearImage();
 
         void applyAlgorithm(QString algorithmName);

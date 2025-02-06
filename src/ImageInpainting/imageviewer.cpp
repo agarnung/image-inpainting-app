@@ -17,7 +17,7 @@ void ImageViewer::init()
     mScene = new QGraphicsScene(this);
     setScene(mScene);
 
-    this->setContentsMargins(5, 5, 5, 5);
+    this->setContentsMargins(0, 0, 0, 0);
 
     mPencilSettingsDialog = new PencilSettingsDialog(this);
 
@@ -149,20 +149,17 @@ void ImageViewer::wheelEvent(QWheelEvent* event)
         return;
     }
 
-    QPointF scenePos = mapToScene(event->position().toPoint());
+    QPointF scenePosBefore = mapToScene(event->position().toPoint());
+
     const double scaleFactor = 1.15;
     if (event->angleDelta().y() > 0)
-    {
         scale(scaleFactor, scaleFactor);
-    }
     else
-    {
         scale(1.0 / scaleFactor, 1.0 / scaleFactor);
-    }
 
-    QPointF newScenePos = mapToScene(event->position().toPoint());
-    QPointF offset = newScenePos - scenePos;
-    setSceneRect(sceneRect().translated(offset.x(), offset.y()));
+    QPointF scenePosAfter = mapToScene(event->position().toPoint());
+    QPointF offset = scenePosAfter - scenePosBefore;
+    translate(-offset.x(), -offset.y());
 }
 
 void ImageViewer::mouseDoubleClickEvent(QMouseEvent* event)
