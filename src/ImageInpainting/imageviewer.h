@@ -248,7 +248,6 @@ class ImageViewer : public QGraphicsView
         QPointF mPanStartPoint;
         QPainterPath mPath;
         QList<QPainterPath> mDrawnPaths;
-        QPixmap mSavedMask;
         bool mDrawingActivated;
         bool mIsUserDrawing;
         bool mIsMiddleButtonPressed;

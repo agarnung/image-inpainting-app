@@ -57,7 +57,6 @@ void ImageViewer::resetImage(const QPixmap& image)
 
         mInpaintingMask = QPixmap(image.size());
         mInpaintingMask.fill(Qt::white);
-        // mInpaintingMask = mSavedMask; // Restaurar la máscara guardada.
 
         if (mDataManager->getCurrentViewMode() == DataManager::Noisy ||
             mDataManager->getCurrentViewMode() == DataManager::Mask)
@@ -90,7 +89,6 @@ void ImageViewer::showPencilSettingsDialog()
 
 void ImageViewer::onMaskUpdated(const QPixmap &newMask)
 {
-    qInfo() << "Mask updated";
     mInpaintingMask = newMask;
 }
 
@@ -157,12 +155,14 @@ void ImageViewer::mouseReleaseEvent(QMouseEvent* event)
             return;
         }
 
-        mDrawnPaths.append(mPath); // Añadir el camino actual a la lista de caminos.
+        mDrawnPaths.append(mPath);
 
-        // mSavedMask = mInpaintingMask; // Guardar la máscara actual.
+        QPainter painter(&mInpaintingMask);
+        painter.setPen(QPen(Qt::black, mPen.width(), Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        for (const QPainterPath& path : mDrawnPaths)
+            painter.drawPath(path);
 
         mDataManager->setMask(mInpaintingMask);
-        mInpaintingMask.save("/opt/proyectos/image-inpainting-app/src/ImageInpainting/icons/mask.png", "PNG");
 
         mIsUserDrawing = false;
     }
@@ -181,10 +181,7 @@ void ImageViewer::clearDrawing()
         mImageItem = mScene->addPixmap(mPixmap);
 
     mDrawnPaths.clear();
-    // mInpaintingMask.fill(Qt::white); // Limpiar la máscara.
-    // mDataManager->setMask(mInpaintingMask);
 }
-
 
 void ImageViewer::wheelEvent(QWheelEvent* event)
 {

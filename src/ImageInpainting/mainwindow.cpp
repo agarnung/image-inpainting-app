@@ -93,25 +93,36 @@ void MainWindow::createActions()
     mActionPencilProperties->setStatusTip("Specify the pencil properties");
     QObject::connect(mActionPencilProperties, &QAction::triggered, mImageViewer, &ImageViewer::showPencilSettingsDialog);
 
+    QActionGroup* actionGroup = new QActionGroup(this);
+    actionGroup->setExclusive(true);
+
     mActionToOriginalImage = new QAction(this);
     mActionToOriginalImage->setText("Original image");
     mActionToOriginalImage->setStatusTip("Show original image");
+    mActionToOriginalImage->setCheckable(true);
     QObject::connect(mActionToOriginalImage, &QAction::triggered, this, &MainWindow::transToOriginalImage);
+    actionGroup->addAction(mActionToOriginalImage);
 
     mActionToNoisyImage = new QAction(this);
     mActionToNoisyImage->setText("Noisy image");
     mActionToNoisyImage->setStatusTip("Show noisy image");
+    mActionToNoisyImage->setCheckable(true);
     QObject::connect(mActionToNoisyImage, &QAction::triggered, this, &MainWindow::transToNoisyImage);
+    actionGroup->addAction(mActionToNoisyImage);
 
     mActionToInpaintedImage = new QAction(this);
     mActionToInpaintedImage->setText("Inpainted image");
     mActionToInpaintedImage->setStatusTip("Show inpainted image");
+    mActionToInpaintedImage->setCheckable(true);
     QObject::connect(mActionToInpaintedImage, &QAction::triggered, this, &MainWindow::transToInpaintedImage);
+    actionGroup->addAction(mActionToInpaintedImage);
 
     mActionToMask = new QAction(this);
     mActionToMask->setText("Inpainting mask");
     mActionToMask->setStatusTip("Show inpainting mask");
+    mActionToMask->setCheckable(true);
     QObject::connect(mActionToMask, &QAction::triggered, this, &MainWindow::transToMask);
+    actionGroup->addAction(mActionToMask);
 
     mActionClearImage = new QAction(this);
     mActionClearImage->setText("Clear");
@@ -264,6 +275,7 @@ void MainWindow::clearImage()
     closeWidget();
     mDataManager->clearImage();
     mImageViewer->resetImage(mDataManager->getImagePixmap());
+    mImageViewer->clearDrawing();
     mImageViewer->update();
     setActionStatus(false);
     mActionImportImage->setEnabled(true);

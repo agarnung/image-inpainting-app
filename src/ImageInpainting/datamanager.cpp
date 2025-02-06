@@ -33,7 +33,7 @@ void DataManager::clearImage()
     mOriginalImage.release();
     mNoisyImage.release();
     mInpaintedImage.release();
-    // mInpaintingMask.release();
+    mInpaintingMask.release();
 }
 
 QPixmap DataManager::matToPixmap(const cv::Mat& mat)
