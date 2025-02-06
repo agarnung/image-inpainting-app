@@ -246,16 +246,8 @@ void ImageViewer::verticalTranslation(int deltaY)
 
 void ImageViewer::updateInpaintingMask(const QPoint& from, const QPoint& to)
 {
-    if (mInpaintingMask.isNull())
-    {
-        qInfo() << "Mask is null";
+    if (mInpaintingMask.isNull() || mMaskUpdater->isRunning())
         return;
-    }
-    if (mMaskUpdater->isRunning())
-    {
-        qInfo() << "MaskUpdater is running";
-        return;
-    }
 
     mMaskUpdater->setMask(&mInpaintingMask, from, to, mPen.width());
     mMaskUpdater->start();

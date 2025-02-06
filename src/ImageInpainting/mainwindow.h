@@ -56,6 +56,7 @@ class MainWindow : public QMainWindow
         QAction* mActionToInpaintedImage = nullptr;
         QAction* mActionToMask = nullptr;
         QAction* mActionClearImage = nullptr;
+        QAction* mActionResetDraw = nullptr;
 
         QToolBar* mToolbarFile = nullptr;
         QToolBar* mToolbarDrawInfo = nullptr;
@@ -89,6 +90,7 @@ class MainWindow : public QMainWindow
         void transToInpaintedImage();
         void transToMask();
         void clearImage();
+        void resetDraw();
 
         void applyAlgorithm(QString algorithmName);
 

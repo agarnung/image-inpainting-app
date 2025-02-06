@@ -39,5 +39,12 @@ void IOThread::importImage(QString& fileName)
 
 void IOThread::exportImage(QString& fileName)
 {
-    ;
+    emit(statusShowMessage("Now writing fileName " + fileName + " ..."));
+    if(!mDataManager->exportImageToFile(fileName.toStdString()))
+    {
+        emit(statusShowMessage("Writing fileName " + fileName + " failed."));
+        return;
+    }
+    else
+        emit(statusShowMessage("Writing image " + fileName + " successful."));
 }

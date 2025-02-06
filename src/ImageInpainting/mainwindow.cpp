@@ -129,9 +129,14 @@ void MainWindow::createActions()
     actionGroup->addAction(mActionToMask);
 
     mActionClearImage = new QAction(this);
-    mActionClearImage->setText("Clear");
-    mActionClearImage->setStatusTip("Clear image");
+    mActionClearImage->setText("Clear all");
+    mActionClearImage->setStatusTip("Clear all");
     QObject::connect(mActionClearImage, &QAction::triggered, this, &MainWindow::clearImage);
+
+    mActionResetDraw = new QAction(this);
+    mActionResetDraw->setText("Reset draw");
+    mActionResetDraw->setStatusTip("Reset draw");
+    QObject::connect(mActionResetDraw, &QAction::triggered, this, &MainWindow::resetDraw);
 }
 
 void MainWindow::createMenus()
@@ -170,6 +175,7 @@ void MainWindow::createToolBars()
     mToolbarImageStatus->addAction(mActionToInpaintedImage);
     mToolbarImageStatus->addAction(mActionToMask);
     mToolbarImageStatus->addSeparator();
+    mToolbarImageStatus->addAction(mActionResetDraw);
     mToolbarImageStatus->addAction(mActionClearImage);
     mToolbarImageStatus->setEnabled(false);
 }
@@ -242,6 +248,9 @@ void MainWindow::exportImage()
 
     if(filename.isNull()) return;
 
+    if (!filename.contains('.'))
+        filename.append(".png");
+
     mIOThread->setFileName(filename);
     mIOThread->mIOType = IOThread::kExport;
     mIOThread->start();
@@ -284,6 +293,12 @@ void MainWindow::clearImage()
     mImageViewer->update();
     setActionStatus(false);
     mActionImportImage->setEnabled(true);
+}
+
+void MainWindow::resetDraw()
+{
+    mImageViewer->clearDrawing();
+    mDataManager->setMask(cv::Mat(mDataManager->getMask().size(), CV_8UC1, cv::Scalar(255)));
 }
 
 void MainWindow::applyAlgorithm(QString algorithmName)
