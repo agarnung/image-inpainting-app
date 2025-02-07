@@ -39,6 +39,18 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 | `Noise` | Add noise to the image |
 | `XYZ Image Inpainting` | Use your favourite image inpainting algorithm |
 
+### Algorithms
+
+| Algorithm | Description | Link / Reference |
+|-----------|-------------|---------------------|
+| **BurgersViscousImageInpainting** | Implements the inpainting algorithm based on the viscous Burgers' equation | [Burgers Equation](https://arxiv.org/abs/2412.11946) |
+| **CahnHilliardImageInpainting** | Utilizes the Cahn-Hilliard algorithm | [Cahn-Hilliard Equation](https://arxiv.org/abs/2412.11946) |
+| **MaxwellHeavisideImageInpainting** | Implements the Maxwell-Heaviside algorithm | [Maxwell-Heaviside Theory](https://arxiv.org/abs/2412.11946) |
+| **NavierStokesImageInpainting** | Executes the image inpainting algorithm from OpenCV based on Navier-Stokes equations. It uses the OpenCV library | [OpenCV Navier-Stokes](https://docs.opencv.org/3.4/d7/d8b/group__photo__inpaint.html#gga8c5f15883bd34d2537cb56526df2b5d6a05e763003a805e6c11c673a9f4ba7d07) |
+| **TeleaImageInpainting** | Uses the TELEA algorithm from OpenCV for inpainting | [Telea Inpainting](https://docs.opencv.org/3.4/d7/d8b/group__photo__inpaint.html#gga8c5f15883bd34d2537cb56526df2b5d6a892824c38e258feb5e72f308a358d52e) |
+| **...** | ... | [...]() |
+
+---
 # TODO
 * Mejorar lo de esconder y mostrar las labels. Por ejemplo, unir en un solo el label de mensaje temporal y tipo de imagen.
 * Crear GIF de funcionamiento para el README
