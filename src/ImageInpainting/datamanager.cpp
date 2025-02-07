@@ -12,6 +12,8 @@ bool DataManager::importImageFromFile(const std::string& filename)
     mImage = cv::imread(filename, cv::IMREAD_UNCHANGED);
     if (mImage.empty()) return false;
 
+    mImageType = mImage.type();
+
     showImageType(mImage);
 
     mOriginalImage = mImage.clone();

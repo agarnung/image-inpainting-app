@@ -65,6 +65,7 @@ void TeleaImageInpainting::inpaint()
             cv::inpaint(channels[i], mask, inpaintedChannel, iters, cv::INPAINT_TELEA);
             channels[i] = inpaintedChannel;
         }
+        emit sendOtherMessage("");
 
         cv::merge(channels, inpainted);
     }
