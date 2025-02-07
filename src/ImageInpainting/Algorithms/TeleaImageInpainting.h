@@ -15,7 +15,7 @@ class TeleaImageInpainting : public ImageInpaintingBase
         ~TeleaImageInpainting() {}
 
     public:
-        void inpaint();
-        void initParameters();
+        void inpaint() override;
+        void initParameters() override;
 };
 

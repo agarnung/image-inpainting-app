@@ -1,6 +1,9 @@
 #include "datamanager.h"
 
 #include <opencv4/opencv2/imgcodecs.hpp>
+#include <opencv4/opencv2/imgproc.hpp>
+
+#include <QDebug>
 
 DataManager::DataManager() {}
 
@@ -8,6 +11,8 @@ bool DataManager::importImageFromFile(const std::string& filename)
 {
     mImage = cv::imread(filename, cv::IMREAD_UNCHANGED);
     if (mImage.empty()) return false;
+
+    showImageType(mImage);
 
     mOriginalImage = mImage.clone();
     mNoisyImage = mImage.clone();
@@ -22,8 +27,29 @@ bool DataManager::exportImageToFile(const std::string& filename)
 {
     if (mImage.empty()) return false;
 
-    cv::Mat outputImage;
-    cv::cvtColor(mImage, outputImage, cv::COLOR_RGB2BGR);
+    cv::Mat outputImage = mImage.clone();
+    if (mImageType == CV_8UC1)
+    {
+        if (outputImage.channels() == 3)
+            cv::cvtColor(outputImage, outputImage, cv::COLOR_BGR2GRAY);
+    }
+    else if (mImageType == CV_8UC3)
+    {
+        if (outputImage.channels() == 1)
+            cv::cvtColor(outputImage, outputImage, cv::COLOR_GRAY2BGR);
+    }
+
+    if (mImageType == CV_64F)
+    {
+        if (outputImage.depth() == CV_64F)
+            outputImage.convertTo(outputImage, CV_8U, 255.0);
+    }
+    else if (mImageType == CV_8U)
+    {
+        if (outputImage.depth() == CV_64F)
+            outputImage.convertTo(outputImage, CV_64F, 1.0 / 255.0);
+    }
+
     return cv::imwrite(filename, outputImage);
 }
 
@@ -36,79 +62,53 @@ void DataManager::clearImage()
     mInpaintingMask.release();
 }
 
-QPixmap DataManager::matToPixmap(const cv::Mat& mat)
+void DataManager::showImageType(const cv::Mat& image)
 {
-    if (mat.empty()) return QPixmap();
+    int channels = image.channels();
+    int depth = image.depth();
 
-    cv::Mat matRGB;
-    if (mat.channels() == 3) cv::cvtColor(mat, matRGB, cv::COLOR_BGR2RGB);
-    else if (mat.channels() == 4) cv::cvtColor(mat, matRGB, cv::COLOR_BGRA2RGBA);
-    else matRGB = mat.clone();
-
-    QImage img(matRGB.data, matRGB.cols, matRGB.rows, matRGB.step,
-               matRGB.channels() == 4 ? QImage::Format_RGBA8888 :
-               matRGB.channels() == 3 ? QImage::Format_RGB888 :
-               matRGB.channels() == 1 ? QImage::Format_Grayscale8 : QImage::Format_Invalid);
-
-    return QPixmap::fromImage(img);
-}
-
-cv::Mat DataManager::pixmapToMat(const QPixmap &pixmap)
-{
-    QImage image = pixmap.toImage();
-
-    if (image.isNull())
-        return cv::Mat();
-
-    cv::Mat mat;
-
-    if (image.format() == QImage::Format_RGB888)
+    std::string depthStr;
+    int bitDepth = 0;
+    switch (depth)
     {
-        mat = cv::Mat(image.height(), image.width(), CV_8UC3, (void*)image.bits(), image.bytesPerLine());
-        cv::cvtColor(mat, mat, cv::COLOR_RGB2BGR);
+        case CV_8U:
+            depthStr = "8-bit";
+            break;
+        case CV_16U:
+            depthStr = "16-bit";
+            break;
+        case CV_32F:
+            depthStr = "32-bit float";
+            break;
+        default:
+            depthStr = "Unknown Depth";
+            break;
     }
-    else if (image.format() == QImage::Format_RGBA8888)
+
+    std::string channelsStr;
+    std::string colorStr;
+    if (channels == 1)
     {
-        mat = cv::Mat(image.height(), image.width(), CV_8UC4, (void*)image.bits(), image.bytesPerLine());
-        cv::cvtColor(mat, mat, cv::COLOR_RGBA2BGRA);
-        cv::Mat grayMat;
-        cv::cvtColor(mat, grayMat, cv::COLOR_BGRA2GRAY);
-        return grayMat;
+        channelsStr = "1 channel";
+        colorStr = "Grayscale";
     }
-    else if (image.format() == QImage::Format_Grayscale8)
-        mat = cv::Mat(image.height(), image.width(), CV_8UC1, (void*)image.bits(), image.bytesPerLine());
-    else if (image.format() == QImage::Format_RGB32)
+    else if (channels == 3)
     {
-        mat = cv::Mat(image.height(), image.width(), CV_8UC4, (void*)image.bits(), image.bytesPerLine());
-
-        cv::Mat grayMat(image.height(), image.width(), CV_8UC1);
-
-        for (int y = 0; y < mat.rows; y++)
-        {
-            for (int x = 0; x < mat.cols; x++)
-            {
-                cv::Vec4b pixel = mat.at<cv::Vec4b>(y, x);
-                uchar r = pixel[2];
-                uchar g = pixel[1];
-                uchar b = pixel[0];
-
-                uchar gray = static_cast<uchar>(0.299 * r + 0.587 * g + 0.114 * b);
-
-                grayMat.at<uchar>(y, x) = gray;
-            }
-        }
-
-        return grayMat;
+        channelsStr = "3 channels";
+        colorStr = "RGB";
+    }
+    else if (channels == 4)
+    {
+        channelsStr = "4 channels";
+        colorStr = "BGRA";
     }
     else
-        return cv::Mat();
+    {
+        channelsStr = std::to_string(channels) + " channels";
+        colorStr = "Unknown";
+    }
 
-    return mat.clone();
+    std::string statusMessage = "The image is " + depthStr + " with " + channelsStr + " (" + colorStr + ")";
+
+    emit statusShowMessage(QString::fromStdString(statusMessage));
 }
-
-void DataManager::receiveProcessImage(const cv::Mat& img)
-{
-    mInpaintedImage = img.clone();
-    // TODO Y QUE SE MUESTRE EN IMAGEVIEWER...
-}
-

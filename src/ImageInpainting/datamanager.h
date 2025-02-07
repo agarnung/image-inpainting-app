@@ -1,8 +1,10 @@
 #pragma once
 
-#include <opencv4/opencv2/core.hpp>
-#include <opencv4/opencv2/imgproc.hpp>
+#include "utils.h"
 
+#include <opencv4/opencv2/core.hpp>
+
+#include <QObject>
 #include <QPixmap>
 
 /**
@@ -11,8 +13,10 @@
  *
  * Manages different versions of the image: original, corrupted (original by default), and restored.
  */
-class DataManager
+class DataManager : public QObject
 {
+    Q_OBJECT
+
     public:
         DataManager();
         ~DataManager() {};
@@ -49,11 +53,7 @@ class DataManager
 
         void clearImage();
 
-        static QPixmap matToPixmap(const cv::Mat& mat);
-        static cv::Mat pixmapToMat(const QPixmap& pixmap);
-
-    public slots:
-        void receiveProcessImage(const cv::Mat& img);
+        inline int getInputImageType() const { return mImageType; }
 
     private:
         cv::Mat mImage;
@@ -63,4 +63,11 @@ class DataManager
         cv::Mat mInpaintingMask;
 
         ViewMode mCurrentViewMode = Original;
+
+        int mImageType;
+
+        void showImageType(const cv::Mat& image);
+
+    signals:
+        void statusShowMessage(QString str);
 };

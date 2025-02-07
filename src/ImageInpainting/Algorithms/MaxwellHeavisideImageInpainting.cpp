@@ -1,6 +1,7 @@
 #include "MaxwellHeavisideImageInpainting.h"
 
 #include <opencv4/opencv2/core.hpp>
+#include <opencv4/opencv2/imgcodecs.hpp>
 
 MaxwellHeavisideImageInpainting::MaxwellHeavisideImageInpainting(DataManager* dataManager, ParameterSet* parameterSet)
     : ImageInpaintingBase(dataManager, parameterSet)
@@ -328,13 +329,13 @@ void MaxwellHeavisideImageInpainting::maxwellHeavisidePDEInpainting(cv::Mat& u, 
 
         original.copyTo(u, mask != 0.0);
 
-        emit sendImageProcess(u);
+        emit sendImageProcess(u.clone());
     }
 }
 
 void MaxwellHeavisideImageInpainting::inpaint()
 {
-    cv::Mat image = mDataManager->getImage();
+    cv::Mat image = mDataManager->getOriginalImage();
     if (image.empty())
     {
         qWarning() << "The image is empty";
@@ -369,6 +370,27 @@ void MaxwellHeavisideImageInpainting::inpaint()
     if (image.channels() == 4)
         cv::cvtColor(image, image, cv::COLOR_BGRA2BGR);
 
+    if (mask.depth() == CV_8U)
+        mask.convertTo(mask, CV_64F, 1.0 / 255.0);
+    else if (mask.depth() == CV_32F)
+        mask.convertTo(mask, CV_64F);
+
+    if (image.depth() == CV_8U)
+        image.convertTo(image, CV_64F, 1.0 / 255.0);
+    else if (image.depth() == CV_32F)
+        image.convertTo(image, CV_64F);
+
+    if (image.channels() == 1)
+        cv::multiply(image, mask, image);
+    else
+    {
+        std::vector<cv::Mat> channels;
+        cv::split(image, channels);
+        for (int i = 0; i < (int)channels.size(); ++i)
+            cv::multiply(channels[i], mask, channels[i]);
+        cv::merge(channels, image);
+    }
+
     if (image.channels() == 3)
     {
         std::vector<cv::Mat> channels;
@@ -381,6 +403,8 @@ void MaxwellHeavisideImageInpainting::inpaint()
     }
     else
         maxwellHeavisidePDEInpainting(image, mask, iters, c_wave, dt, alpha, beta, gamma, useEulerMethod, epsilon_0, mu_0, stationaryFields);
+
+    image.convertTo(image, CV_8U, 255.0);
 
     mDataManager->setInpaintedImage(image);
 }

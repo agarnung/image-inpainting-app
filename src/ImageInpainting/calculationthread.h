@@ -1,5 +1,6 @@
 #pragma once
 
+#include "mainwindow.h"
 #include "datamanager.h"
 #include "parameterset.h"
 #include "Algorithms/Noise.h"
@@ -18,11 +19,12 @@ class CalculationThread: public QThread
     Q_OBJECT
 
     public:
-        CalculationThread();
+        CalculationThread(MainWindow* mainWindow = nullptr);
         ~CalculationThread();
 
         enum AlgorithmsType{kNone, kNoise,
-                            kMaxwellHeavisideImageInpainting, kTeleaImageInpainting};
+                            kTeleaImageInpainting, kNavierStokesImageInpainting,
+                            kMaxwellHeavisideImageInpainting, kBurgersViscousImageInpainting, kCahnHilliardImageInpainting};
 
         QString mAlgorithmName;
         AlgorithmsType mAlgorithmType;
@@ -34,8 +36,11 @@ class CalculationThread: public QThread
 
         void run();
 
+    private:
+        MainWindow* mMainWindow = nullptr;
+
     signals:
         void needToResetImage();
-        void setActionAndWidget(bool, bool);
+        void setActionAndWidget(bool value1, bool value2);
         void statusShowMessage(QString message);
 };

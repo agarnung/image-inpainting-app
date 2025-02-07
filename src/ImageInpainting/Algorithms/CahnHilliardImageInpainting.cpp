@@ -154,7 +154,7 @@ void CahnHilliardImageInpainting::cahnHilliardInpainting(cv::Mat& c, const cv::M
 
 void CahnHilliardImageInpainting::inpaint()
 {
-    cv::Mat image = mDataManager->getImage();
+    cv::Mat image = mDataManager->getOriginalImage();
     if (image.empty())
     {
         qWarning() << "The image is empty";
@@ -186,6 +186,27 @@ void CahnHilliardImageInpainting::inpaint()
     if (image.channels() == 4)
         cv::cvtColor(image, image, cv::COLOR_BGRA2BGR);
 
+    if (mask.depth() == CV_8U)
+        mask.convertTo(mask, CV_64F, 1.0 / 255.0);
+    else if (mask.depth() == CV_32F)
+        mask.convertTo(mask, CV_64F);
+
+    if (image.depth() == CV_8U)
+        image.convertTo(image, CV_64F, 1.0 / 255.0);
+    else if (image.depth() == CV_32F)
+        image.convertTo(image, CV_64F);
+
+    if (image.channels() == 1)
+        cv::multiply(image, mask, image);
+    else
+    {
+        std::vector<cv::Mat> channels;
+        cv::split(image, channels);
+        for (int i = 0; i < (int)channels.size(); ++i)
+            cv::multiply(channels[i], mask, channels[i]);
+        cv::merge(channels, image);
+    }
+
     if (image.channels() == 3)
     {
         std::vector<cv::Mat> channels;
@@ -198,6 +219,8 @@ void CahnHilliardImageInpainting::inpaint()
     }
     else
         cahnHilliardInpainting(image, mask, iters, D, gamma, dt, deltaX, deltaY, useExplicitLaplacian);
+
+    image.convertTo(image, CV_8U, 255.0);
 
     mDataManager->setInpaintedImage(image);
 }

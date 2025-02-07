@@ -3,7 +3,7 @@
 #include "../parameterset.h"
 #include "../datamanager.h"
 
-class ImageInpaintingBase
+class ImageInpaintingBase : public QObject
 {
     Q_OBJECT
 
@@ -14,9 +14,6 @@ class ImageInpaintingBase
     public:
         virtual void inpaint() = 0;
         virtual void initParameters() = 0;
-
-    private:
-        //...
 
     protected:
         ParameterSet* mParameterSet = nullptr;

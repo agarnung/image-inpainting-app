@@ -17,7 +17,7 @@ class IOThread : public QThread
 
     public:
         IOThread(DataManager* dataManager = nullptr);
-        ~IOThread();
+        ~IOThread() {};
 
         enum ioType{kNone, kImport, kExport};
 
@@ -34,7 +34,7 @@ class IOThread : public QThread
         inline void setFileName(const QString& fileName) { mFileName = fileName; }
 
     signals:
-        void statusShowMessage(QString);
-        void setActionAndWidget(bool, bool);
-        void needToResetImage(bool);
+        void statusShowMessage(QString str);
+        void setActionAndWidget(bool value1, bool value2);
+        void needToResetImage();
 };

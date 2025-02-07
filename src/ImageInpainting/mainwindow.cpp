@@ -48,7 +48,7 @@ void MainWindow::init()
     mImageViewer = new ImageViewer(nullptr, mDataManager);
     mParameterSet = new ParameterSet();
     mParameterSetWidget = new ParameterSetWidget();
-    mCalculationThread = new CalculationThread();
+    mCalculationThread = new CalculationThread(this);
     mCalculationThread->mAlgorithmType = CalculationThread::kNone;
     QObject::connect(mCalculationThread, &CalculationThread::needToResetImage, this, &MainWindow::needToResetImage);
     QObject::connect(mCalculationThread, &CalculationThread::setActionAndWidget, this, &MainWindow::setActionAndWidget);
@@ -77,12 +77,24 @@ void MainWindow::createActions()
     QObject::connect(mActionNoise, &QAction::triggered, this, &MainWindow::showNoiseWidget);
 
     mActionMaxwellHeavisideImageInpainting = new QAction(tr("Maxwell-Heaviside Image Inpainting"), this);
-    mActionMaxwellHeavisideImageInpainting->setStatusTip("Inpaint image using algorithm -- Maxwell-Heaviside Image Inpainting");
+    mActionMaxwellHeavisideImageInpainting->setStatusTip("Inpaint image using Maxwell-Heaviside Image Inpainting algorithm");
     QObject::connect(mActionMaxwellHeavisideImageInpainting, &QAction::triggered, this, &MainWindow::showMaxwellHeavisideInpaintingWidget);
 
+    mActionCahnHilliardImageInpainting = new QAction(tr("Cahn-Hilliard Image Inpainting"), this);
+    mActionCahnHilliardImageInpainting->setStatusTip("Inpaint image using Cahn-Hilliard Image Inpainting algorithm");
+    QObject::connect(mActionCahnHilliardImageInpainting, &QAction::triggered, this, &MainWindow::showCahnHilliardInpaintingWidget);
+
+    mActionBurguersViscousImageInpainting = new QAction(tr("Burgers' Viscous Image Inpainting"), this);
+    mActionBurguersViscousImageInpainting->setStatusTip("Inpaint image using Burgers' Viscous Image Inpainting algorithm");
+    QObject::connect(mActionBurguersViscousImageInpainting, &QAction::triggered, this, &MainWindow::showBurguersViscousInpaintingWidget);
+
     mActionTeleaImageInpainting = new QAction(tr("Telea Image Inpainting"), this);
-    mActionTeleaImageInpainting->setStatusTip("Inpaint image using algorithm -- Telea Image Inpainting");
+    mActionTeleaImageInpainting->setStatusTip("Inpaint image using Telea Image Inpainting algorithm");
     QObject::connect(mActionTeleaImageInpainting, &QAction::triggered, this, &MainWindow::showTeleaInpaintingWidget);
+
+    mActionNavierStokesImageInpainting = new QAction(tr("Navier-Stokes Image Inpainting"), this);
+    mActionNavierStokesImageInpainting->setStatusTip("Inpaint image using Navier-Stokes Image Inpainting algorithm");
+    QObject::connect(mActionNavierStokesImageInpainting, &QAction::triggered, this, &MainWindow::showNavierStokesInpaintingWidget);
 
     mActionAbout = new QAction(QIcon(":/icons/about.ico"), tr("About"), this);
     mActionAbout->setStatusTip("Information about this application");
@@ -151,7 +163,10 @@ void MainWindow::createMenus()
     mMenuAlgorithms->addAction(mActionNoise);
     mMenuAlgorithms->addSeparator();
     mMenuAlgorithms->addAction(mActionMaxwellHeavisideImageInpainting);
+    mMenuAlgorithms->addAction(mActionCahnHilliardImageInpainting);
+    mMenuAlgorithms->addAction(mActionBurguersViscousImageInpainting);
     mMenuAlgorithms->addAction(mActionTeleaImageInpainting);
+    mMenuAlgorithms->addAction(mActionNavierStokesImageInpainting);
     mMenuAlgorithms->setEnabled(false);
 
     mMenuHelp = menuBar()->addMenu(tr("Help"));
@@ -182,13 +197,28 @@ void MainWindow::createToolBars()
 
 void MainWindow::createStatusBar()
 {
-    mLabelOperationInfo = new QLabel();
+    mLabelOperationInfo = new QLabel(this);
     mLabelOperationInfo->setAlignment(Qt::AlignCenter);
     mLabelOperationInfo->setMinimumSize(mLabelOperationInfo->sizeHint());
 
-    statusBar()->addWidget(mLabelOperationInfo);
-    connect(mIOThread, &IOThread::statusShowMessage, mLabelOperationInfo, &QLabel::setText);
-    connect(mCalculationThread, &CalculationThread::statusShowMessage, mLabelOperationInfo, &QLabel::setText);
+    mLabelOtherInfo = new QLabel(this);
+    mLabelOtherInfo->setAlignment(Qt::AlignLeft);
+    mLabelOtherInfo->setMinimumSize(mLabelOtherInfo->sizeHint());
+
+    QWidget* statusWidget = new QWidget(this);
+
+    QVBoxLayout* layout = new QVBoxLayout(statusWidget);
+
+    layout->addWidget(mLabelOperationInfo);
+    layout->addWidget(mLabelOtherInfo);
+
+    statusWidget->setLayout(layout);
+    statusWidget->setMinimumSize(statusWidget->sizeHint());
+    statusBar()->addWidget(statusWidget);
+
+    QObject::connect(mIOThread, &IOThread::statusShowMessage, mLabelOperationInfo, &QLabel::setText);
+    QObject::connect(mCalculationThread, &CalculationThread::statusShowMessage, mLabelOperationInfo, &QLabel::setText);
+    QObject::connect(mDataManager, &DataManager::statusShowMessage, mLabelOtherInfo, &QLabel::setText);
 }
 
 void MainWindow::setActionStatus(bool value)
@@ -229,6 +259,23 @@ void MainWindow::setStyle()
     }
     else
         qCritical() << QObject::tr("%1 - %2 - Could not open style sheet").arg(this->metaObject()->className()).arg(__func__);
+}
+
+void MainWindow::receiveProcessImage(const cv::Mat& img)
+{
+    if (!mDataManager || !mImageViewer)
+        return;
+
+    if (img.depth() != CV_8U)
+    {
+        cv::Mat img_8U;
+        img.convertTo(img_8U, CV_8U, 255.0);
+        mDataManager->setInpaintedImage(img_8U);
+    }
+    else
+        mDataManager->setInpaintedImage(img);
+
+    transToInpaintedImage();
 }
 
 void MainWindow::importImage()
@@ -303,6 +350,8 @@ void MainWindow::resetDraw()
 
 void MainWindow::applyAlgorithm(QString algorithmName)
 {
+    mActionToInpaintedImage->setChecked(true);
+    transToInpaintedImage();
     mCalculationThread->setAlgorithmName(algorithmName);
     mCalculationThread->start();
 }
@@ -321,9 +370,30 @@ void MainWindow::showMaxwellHeavisideInpaintingWidget()
     showWidget();
 }
 
+void MainWindow::showCahnHilliardInpaintingWidget()
+{
+    mCalculationThread->mAlgorithmType = CalculationThread::kCahnHilliardImageInpainting;
+    closeWidget();
+    showWidget();
+}
+
+void MainWindow::showBurguersViscousInpaintingWidget()
+{
+    mCalculationThread->mAlgorithmType = CalculationThread::kBurgersViscousImageInpainting;
+    closeWidget();
+    showWidget();
+}
+
 void MainWindow::showTeleaInpaintingWidget()
 {
     mCalculationThread->mAlgorithmType = CalculationThread::kTeleaImageInpainting;
+    closeWidget();
+    showWidget();
+}
+
+void MainWindow::showNavierStokesInpaintingWidget()
+{
+    mCalculationThread->mAlgorithmType = CalculationThread::kNavierStokesImageInpainting;
     closeWidget();
     showWidget();
 }

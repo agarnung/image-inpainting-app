@@ -1,19 +1,15 @@
 #include "calculationthread.h"
 #include "utils.h"
-#include "Algorithms/ImageInpaintingBase.h"
-#include "Algorithms/TeleaImageInpainting.h"
-#include "Algorithms/NavierStokesImageInpainting.h"
 #include "Algorithms/MaxwellHeavisideImageInpainting.h"
-#include "Algorithms/CahnHilliardImageInpainting.h"
-#include "Algorithms/BurgersViscousImageInpainting.h"
+#include "Algorithms/TeleaImageInpainting.h"
 
-CalculationThread::CalculationThread(MainWindow* mainWindow)
+CalculationThread::CalculationThread()
     : mAlgorithmName{""}
     , mAlgorithmType{kNone}
     , mNoise{nullptr}
     , mImageInpaintingBase{nullptr}
-    , mMainWindow{mainWindow}
 {
+
 }
 
 CalculationThread::~CalculationThread()
@@ -29,27 +25,19 @@ void CalculationThread::initAlgorithm(DataManager* dataManager, ParameterSet* pa
         case kNoise:
             mNoise = new Noise(dataManager, parameterSet);
             break;
+            break;
         case kTeleaImageInpainting:
             mImageInpaintingBase = new TeleaImageInpainting(dataManager, parameterSet);
-            break;
-        case kNavierStokesImageInpainting:
-            mImageInpaintingBase = new NavierStokesImageInpainting(dataManager, parameterSet);
-            break;
         case kMaxwellHeavisideImageInpainting:
             mImageInpaintingBase = new MaxwellHeavisideImageInpainting(dataManager, parameterSet);
-            break;
-        case kBurgersViscousImageInpainting:
-            mImageInpaintingBase = new BurgersViscousImageInpainting(dataManager, parameterSet);
-            break;
-        case kCahnHilliardImageInpainting:
-            mImageInpaintingBase = new CahnHilliardImageInpainting(dataManager, parameterSet);
+        case kMaxwellHeavisideImageInpainting:
+            mImageInpaintingBase = new MaxwellHeavisideImageInpainting(dataManager, parameterSet);
+        case kMaxwellHeavisideImageInpainting:
+            mImageInpaintingBase = new MaxwellHeavisideImageInpainting(dataManager, parameterSet);
             break;
         default:
             break;
     }
-
-    if (mImageInpaintingBase)
-        QObject::connect(mImageInpaintingBase, &ImageInpaintingBase::sendImageProcess, mMainWindow, &MainWindow::receiveProcessImage);
 }
 
 void CalculationThread::run()
@@ -65,3 +53,4 @@ void CalculationThread::run()
 
     emit needToResetImage();
 }
+

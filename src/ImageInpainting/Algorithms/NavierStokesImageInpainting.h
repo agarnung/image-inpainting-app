@@ -15,7 +15,7 @@ class NavierStokesImageInpainting : public ImageInpaintingBase
         ~NavierStokesImageInpainting() {}
 
     public:
-        void inpaint();
-        void initParameters();
+        void inpaint() override;
+        void initParameters() override;
 };
 

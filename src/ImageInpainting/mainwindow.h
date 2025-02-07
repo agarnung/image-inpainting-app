@@ -3,6 +3,8 @@
 #include <QMainWindow>
 #include <QtWidgets>
 
+#include <opencv4/opencv2/core.hpp>
+
 class ImageViewer;
 class DataManager;
 class ParameterSet;
@@ -43,8 +45,11 @@ class MainWindow : public QMainWindow
         QAction* mActionExit = nullptr;
 
         QAction* mActionNoise = nullptr;
-        QAction* mActionMaxwellHeavisideImageInpainting = nullptr;
         QAction* mActionTeleaImageInpainting = nullptr;
+        QAction* mActionNavierStokesImageInpainting = nullptr;
+        QAction* mActionMaxwellHeavisideImageInpainting = nullptr;
+        QAction* mActionCahnHilliardImageInpainting = nullptr;
+        QAction* mActionBurguersViscousImageInpainting = nullptr;
 
         QAction* mActionAbout = nullptr;
 
@@ -63,6 +68,7 @@ class MainWindow : public QMainWindow
         QToolBar* mToolbarImageStatus = nullptr;
 
         QLabel* mLabelOperationInfo = nullptr;
+        QLabel* mLabelOtherInfo = nullptr;
 
         QMenu* mMenuFile= nullptr;
         QMenu* mMenuAlgorithms = nullptr;
@@ -81,6 +87,9 @@ class MainWindow : public QMainWindow
 
         void setStyle();
 
+    public slots:
+        void receiveProcessImage(const cv::Mat& img);
+
     private slots:
         void importImage();
         void exportImage();
@@ -95,8 +104,11 @@ class MainWindow : public QMainWindow
         void applyAlgorithm(QString algorithmName);
 
         void showNoiseWidget();
-        void showMaxwellHeavisideInpaintingWidget();
         void showTeleaInpaintingWidget();
+        void showNavierStokesInpaintingWidget();
+        void showMaxwellHeavisideInpaintingWidget();
+        void showCahnHilliardInpaintingWidget();
+        void showBurguersViscousInpaintingWidget();
 
         void setActionAndWidget(bool value1, bool value2);
         void needToResetImage();

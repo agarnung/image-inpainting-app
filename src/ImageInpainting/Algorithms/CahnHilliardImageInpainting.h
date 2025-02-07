@@ -16,8 +16,8 @@ class CahnHilliardImageInpainting : public ImageInpaintingBase
         ~CahnHilliardImageInpainting() {}
 
     public:
-        void inpaint();
-        void initParameters();
+        void inpaint() override;
+        void initParameters() override;
 
     private:
         void cahnHilliardInpainting(cv::Mat& c, const cv::Mat& mask, int nIters = 50,

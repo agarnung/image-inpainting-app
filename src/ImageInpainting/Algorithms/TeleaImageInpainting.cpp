@@ -27,7 +27,7 @@ void TeleaImageInpainting::initParameters()
 
 void TeleaImageInpainting::inpaint()
 {
-    cv::Mat image = mDataManager->getImage();
+    cv::Mat image = mDataManager->getOriginalImage();
     if (image.empty())
     {
         qWarning() << "The image is empty";

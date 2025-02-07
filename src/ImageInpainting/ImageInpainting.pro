@@ -16,6 +16,7 @@ SOURCES += \
         mainwindow.cpp \
         parameterset.cpp \
         parametersetwidget.cpp \
+        utils.cpp \
         Algorithms/Noise.cpp \
         Algorithms/ImageInpaintingBase.cpp \
         Algorithms/MaxwellHeavisideImageInpainting.cpp \
@@ -49,3 +50,5 @@ RESOURCES += \
 
 CONFIG += link_pkgconfig
 PKGCONFIG += opencv4
+
+QMAKE_CXXFLAGS += -O3 -march=native

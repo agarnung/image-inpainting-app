@@ -16,8 +16,8 @@ class MaxwellHeavisideImageInpainting : public ImageInpaintingBase
         ~MaxwellHeavisideImageInpainting() {}
 
     public:
-        void inpaint();
-        void initParameters();
+        void inpaint() override;
+        void initParameters() override;
 
     private:
         void maxwellHeavisidePDEInpainting(cv::Mat& u, const cv::Mat& mask, int nIters = 1000, double c_wave = 3.0e8,

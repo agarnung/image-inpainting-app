@@ -4,11 +4,10 @@
 #include "../datamanager.h"
 
 #include <QList>
+#include <QObject>
 
 class Noise
 {
-    Q_OBJECT
-
     public:
         explicit Noise(DataManager* dataManager = nullptr, ParameterSet* parameterSet = nullptr);
         ~Noise() {}

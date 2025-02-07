@@ -7,11 +7,6 @@ IOThread::IOThread(DataManager* dataManager)
     if (dataManager) mDataManager = dataManager;
 }
 
-IOThread::~IOThread()
-{
-    ;
-}
-
 void IOThread::run()
 {
     if(mIOType == kImport)
@@ -27,24 +22,23 @@ void IOThread::importImage(QString& fileName)
     if (!mDataManager->importImageFromFile(fileName.toStdString()))
     {
         emit statusShowMessage("Loading image " + fileName + " failed.");
-
         return;
     }
     else
         emit statusShowMessage("Loading image " + fileName + " successful.");
 
-    emit needToResetImage(true);
+    emit needToResetImage();
     emit setActionAndWidget(true, true);
 }
 
 void IOThread::exportImage(QString& fileName)
 {
-    emit(statusShowMessage("Now writing fileName " + fileName + " ..."));
+    emit statusShowMessage("Now writing fileName " + fileName + " ...");
     if(!mDataManager->exportImageToFile(fileName.toStdString()))
     {
-        emit(statusShowMessage("Writing fileName " + fileName + " failed."));
+        emit statusShowMessage("Writing fileName " + fileName + " failed.");
         return;
     }
     else
-        emit(statusShowMessage("Writing image " + fileName + " successful."));
+        emit statusShowMessage("Writing image " + fileName + " successful.");
 }

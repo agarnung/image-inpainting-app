@@ -18,8 +18,8 @@ class BurgersViscousImageInpainting : public ImageInpaintingBase
         ~BurgersViscousImageInpainting() {}
 
     public:
-        void inpaint();
-        void initParameters();
+        void inpaint() override;
+        void initParameters() override;
 
     private:
         void burgersViscousEquationInpainting(cv::Mat& u, const cv::Mat& mask, double nu, int nIters = 1000, double dt = 0.01, double dx = 0.1, double dy = 0.1, bool useUpwind = true);
