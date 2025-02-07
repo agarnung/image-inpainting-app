@@ -1,5 +1,5 @@
 # image-inpainting-app
-A Qt-based application to restore images with various inpainting methods
+A Qt-based application to restore images with various inpainting methods.
 
 <p align="center">
   <img src="./assets/app_main.png" alt="Application main window" title="Application main window" />
