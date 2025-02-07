@@ -71,5 +71,7 @@ void TeleaImageInpainting::inpaint()
         cv::inpaint(image, mask, inpainted, iters, cv::INPAINT_TELEA);
 
     mDataManager->setInpaintedImage(inpainted);
+
+    emit sendImageProcess(inpainted);
 }
 

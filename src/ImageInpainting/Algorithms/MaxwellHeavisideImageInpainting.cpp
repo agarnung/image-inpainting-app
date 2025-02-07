@@ -329,7 +329,7 @@ void MaxwellHeavisideImageInpainting::maxwellHeavisidePDEInpainting(cv::Mat& u, 
 
         original.copyTo(u, mask != 0.0);
 
-        emit sendImageProcess(u.clone());
+        emit sendImageProcess(u);
     }
 }
 

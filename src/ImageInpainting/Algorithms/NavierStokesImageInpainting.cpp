@@ -71,5 +71,7 @@ void NavierStokesImageInpainting::inpaint()
         cv::inpaint(image, mask, inpainted, iters, cv::INPAINT_NS);
 
     mDataManager->setInpaintedImage(inpainted);
+
+    emit sendImageProcess(inpainted);
 }
 
