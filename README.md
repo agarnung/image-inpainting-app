@@ -25,11 +25,11 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 
 | Icon | Functionality |
 |---------- | ---------- |
-| ![open](./src/ImageInpainting/icons/open.ico) | Import image |
-| ![save](./src/ImageInpainting/icons/save.ico) | Save image |
-| ![about](./src/ImageInpainting/icons/about.ico) | Show information about the application |
-| ![pencil](./src/ImageInpainting/icons/pencil.ico) | Activate pencil drawing mode (only available in `Noise` image mode) |
-| ![pencil_color](./src/ImageInpainting/icons/pencil_color.ico) | Adjust pencil properties |
+| <img src="./src/ImageInpainting/icons/open.ico" width="32" height="32"> | Import image |
+| <img src="./src/ImageInpainting/icons/save.ico" width="32" height="32"> | Save image |
+| <img src="./src/ImageInpainting/icons/about.ico" width="32" height="32"> | Show information about the application |
+| <img src="./src/ImageInpainting/icons/pencil.ico" width="32" height="32"> | Activate pencil drawing mode (only available in `Noise` image mode) |
+| <img src="./src/ImageInpainting/icons/pencil_color.ico" width="32" height="32"> | Adjust pencil properties |
 | `Original image` | Show original image |
 | `Noisy image` | Show noisy image |
 | `Inpainted image` | Show inpainted image |
@@ -37,7 +37,7 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 | `Clear all` | Clear all images and setup |
 | `Reset draw` | Reset pencil drawing |
 | `Noise` | Add noise to the image |
-| `XYZ Image Inpainting` | Use you favourite image inpainting algorithm |
+| `XYZ Image Inpainting` | Use your favourite image inpainting algorithm |
 
 # TODO
 * Mejorar lo de esconder y mostrar las labels. Por ejemplo, unir en un solo el label de mensaje temporal y tipo de imagen.
