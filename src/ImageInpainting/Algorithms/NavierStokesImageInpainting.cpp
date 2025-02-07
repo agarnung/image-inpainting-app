@@ -22,7 +22,7 @@ void NavierStokesImageInpainting::initParameters()
 
     mParameterSet->setName(QString("Navier-Stokes image inpainting algorithm"));
     mParameterSet->setLabel(QString("Navier-Stokes image inpainting algorithm"));
-    mParameterSet->setIntroduction(QString("Navier-Stokes image inpainting algorithm -- Parameters"));
+    mParameterSet->setIntroduction(QString("Parameters settings"));
 }
 
 void NavierStokesImageInpainting::inpaint()

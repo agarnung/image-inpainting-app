@@ -232,8 +232,9 @@ void ParameterSetWidget::showWidget()
     this->setWindowTitle(mParameterSet->getLabel());
     mLabel->setText(mParameterSet->getIntroduction());
 
-    QGroupBox* GroupBox = new QGroupBox("Setting");
+    QGroupBox* GroupBox = new QGroupBox();
     mVBoxLayoutSetting = new QVBoxLayout(GroupBox);
+    mVBoxLayoutSetting->setSpacing(4);
     QVector<Parameter *> all_parameters = mParameterSet->getAllParameters();
     for (int i = 0; i < (int)all_parameters.size(); i++)
     {

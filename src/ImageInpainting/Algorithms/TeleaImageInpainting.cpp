@@ -22,7 +22,7 @@ void TeleaImageInpainting::initParameters()
 
     mParameterSet->setName(QString("Telea image inpainting algorithm"));
     mParameterSet->setLabel(QString("Telea image inpainting algorithm"));
-    mParameterSet->setIntroduction(QString("Telea image inpainting algorithm -- Parameters"));
+    mParameterSet->setIntroduction(QString("Parameters settings"));
 }
 
 void TeleaImageInpainting::inpaint()

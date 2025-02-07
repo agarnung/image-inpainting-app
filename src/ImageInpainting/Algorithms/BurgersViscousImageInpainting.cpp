@@ -40,7 +40,7 @@ void BurgersViscousImageInpainting::initParameters()
                                 QString("doUpwindDifferences"));
     mParameterSet->setName(QString("Vicsous Burguers' equation image inpainting algorithm"));
     mParameterSet->setLabel(QString("Vicsous Burguers' equation image inpainting algorithm"));
-    mParameterSet->setIntroduction(QString("Parameters"));
+    mParameterSet->setIntroduction(QString("Parameters settings"));
 }
 
 void BurgersViscousImageInpainting::burgersViscousEquationInpainting(cv::Mat& u, const cv::Mat& mask, double nu, int nIters, double dt, double dx, double dy, bool useUpwind)

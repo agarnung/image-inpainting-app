@@ -62,7 +62,7 @@ void MaxwellHeavisideImageInpainting::initParameters()
                                 QString("Use stationary (true) or dynamic fields"));
     mParameterSet->setName(QString("Maxwell-Heaviside Image Inpainting Algorithm"));
     mParameterSet->setLabel(QString("Maxwell-Heaviside image inpainting algorithm"));
-    mParameterSet->setIntroduction(QString("Parameters"));
+    mParameterSet->setIntroduction(QString("Parameters settings"));
 }
 
 void MaxwellHeavisideImageInpainting::maxwellHeavisidePDEInpainting(cv::Mat& u, const cv::Mat& mask, int nIters, double c_wave,
