@@ -5,6 +5,8 @@ A Qt-based application to restore images with various inpainting methods
   <img src="./assets/app_main.png" alt="Application main window" title="Application main window" />
 </p>
 
+_A work in progress_
+
 The algorithms are implemented in C++ for personal amusement.
 
 # Installation
@@ -21,15 +23,27 @@ The app has been tested on the following platforms:
 
 The app consists of a self-explanatory GUI and it contains a useful Help file. The following table explains the functionality for the GUI icons:
 
-|Icon       | Functionality |
-|---------- | ----------    |
-|![name](./path/to/qrc/icon.ico) | Explanation |
-|![name](./path/to/qrc/icon.ico) | Explanation |
-|`name` | Explanation |
+| Icon | Functionality |
+|---------- | ---------- |
+| ![open](./src/ImageInpainting/icons/open.ico) | Import image |
+| ![save](./src/ImageInpainting/icons/save.ico) | Save image |
+| ![exit](./src/ImageInpainting/icons/exit.ico) | Exit the application |
+| ![about](./src/ImageInpainting/icons/about.ico) | Show information about the application |
+| ![pencil](./src/ImageInpainting/icons/pencil.ico) | Activate pencil drawing mode (only available in `Noise` image mode) |
+| ![pencil_color](./src/ImageInpainting/icons/pencil_color.ico) | Adjust pencil properties |
+| `Original image` | Show original image |
+| `Noisy image` | Show noisy image |
+| `Inpainted image` | Show inpainted image |
+| `Inpainting mask` | Show inpainting mask |
+| `Clear all` | Clear all images and setup |
+| `Reset draw` | Reset pencil drawing |
+| `Noise` | Add noise to the image |
+| `XYZ Image Inpainting` | Use you favourite image inpainting algorithm |
 
 # TODO
 * Mejorar lo de esconder y mostrar las labels. Por ejemplo, unir en un solo el label de mensaje temporal y tipo de imagen.
 * Crear GIF de funcionamiento para el README
 * Explicaciones de app e iconos en README. Enlazar el README en hipervínculo desde el About de la aplicación
+* Exaplicaciones someras con ejemplo visuales de qué algoritmo va mejor para qué caso
 * Encapsular toda la app en un Docker
 * Release the app in AppImage format
