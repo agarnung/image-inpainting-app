@@ -58,3 +58,6 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 * Exaplicaciones someras con ejemplo visuales de qué algoritmo va mejor para qué caso
 * Encapsular toda la app en un Docker
 * Release the app in AppImage format
+* 
+# References
+* [Inspired in GuidedDenoising](https://github.com/bldeng/GuidedDenoising)
