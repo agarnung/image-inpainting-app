@@ -213,8 +213,16 @@ void ImageViewer::wheelEvent(QWheelEvent* event)
 void ImageViewer::mouseDoubleClickEvent(QMouseEvent* event)
 {
     (void) event;
+
+    if (mPixmap.isNull())
+        return;
+
     resetTransform();
-    setSceneRect(mPixmap.rect());
+
+    QSizeF viewportSize = this->viewport()->size();
+    QSizeF imageSize = mPixmap.size();
+    qreal scaleFactor = qMin(viewportSize.width() / imageSize.width(), viewportSize.height() / imageSize.height());
+    scale(scaleFactor, scaleFactor);
     centerOn(mPixmap.rect().center());
 }
 
