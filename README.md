@@ -11,7 +11,7 @@ The algorithms are implemented in C++ for personal amusement.
 
 # Installation
 
-Make sure you have Qt (https://www.qt.io) installed. Then open the file ```src/MeshDenoising.pro``` with Qt Creator, and build the source code. 
+Make sure you have Qt (https://www.qt.io) installed. Then open the file ```src/ImageInpainting.pro``` with Qt Creator, and build the source code. 
 
 This project uses [OpenCV 4](https://github.com/opencv/opencv/tree/4.10.0) (see additional packages in https://docs.opencv.org/3.4/d7/d9f/tutorial_linux_install.html)
 
@@ -27,7 +27,6 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 |---------- | ---------- |
 | ![open](./src/ImageInpainting/icons/open.ico) | Import image |
 | ![save](./src/ImageInpainting/icons/save.ico) | Save image |
-| ![exit](./src/ImageInpainting/icons/exit.ico) | Exit the application |
 | ![about](./src/ImageInpainting/icons/about.ico) | Show information about the application |
 | ![pencil](./src/ImageInpainting/icons/pencil.ico) | Activate pencil drawing mode (only available in `Noise` image mode) |
 | ![pencil_color](./src/ImageInpainting/icons/pencil_color.ico) | Adjust pencil properties |
