@@ -28,10 +28,7 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 |`name` | Explanation |
 
 # TODO
-* Poner en otro label "procesando canal R, G, B o gris durante las iteraciones..."
-* Arreglar el por qué no se muestra la imagen resultado al terminal el algoritmo, por qué se necesita pulsar el botón InpaintedImage para que se recargue
-* Ver cómo lanzar mensajes temporales a los labels del statusBar con un QTimer
-* Arreglar el hecho de que la originalImage se sobreescriba con la noisyImage en la segunda ejecución
+* Mejorar lo de esconder y mostrar las labels. Por ejemplo, unir en un solo el label de mensaje temporal y tipo de imagen.
 * Crear GIF de funcionamiento para el README
 * Explicaciones de app e iconos en README. Enlazar el README en hipervínculo desde el About de la aplicación
 * Encapsular toda la app en un Docker

@@ -197,5 +197,8 @@ void BurgersViscousImageInpainting::inpaint()
 
     image.convertTo(image, CV_8U, 255.0);
 
+    mDataManager->setImage(image);
     mDataManager->setInpaintedImage(image);
+
+    emit sendImageProcess(image);
 }

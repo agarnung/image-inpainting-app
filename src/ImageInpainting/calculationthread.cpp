@@ -50,8 +50,8 @@ void CalculationThread::initAlgorithm(DataManager* dataManager, ParameterSet* pa
 
     if (mImageInpaintingBase)
     {
-        QObject::connect(mImageInpaintingBase, &ImageInpaintingBase::sendImageProcess, mMainWindow, &MainWindow::receiveProcessImage);
-        QObject::connect(mImageInpaintingBase, &ImageInpaintingBase::sendOtherMessage, mMainWindow, &MainWindow::receiveOtherMessage);
+        QObject::connect(mImageInpaintingBase, &ImageInpaintingBase::sendImageProcess, mMainWindow, &MainWindow::receiveProcessImage, Qt::QueuedConnection);
+        QObject::connect(mImageInpaintingBase, &ImageInpaintingBase::sendOtherMessage, mMainWindow, &MainWindow::receiveOtherMessage, Qt::QueuedConnection);
     }
 }
 

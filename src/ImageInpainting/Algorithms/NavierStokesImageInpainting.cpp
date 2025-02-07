@@ -76,6 +76,7 @@ void NavierStokesImageInpainting::inpaint()
         emit sendOtherMessage("");
     }
 
+    mDataManager->setImage(image);
     mDataManager->setInpaintedImage(inpainted);
 
     emit sendImageProcess(inpainted);

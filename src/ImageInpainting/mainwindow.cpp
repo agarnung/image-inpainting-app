@@ -51,12 +51,12 @@ void MainWindow::init()
     mParameterSetWidget = new ParameterSetWidget();
     mCalculationThread = new CalculationThread(this);
     mCalculationThread->mAlgorithmType = CalculationThread::kNone;
-    QObject::connect(mCalculationThread, &CalculationThread::needToResetImage, this, &MainWindow::needToResetImage);
-    QObject::connect(mCalculationThread, &CalculationThread::setActionAndWidget, this, &MainWindow::setActionAndWidget);
+    QObject::connect(mCalculationThread, &CalculationThread::needToResetImage, this, &MainWindow::needToResetImage, Qt::QueuedConnection);
+    QObject::connect(mCalculationThread, &CalculationThread::setActionAndWidget, this, &MainWindow::setActionAndWidget, Qt::QueuedConnection);
     mIOThread = new IOThread(mDataManager);
     mIOThread->mIOType = IOThread::kNone;
-    QObject::connect(mIOThread, &IOThread::needToResetImage, this, &MainWindow::needToResetImage);
-    QObject::connect(mIOThread, &IOThread::setActionAndWidget, this, &MainWindow::setActionAndWidget);
+    QObject::connect(mIOThread, &IOThread::needToResetImage, this, &MainWindow::needToResetImage, Qt::QueuedConnection);
+    QObject::connect(mIOThread, &IOThread::setActionAndWidget, this, &MainWindow::setActionAndWidget, Qt::QueuedConnection);
 }
 
 void MainWindow::createActions()
@@ -205,10 +205,10 @@ void MainWindow::createStatusBar()
     mLabelImageType = new QLabel(this);
     mLabelImageType->setAlignment(Qt::AlignLeft);
     mLabelImageType->setMinimumSize(mLabelImageType->sizeHint());
-    mLabelImageType->hide();
+    // mLabelImageType->hide();
 
     mLabelTimedMessages = new QLabel(this);
-    mLabelTimedMessages->setAlignment(Qt::AlignRight);
+    mLabelTimedMessages->setAlignment(Qt::AlignLeft);
     mLabelTimedMessages->setMinimumSize(mLabelTimedMessages->sizeHint());
     mLabelTimedMessages->hide();
 
@@ -222,15 +222,14 @@ void MainWindow::createStatusBar()
 
     VLayout->addWidget(mLabelOperationInfo);
     HLayout->addWidget(mLabelImageType);
-    HLayout->addStretch();
     HLayout->addWidget(mLabelTimedMessages);
     VLayout->addLayout(HLayout);
 
     statusWidget->setLayout(VLayout);
     statusBar()->addWidget(statusWidget);
 
-    QObject::connect(mIOThread, &IOThread::statusShowMessage, mLabelOperationInfo, &QLabel::setText);
-    QObject::connect(mCalculationThread, &CalculationThread::statusShowMessage, mLabelOperationInfo, &QLabel::setText);
+    QObject::connect(mIOThread, &IOThread::statusShowMessage, mLabelOperationInfo, &QLabel::setText, Qt::QueuedConnection);
+    QObject::connect(mCalculationThread, &CalculationThread::statusShowMessage, mLabelOperationInfo, &QLabel::setText, Qt::QueuedConnection);
     QObject::connect(mDataManager, &DataManager::statusShowMessage, this, [this](const QString& msg) {
         if (msg.isEmpty())
             mLabelImageType->hide();
@@ -239,7 +238,9 @@ void MainWindow::createStatusBar()
             mLabelImageType->setText(msg);
             mLabelImageType->show();
         }
-    });}
+        // mLabelImageType->setText(msg);
+    }, Qt::QueuedConnection);
+}
 
 void MainWindow::setActionStatus(bool value)
 {
@@ -295,7 +296,7 @@ void MainWindow::receiveProcessImage(const cv::Mat& img)
     else
         mDataManager->setInpaintedImage(img);
 
-    mImageViewer->updateImage(mDataManager->getInpaintedImagePixmap());
+    mImageViewer->updateImage(mDataManager->getInpaintedImagePixmap().copy());
 
     if (mActionToInpaintedImage)
     {
@@ -312,7 +313,6 @@ void MainWindow::receiveTimedMessage(const QString& msg, int duration_ms)
     {
         mLabelTimedMessages->setText(msg);
         mLabelTimedMessages->show();
-
         QTimer::singleShot(duration_ms, this, [this]() {
             mLabelTimedMessages->clear();
         });
@@ -321,13 +321,14 @@ void MainWindow::receiveTimedMessage(const QString& msg, int duration_ms)
 
 void MainWindow::receiveOtherMessage(const QString& msg)
 {
-    if (msg.isEmpty())
-        mLabelImageType->hide();
-    else
-    {
-        mLabelImageType->setText(msg);
-        mLabelImageType->show();
-    }
+    // if (msg.isEmpty())
+    //     mLabelImageType->hide();
+    // else
+    // {
+    //     mLabelImageType->setText(msg);
+    //     mLabelImageType->show();
+    // }
+    mLabelImageType->setText(msg);
 }
 
 void MainWindow::importImage()

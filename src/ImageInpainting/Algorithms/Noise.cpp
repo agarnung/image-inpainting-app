@@ -67,7 +67,7 @@ void Noise::createRandomMask(double occlusionRatio, cv::Mat& mask)
 
 void Noise::addNoise()
 {
-    cv::Mat image = mDataManager->getOriginalImage();
+    cv::Mat image = mDataManager->getOriginalImage().clone();
     if (image.empty())
     {
         qWarning() << "The image is empty";
@@ -133,7 +133,7 @@ void Noise::addNoise()
             break;
     }
 
-    mDataManager->setImage(image);
-    mDataManager->setNoisyImage(image);
-    mDataManager->setInpaintedImage(image);
+    mDataManager->setImage(image.clone());
+    mDataManager->setNoisyImage(image.clone());
+    mDataManager->setInpaintedImage(image.clone());
 }
