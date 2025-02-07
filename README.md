@@ -32,5 +32,7 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 * Arreglar el por qué no se muestra la imagen resultado al terminal el algoritmo, por qué se necesita pulsar el botón InpaintedImage para que se recargue
 * Ver cómo lanzar mensajes temporales a los labels del statusBar con un QTimer
 * Arreglar el hecho de que la originalImage se sobreescriba con la noisyImage en la segunda ejecución
+* Crear GIF de funcionamiento para el README
+* Explicaciones de app e iconos en README. Enlazar el README en hipervínculo desde el About de la aplicación
 * Encapsular toda la app en un Docker
 * Release the app in AppImage format
