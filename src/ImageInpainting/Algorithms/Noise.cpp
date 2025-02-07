@@ -87,7 +87,6 @@ void Noise::addNoise()
         return;
     }
 
-    // mDataManager->imageToOriginalImage();
     NoiseType noiseType = static_cast<NoiseType>(noiseTypeIndex);
 
     switch (noiseType)

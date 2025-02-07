@@ -46,6 +46,7 @@ void MainWindow::init()
 {
     mDataManager = new DataManager();
     mImageViewer = new ImageViewer(nullptr, mDataManager);
+    QObject::connect(mImageViewer, &ImageViewer::sendTimedMessage, this, &MainWindow::receiveTimedMessage);
     mParameterSet = new ParameterSet();
     mParameterSetWidget = new ParameterSetWidget();
     mCalculationThread = new CalculationThread(this);
@@ -198,28 +199,47 @@ void MainWindow::createToolBars()
 void MainWindow::createStatusBar()
 {
     mLabelOperationInfo = new QLabel(this);
-    mLabelOperationInfo->setAlignment(Qt::AlignCenter);
+    mLabelOperationInfo->setAlignment(Qt::AlignLeft);
     mLabelOperationInfo->setMinimumSize(mLabelOperationInfo->sizeHint());
 
-    mLabelOtherInfo = new QLabel(this);
-    mLabelOtherInfo->setAlignment(Qt::AlignLeft);
-    mLabelOtherInfo->setMinimumSize(mLabelOtherInfo->sizeHint());
+    mLabelImageType = new QLabel(this);
+    mLabelImageType->setAlignment(Qt::AlignLeft);
+    mLabelImageType->setMinimumSize(mLabelImageType->sizeHint());
+    mLabelImageType->hide();
+
+    mLabelTimedMessages = new QLabel(this);
+    mLabelTimedMessages->setAlignment(Qt::AlignRight);
+    mLabelTimedMessages->setMinimumSize(mLabelTimedMessages->sizeHint());
+    mLabelTimedMessages->hide();
 
     QWidget* statusWidget = new QWidget(this);
 
-    QVBoxLayout* layout = new QVBoxLayout(statusWidget);
+    QVBoxLayout* VLayout = new QVBoxLayout(statusWidget);
+    QHBoxLayout* HLayout = new QHBoxLayout(statusWidget);
 
-    layout->addWidget(mLabelOperationInfo);
-    layout->addWidget(mLabelOtherInfo);
+    mLabelTimedMessages->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mLabelImageType->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    statusWidget->setLayout(layout);
-    statusWidget->setMinimumSize(statusWidget->sizeHint());
+    VLayout->addWidget(mLabelOperationInfo);
+    HLayout->addWidget(mLabelImageType);
+    HLayout->addStretch();
+    HLayout->addWidget(mLabelTimedMessages);
+    VLayout->addLayout(HLayout);
+
+    statusWidget->setLayout(VLayout);
     statusBar()->addWidget(statusWidget);
 
     QObject::connect(mIOThread, &IOThread::statusShowMessage, mLabelOperationInfo, &QLabel::setText);
     QObject::connect(mCalculationThread, &CalculationThread::statusShowMessage, mLabelOperationInfo, &QLabel::setText);
-    QObject::connect(mDataManager, &DataManager::statusShowMessage, mLabelOtherInfo, &QLabel::setText);
-}
+    QObject::connect(mDataManager, &DataManager::statusShowMessage, this, [this](const QString& msg) {
+        if (msg.isEmpty())
+            mLabelImageType->hide();
+        else
+        {
+            mLabelImageType->setText(msg);
+            mLabelImageType->show();
+        }
+    });}
 
 void MainWindow::setActionStatus(bool value)
 {
@@ -281,6 +301,32 @@ void MainWindow::receiveProcessImage(const cv::Mat& img)
     {
         mActionToInpaintedImage->setChecked(true);
         mActionToInpaintedImage->trigger();
+    }
+}
+
+void MainWindow::receiveTimedMessage(const QString& msg, int duration_ms)
+{
+    if (msg.isEmpty())
+        mLabelTimedMessages->hide();
+    else
+    {
+        mLabelTimedMessages->setText(msg);
+        mLabelTimedMessages->show();
+
+        QTimer::singleShot(duration_ms, this, [this]() {
+            mLabelTimedMessages->clear();
+        });
+    }
+}
+
+void MainWindow::receiveOtherMessage(const QString& msg)
+{
+    if (msg.isEmpty())
+        mLabelImageType->hide();
+    else
+    {
+        mLabelImageType->setText(msg);
+        mLabelImageType->show();
     }
 }
 

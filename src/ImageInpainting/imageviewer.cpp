@@ -98,7 +98,7 @@ void ImageViewer::mousePressEvent(QMouseEvent* event)
     {
         if (mDataManager->getCurrentViewMode() != DataManager::Noisy)
         {
-            qInfo() << "Draw in the noisy image, please";
+            sendTimedMessage("     >> Please draw in the noisy image <<     ", 1000);
             return;
         }
 

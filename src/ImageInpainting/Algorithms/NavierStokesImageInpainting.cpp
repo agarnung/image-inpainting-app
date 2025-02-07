@@ -60,15 +60,21 @@ void NavierStokesImageInpainting::inpaint()
 
         for (int i = 0; i < (int)channels.size(); ++i)
         {
+            emit sendOtherMessage("Processing channel " + QString::number(i) + "...");
             cv::Mat inpaintedChannel;
             cv::inpaint(channels[i], mask, inpaintedChannel, iters, cv::INPAINT_NS);
             channels[i] = inpaintedChannel;
         }
+        emit sendOtherMessage("");
 
         cv::merge(channels, inpainted);
     }
     else
+    {
+        emit sendOtherMessage("Processing image...");
         cv::inpaint(image, mask, inpainted, iters, cv::INPAINT_NS);
+        emit sendOtherMessage("");
+    }
 
     mDataManager->setInpaintedImage(inpainted);
 

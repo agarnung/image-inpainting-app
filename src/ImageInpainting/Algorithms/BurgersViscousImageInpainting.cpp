@@ -52,7 +52,8 @@ void BurgersViscousImageInpainting::burgersViscousEquationInpainting(cv::Mat& u,
 
     cv::Mat uNew = u.clone();
 
-    for (int iter = 0; iter < nIters; ++iter) {
+    for (int iter = 0; iter < nIters; ++iter)
+    {
         double* currentPtr = u.ptr<double>();
         double* nextPtr = uNew.ptr<double>();
 
@@ -67,7 +68,8 @@ void BurgersViscousImageInpainting::burgersViscousEquationInpainting(cv::Mat& u,
 
                 double du_dx, du_dy;
 
-                if (useUpwind) {
+                if (useUpwind)
+                {
                     // Derivadas espaciales usando esquema upwind
                     du_dx = (u_ij > 0)
                                 ? (u_ij - u_left) / dx  // Flujo positivo: usa puntos "hacia atrás"
@@ -76,7 +78,9 @@ void BurgersViscousImageInpainting::burgersViscousEquationInpainting(cv::Mat& u,
                     du_dy = (u_ij > 0)
                                 ? (u_ij - u_down) / dy  // Flujo positivo: usa puntos "hacia atrás"
                                 : (u_up - u_ij) / dy;   // Flujo negativo: usa puntos "hacia adelante"
-                } else {
+                }
+                else
+                {
                     // Derivadas espaciales usando esquema de diferencias centradas
                     du_dx = (u_right - u_left) / (2 * dx);
                     du_dy = (u_up - u_down) / (2 * dy);
@@ -97,11 +101,13 @@ void BurgersViscousImageInpainting::burgersViscousEquationInpainting(cv::Mat& u,
         }
 
         // Condiciones de frontera (Neumann: gradiente nulo)
-        for (int c = 0; c < width; ++c) {
+        for (int c = 0; c < width; ++c)
+        {
             nextPtr[0 * width + c] = nextPtr[1 * width + c];               // Borde superior
             nextPtr[(height - 1) * width + c] = nextPtr[(height - 2) * width + c]; // Borde inferior
         }
-        for (int r = 0; r < height; ++r) {
+        for (int r = 0; r < height; ++r)
+        {
             nextPtr[r * width + 0] = nextPtr[r * width + 1];               // Borde izquierdo
             nextPtr[r * width + (width - 1)] = nextPtr[r * width + (width - 2)]; // Borde derecho
         }
@@ -174,12 +180,20 @@ void BurgersViscousImageInpainting::inpaint()
         cv::split(image, channels);
 
         for (int i = 0; i < (int)channels.size(); ++i)
+        {
+            emit sendOtherMessage("Processing channel " + QString::number(i) + "...");
             burgersViscousEquationInpainting(channels[i], mask, nu, iters, dt, dx, dy, doUpwindDifferences);
+        }
+        emit sendOtherMessage("");
 
         cv::merge(channels, image);
     }
     else
+    {
+        emit sendOtherMessage("Processing image...");
         burgersViscousEquationInpainting(image, mask, nu, iters, dt, dx, dy, doUpwindDifferences);
+        emit sendOtherMessage("");
+    }
 
     image.convertTo(image, CV_8U, 255.0);
 

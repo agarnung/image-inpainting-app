@@ -213,12 +213,20 @@ void CahnHilliardImageInpainting::inpaint()
         cv::split(image, channels);
 
         for (int i = 0; i < (int)channels.size(); ++i)
+        {
+            emit sendOtherMessage("Processing channel " + QString::number(i) + "...");
             cahnHilliardInpainting(channels[i], mask, iters, D, gamma, dt, deltaX, deltaY, useExplicitLaplacian);
+        }
+        emit sendOtherMessage("");
 
         cv::merge(channels, image);
     }
     else
+    {
+        emit sendOtherMessage("Processing image...");
         cahnHilliardInpainting(image, mask, iters, D, gamma, dt, deltaX, deltaY, useExplicitLaplacian);
+        emit sendOtherMessage("");
+    }
 
     image.convertTo(image, CV_8U, 255.0);
 

@@ -60,6 +60,7 @@ void TeleaImageInpainting::inpaint()
 
         for (int i = 0; i < (int)channels.size(); ++i)
         {
+            emit sendOtherMessage("Processing channel " + QString::number(i) + "...");
             cv::Mat inpaintedChannel;
             cv::inpaint(channels[i], mask, inpaintedChannel, iters, cv::INPAINT_TELEA);
             channels[i] = inpaintedChannel;
@@ -68,7 +69,11 @@ void TeleaImageInpainting::inpaint()
         cv::merge(channels, inpainted);
     }
     else
+    {
+        emit sendOtherMessage("Processing image...");
         cv::inpaint(image, mask, inpainted, iters, cv::INPAINT_TELEA);
+        emit sendOtherMessage("");
+    }
 
     mDataManager->setInpaintedImage(inpainted);
 

@@ -49,7 +49,10 @@ void CalculationThread::initAlgorithm(DataManager* dataManager, ParameterSet* pa
     }
 
     if (mImageInpaintingBase)
+    {
         QObject::connect(mImageInpaintingBase, &ImageInpaintingBase::sendImageProcess, mMainWindow, &MainWindow::receiveProcessImage);
+        QObject::connect(mImageInpaintingBase, &ImageInpaintingBase::sendOtherMessage, mMainWindow, &MainWindow::receiveOtherMessage);
+    }
 }
 
 void CalculationThread::run()

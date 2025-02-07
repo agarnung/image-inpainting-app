@@ -261,6 +261,9 @@ class ImageViewer : public QGraphicsView
 
         void updateInpaintingMask(const QPoint& from, const QPoint& to);
 
+    signals:
+        void sendTimedMessage(const QString& msg, int duration_ms = 1000);
+
     public slots:
         void togglePencilDrawing();
         void showPencilSettingsDialog();

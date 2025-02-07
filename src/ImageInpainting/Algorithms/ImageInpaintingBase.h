@@ -21,5 +21,6 @@ class ImageInpaintingBase : public QObject
 
     signals:
         void sendImageProcess(const cv::Mat& img);
+        void sendOtherMessage(const QString& msg);
 };
 

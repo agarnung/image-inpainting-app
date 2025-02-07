@@ -68,7 +68,8 @@ class MainWindow : public QMainWindow
         QToolBar* mToolbarImageStatus = nullptr;
 
         QLabel* mLabelOperationInfo = nullptr;
-        QLabel* mLabelOtherInfo = nullptr;
+        QLabel* mLabelImageType = nullptr;
+        QLabel* mLabelTimedMessages= nullptr;
 
         QMenu* mMenuFile= nullptr;
         QMenu* mMenuAlgorithms = nullptr;
@@ -89,6 +90,8 @@ class MainWindow : public QMainWindow
 
     public slots:
         void receiveProcessImage(const cv::Mat& img);
+        void receiveOtherMessage(const QString& msg);
+        void receiveTimedMessage(const QString& msg, int duration_ms);
 
     private slots:
         void importImage();

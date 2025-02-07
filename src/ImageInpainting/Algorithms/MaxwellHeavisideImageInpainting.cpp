@@ -397,12 +397,20 @@ void MaxwellHeavisideImageInpainting::inpaint()
         cv::split(image, channels);
 
         for (int i = 0; i < (int)channels.size(); ++i)
+        {
+            emit sendOtherMessage("Processing channel " + QString::number(i) + "...");
             maxwellHeavisidePDEInpainting(channels[i], mask, iters, c_wave, dt, alpha, beta, gamma, useEulerMethod, epsilon_0, mu_0, stationaryFields);
+        }
+        emit sendOtherMessage("");
 
         cv::merge(channels, image);
     }
     else
+    {
+        emit sendOtherMessage("Processing image...");
         maxwellHeavisidePDEInpainting(image, mask, iters, c_wave, dt, alpha, beta, gamma, useEulerMethod, epsilon_0, mu_0, stationaryFields);
+        emit sendOtherMessage("");
+    }
 
     image.convertTo(image, CV_8U, 255.0);
 
