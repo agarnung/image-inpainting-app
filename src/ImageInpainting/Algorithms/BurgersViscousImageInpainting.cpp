@@ -38,9 +38,9 @@ void BurgersViscousImageInpainting::initParameters()
                                 true,
                                 QString("doUpwindDifferences"),
                                 QString("doUpwindDifferences"));
-    mParameterSet->setName(QString("Maxwell-Heaviside image inpainting algorithm"));
-    mParameterSet->setLabel(QString("Maxwell-Heaviside image inpainting algorithm"));
-    mParameterSet->setIntroduction(QString("Maxwell-Heaviside image inpainting algorithm -- Parameters"));
+    mParameterSet->setName(QString("Vicsous Burguers' equation image inpainting algorithm"));
+    mParameterSet->setLabel(QString("Vicsous Burguers' equation image inpainting algorithm"));
+    mParameterSet->setIntroduction(QString("Parameters"));
 }
 
 void BurgersViscousImageInpainting::burgersViscousEquationInpainting(cv::Mat& u, const cv::Mat& mask, double nu, int nIters, double dt, double dx, double dy, bool useUpwind)

@@ -275,7 +275,13 @@ void MainWindow::receiveProcessImage(const cv::Mat& img)
     else
         mDataManager->setInpaintedImage(img);
 
-    transToInpaintedImage();
+    mImageViewer->updateImage(mDataManager->getInpaintedImagePixmap());
+
+    if (mActionToInpaintedImage)
+    {
+        mActionToInpaintedImage->setChecked(true);
+        mActionToInpaintedImage->trigger();
+    }
 }
 
 void MainWindow::importImage()

@@ -56,7 +56,7 @@ void CahnHilliardImageInpainting::initParameters()
 
     mParameterSet->setName(QString("Cahn-Hilliard Image Inpainting Algorithm"));
     mParameterSet->setLabel(QString("Cahn-Hilliard image inpainting algorithm"));
-    mParameterSet->setIntroduction(QString("Cahn-Hilliard image inpainting algorithm -- Parameters"));
+    mParameterSet->setIntroduction(QString("Parameters"));
 }
 
 void CahnHilliardImageInpainting::cahnHilliardInpainting(cv::Mat& c, const cv::Mat& mask, int nIters, double D, double gamma, double dt, double deltaX, double deltaY, bool useExplicitLaplacian)
