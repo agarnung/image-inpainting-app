@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  qt_application:
+    build:
+      context: ..  # Set the context to the parent directory (project root)
+      dockerfile: docker/Dockerfile  # Specify the location of the Dockerfile
+    container_name: qt_image_inpainting_app
+    environment:
+#      - DISPLAY=:0
+      - DISPLAY=$DISPLAY
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw # Allows access to the graphical display
+    privileged: true # Required to run graphical applications
+    network_mode: host # Use host mode to allow graphical access
+
