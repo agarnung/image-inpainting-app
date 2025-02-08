@@ -102,6 +102,14 @@ docker-compose down
    `$ docker-compose down --remove-orphans
       docker system prune -af
     `
+# Have you made changes to the source code and want them to reflect in your image?
+
+To ensure that your changes are included in the Docker image, follow these steps:
+1. **Compile the application on your host** to make sure everything is up-to-date.
+2. Run `docker-compose down` to stop and remove the existing container.
+3. Run `docker-compose up -d` to recreate the container. Docker will rebuild the image considering only the changes made to the source code, and then start the container with the updated image.
+
+This process ensures that only the changes you made to the code are included in the new image before running the container again.
 
 # Distribute you image:
 Once you have verified that the application works correctly, you can distribute it  

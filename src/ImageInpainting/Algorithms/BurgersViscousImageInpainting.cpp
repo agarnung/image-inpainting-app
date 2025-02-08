@@ -10,10 +10,10 @@ void BurgersViscousImageInpainting::initParameters()
 {
     mParameterSet->removeAllParameter();
     mParameterSet->addParameter(QString("iters"),
-                                5,
+                                500,
                                 QString("Iterations number"),
                                 QString("The total number of iteration of the algorithm"),
-                                true, 1, 100);
+                                true, 1, 10000);
     mParameterSet->addParameter(QString("dx"),
                                 0.01,
                                 QString("dx"),
