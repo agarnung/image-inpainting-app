@@ -71,3 +71,6 @@ compile_commands.json
 
 *_qmlcache.qrc
 
+# Custom
+*.tar
+

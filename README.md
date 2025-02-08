@@ -5,6 +5,11 @@ A Qt-based application to restore images with various inpainting methods.
   <img src="./assets/app_main.png" alt="Application main window" title="Application main window" />
 </p>
 
+<div style="display: flex; justify-content: center; gap: 10px;">
+  <img src="./assets/bird.png" alt="bird" title="bird" />
+  <img src="./assets/bald_bird.png" alt="bald_bird" title="bald_bird" />
+</div>
+
 _A work in progress_
 
 The algorithms are implemented in C++ for personal amusement.
@@ -54,8 +59,11 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 # TODO
 * Mejorar lo de esconder y mostrar las labels. Por ejemplo, unir en un solo el label de mensaje temporal y tipo de imagen.
 * Crear GIF de funcionamiento para el README
+* Arreglar lo de las iteraciones de Burguers
 * Explicaciones de app e iconos en README. Enlazar el README en hipervínculo desde el About de la aplicación
 * Explicaciones someras con ejemplo visuales de qué algoritmo va mejor para qué caso
+* Gran problema: cuando se cambia grosor del lápiz, que no afecte al dibujo anterior, o sea, guardar el histórico de tuplas paths-grosor, no solo path.
+* No aparece al brush style por defecto en docker, al cambiar el estilo del lápiz, por qué. 
 * Distribuir la imagen docker de la aplicación en Docker Registry o subirla el .tar a algún lado
 * Release the app in AppImage format 
 
