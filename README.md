@@ -59,7 +59,6 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 # TODO
 * Mejorar lo de esconder y mostrar las labels. Por ejemplo, unir en un solo el label de mensaje temporal y tipo de imagen.
 * Crear GIF de funcionamiento para el README
-* Arreglar lo de las iteraciones de Burguers
 * Meter estadísticas de PSNR, MSE y SSIM tras hacer el inpainting
 * Explicaciones de app e iconos en README. Enlazar el README en hipervínculo desde el About de la aplicación
 * Explicaciones someras con ejemplo visuales de qué algoritmo va mejor para qué caso
