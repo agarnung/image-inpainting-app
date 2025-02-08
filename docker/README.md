@@ -5,7 +5,7 @@
 > so that graphical applications can be displayed:  
 > `$ xhost +local:docker`
 
-## First Steps:
+# First Steps:
 1. Install Docker Compose:  
    `$ sudo apt install docker-compose`
    
@@ -30,7 +30,61 @@ $ docker run -it --name image-inpainting-app-docker-image docker_qt_application
 6. Guardar la imagen de Docker en un archivo (Exportar)
 $ docker save -o image-inpainting-app-docker-image.tar docker_qt_application
 
-## Troubleshooting:
+# 🚀 Instructions to Run the Container from a `.tar` Image
+
+This project allows running a Qt application inside a Docker container. Follow the steps below to download, load, and run the image.
+
+## **1️⃣ Download the Docker Image**
+Download the image from the provided link:  
+```bash
+wget https://your-link.com/my_image.tar
+```
+
+## **2 Load the Image into Docker**
+Once downloaded, load the image into Docker:
+```bash
+docker load -i my_image.tar
+```
+To verify that the image was loaded correctly, run:
+```bash
+docker images
+```
+You should see something like this:
+```nginx
+REPOSITORY                   TAG     IMAGE ID       CREATED        SIZE
+qt_image_inpainting_app      latest  abc123def456   2 hours ago    1.2GB
+
+```
+
+## **3 Clone the Repository**
+Clone this repository to get the required files (docker-compose.yml and start.sh):
+```bash
+git clone https://github.com/your-username/image-inpainting-app.git
+cd image-inpainting-app
+```
+
+## **4 Grant Permissions and Run the Startup Script**
+First, ensure that start.sh has execution permissions:
+```bash
+chmod +x start.sh
+```
+Then, run the script to launch the container:
+```bash
+./start.sh
+```
+
+## **5 (Optional) View Container Logs**
+If you need to check the logs without attaching the terminal, use:
+```bash
+docker logs -f qt_image_inpainting_app
+```
+## **REJ CIRCLE How to Stop the Container**
+To stop and remove the container, run:
+```bash
+docker-compose down
+```
+
+# Troubleshooting:
 - Restart the Docker service:  
    `$ sudo systemctl restart docker`
 
@@ -41,7 +95,15 @@ $ docker save -o image-inpainting-app-docker-image.tar docker_qt_application
   [Solution](https://stackoverflow.com/questions/64952238/docker-errors-dockerexception-error-while-fetching-server-api-version?page=1&tab=scoredesc#tab-top):  
   `$ pip3 install requests==2.31.0`
 
-## Distribution:
+- If the docker-compose.yml has syntax errors, the following command will show you:
+   `$ docker-compose config`
+
+- _Error KeyError: 'ContainerConfig'_ => Remove old (orphnn) containers that may be interfering:
+   `$ docker-compose down --remove-orphans
+      docker system prune -af
+    `
+
+# Distribute you image:
 Once you have verified that the application works correctly, you can distribute it  
 by uploading the Docker image to Docker Hub or another registry, or distribute it as a file.  
 

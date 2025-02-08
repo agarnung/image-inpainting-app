@@ -11,6 +11,7 @@ services:
       - DISPLAY=$DISPLAY
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw # Allows access to the graphical display
+      - ./data:/data  # Shared folder between host and container
     privileged: true # Required to run graphical applications
     network_mode: host # Use host mode to allow graphical access
 

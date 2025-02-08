@@ -55,9 +55,9 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 * Mejorar lo de esconder y mostrar las labels. Por ejemplo, unir en un solo el label de mensaje temporal y tipo de imagen.
 * Crear GIF de funcionamiento para el README
 * Explicaciones de app e iconos en README. Enlazar el README en hipervínculo desde el About de la aplicación
-* Exaplicaciones someras con ejemplo visuales de qué algoritmo va mejor para qué caso
-* Encapsular toda la app en un Docker
-* Release the app in AppImage format
-* 
+* Explicaciones someras con ejemplo visuales de qué algoritmo va mejor para qué caso
+* Distribuir la imagen docker de la aplicación en Docker Registry o subirla el .tar a algún lado
+* Release the app in AppImage format 
+
 # References
 * [Inspired in GuidedDenoising](https://github.com/bldeng/GuidedDenoising)
