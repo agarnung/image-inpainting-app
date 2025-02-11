@@ -5,20 +5,24 @@ A Qt-based application to restore images with various inpainting methods.
   <img src="./assets/app_main.png" alt="Application main window" title="Application main window" />
 </p>
 
-<div style="display: flex;">
-  <img src="./assets/bird.png" alt="bird" title="bird" style="width: 350px; margin-right: 10px;" />
-  <img src="./assets/bald_bird.png" alt="bald_bird" title="bald_bird" style="width: 350px;" />
-</div>
-
-<div style="display: flex;">
-  <img src="./assets/input1.png" alt="input1" title="input1" style="width: 350px; margin-right: 10px;" />
-  <img src="./assets/result1.png" alt="resul1" title="resul1" style="width: 350px;" />
-</div>
-
-<div style="display: flex;">
-  <img src="./assets/input2.png" alt="input2" title="input2" style="width: 350px; margin-right: 10px;" />
-  <img src="./assets/result2.png" alt="result2" title="result2" style="width: 350px;" />
-</div>
+<table border="1" style="border-collapse: collapse; text-align: center;">
+  <tr>
+    <th>Original</th>
+    <th>Inpainted</th>
+  </tr>
+  <tr>
+    <td><img src="./assets/bird.png" alt="bird" title="bird" style="width: 350px;" /></td>
+    <td><img src="./assets/bald_bird.png" alt="bald_bird" title="bald_bird" style="width: 350px;" /></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/input1.png" alt="input1" title="input1" style="width: 350px;" /></td>
+    <td><img src="./assets/result1.png" alt="result1" title="result1" style="width: 350px;" /></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/input2.png" alt="input2" title="input2" style="width: 350px;" /></td>
+    <td><img src="./assets/result2.png" alt="result2" title="result2" style="width: 350px;" /></td>
+  </tr>
+</table>
 
 _A work in progress_
 
