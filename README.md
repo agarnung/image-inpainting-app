@@ -5,9 +5,9 @@ A Qt-based application to restore images with various inpainting methods.
   <img src="./assets/app_main.png" alt="Application main window" title="Application main window" />
 </p>
 
-<div style="display: flex; justify-content: center; gap: 10px;">
-  <img src="./assets/bird.png" alt="bird" title="bird" style="max-width: 100px;" />
-  <img src="./assets/bald_bird.png" alt="bald_bird" title="bald_bird" style="max-width: 100px;" />
+<div style="display: flex;">
+  <img src="./assets/bird.png" alt="bird" title="bird" style="width: 350px; margin-right: 10px;" />
+  <img src="./assets/bald_bird.png" alt="bald_bird" title="bald_bird" style="width: 350px;" />
 </div>
 
 _A work in progress_
