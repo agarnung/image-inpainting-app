@@ -10,6 +10,16 @@ A Qt-based application to restore images with various inpainting methods.
   <img src="./assets/bald_bird.png" alt="bald_bird" title="bald_bird" style="width: 350px;" />
 </div>
 
+<div style="display: flex;">
+  <img src="./assets/input1.png" alt="input1" title="input1" style="width: 350px; margin-right: 10px;" />
+  <img src="./assets/result1.png" alt="resul1" title="resul1" style="width: 350px;" />
+</div>
+
+<div style="display: flex;">
+  <img src="./assets/input2.png" alt="input2" title="input2" style="width: 350px; margin-right: 10px;" />
+  <img src="./assets/result2.png" alt="result2" title="result2" style="width: 350px;" />
+</div>
+
 _A work in progress_
 
 The algorithms are implemented in C++ for personal amusement.
