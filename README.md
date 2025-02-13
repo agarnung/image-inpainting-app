@@ -84,4 +84,4 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 * Implementar los algoritmos comentados en [este README](./src/ImageInpainting/Algorithms/README.md)
 
 # References
-* [Inspired in GuidedDenoising](https://github.com/bldeng/GuidedDenoising)
+* [Inspired by GuidedDenoising](https://github.com/bldeng/GuidedDenoising)
