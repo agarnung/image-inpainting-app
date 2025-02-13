@@ -1,6 +1,8 @@
 # image-inpainting-app
 A Qt-based application to restore images with various inpainting methods.
 
+This is also a _reservoir_ for image inpainting algorithms in C++ (for personal amusement).
+
 <p align="center">
   <img src="./assets/app_main.png" alt="Application main window" title="Application main window" />
 </p>
@@ -23,10 +25,6 @@ A Qt-based application to restore images with various inpainting methods.
     <td><img src="./assets/result2.png" alt="result2" title="result2" style="width: 350px;" /></td>
   </tr>
 </table>
-
-This is also a _reservoir_ for image inpainting algorithms in C++.
-
-The algorithms are implemented in C++ for personal amusement.
 
 # Installation
 
