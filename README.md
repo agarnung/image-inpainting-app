@@ -24,7 +24,7 @@ A Qt-based application to restore images with various inpainting methods.
   </tr>
 </table>
 
-_A work in progress_
+This is also a _reservoir_ for image inpainting algorithms in C++.
 
 The algorithms are implemented in C++ for personal amusement.
 
