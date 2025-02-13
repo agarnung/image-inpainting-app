@@ -80,6 +80,7 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 * No aparece al brush style por defecto en docker, al cambiar el estilo del lápiz, por qué. 
 * Distribuir la imagen docker de la aplicación en Docker Registry o subirla el .tar a algún lado
 * Release the app in AppImage format 
+* Implementar los algoritmos comentados en [este README](./src/ImageInpainting/Algorithms/README.md)
 
 # References
 * [Inspired in GuidedDenoising](https://github.com/bldeng/GuidedDenoising)

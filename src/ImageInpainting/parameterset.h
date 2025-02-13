@@ -135,7 +135,7 @@ class ParameterSet
 
         void addParameter(const QString &_name, bool _defaultValue, const QString &_label = "", const QString &_toolTip = "");
         void addParameter(const QString &_name, int _defaultValue, const QString &_label = "", const QString &_toolTip = "",
-                          bool _hasValidator = false, int _validMin = -1e10, int _validMax = 1e10);
+                          bool _hasValidator = false, int _validMin = (int)-1e10, int _validMax = (int)1e10);
         void addParameter(const QString &_name, double _defaultValue, const QString &_label = "", const QString &_toolTip = "",
                           bool _hasValidator = false, double _validMin = -1.0e10, double _validMax = 1.0e10);
         void addParameter(const QString &_name, QStringList &_defaultValue, int _defaultIndex, const QString &_label = "", const QString &_toolTip = "");

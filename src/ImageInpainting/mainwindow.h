@@ -50,6 +50,7 @@ class MainWindow : public QMainWindow
         QAction* mActionMaxwellHeavisideImageInpainting = nullptr;
         QAction* mActionCahnHilliardImageInpainting = nullptr;
         QAction* mActionBurguersViscousImageInpainting = nullptr;
+        QAction* mActionCriminisiImageInpainting = nullptr;
 
         QAction* mActionAbout = nullptr;
 
@@ -112,6 +113,7 @@ class MainWindow : public QMainWindow
         void showMaxwellHeavisideInpaintingWidget();
         void showCahnHilliardInpaintingWidget();
         void showBurguersViscousInpaintingWidget();
+        void showCriminisiInpaintingWidget();
 
         void setActionAndWidget(bool value1, bool value2);
         void needToResetImage();

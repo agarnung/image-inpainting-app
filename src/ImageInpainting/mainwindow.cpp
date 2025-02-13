@@ -97,6 +97,10 @@ void MainWindow::createActions()
     mActionNavierStokesImageInpainting->setStatusTip("Inpaint image using Navier-Stokes Image Inpainting algorithm");
     QObject::connect(mActionNavierStokesImageInpainting, &QAction::triggered, this, &MainWindow::showNavierStokesInpaintingWidget);
 
+    mActionCriminisiImageInpainting = new QAction(tr("Criminisi Image Inpainting"), this);
+    mActionCriminisiImageInpainting->setStatusTip("Inpaint image using Criminisi Image Inpainting algorithm");
+    QObject::connect(mActionCriminisiImageInpainting, &QAction::triggered, this, &MainWindow::showCriminisiInpaintingWidget);
+
     mActionAbout = new QAction(QIcon(":/icons/about.ico"), tr("About"), this);
     mActionAbout->setStatusTip("Information about this application");
     QObject::connect(mActionAbout, &QAction::triggered, this, &MainWindow::about);
@@ -168,6 +172,7 @@ void MainWindow::createMenus()
     mMenuAlgorithms->addAction(mActionBurguersViscousImageInpainting);
     mMenuAlgorithms->addAction(mActionTeleaImageInpainting);
     mMenuAlgorithms->addAction(mActionNavierStokesImageInpainting);
+    mMenuAlgorithms->addAction(mActionCriminisiImageInpainting);
     mMenuAlgorithms->setEnabled(false);
 
     mMenuHelp = menuBar()->addMenu(tr("Help"));
@@ -447,6 +452,13 @@ void MainWindow::showTeleaInpaintingWidget()
 void MainWindow::showNavierStokesInpaintingWidget()
 {
     mCalculationThread->mAlgorithmType = CalculationThread::kNavierStokesImageInpainting;
+    closeWidget();
+    showWidget();
+}
+
+void MainWindow::showCriminisiInpaintingWidget()
+{
+    mCalculationThread->mAlgorithmType = CalculationThread::kCriminsiImageInpainting;
     closeWidget();
     showWidget();
 }

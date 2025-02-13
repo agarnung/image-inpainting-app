@@ -24,6 +24,7 @@ SOURCES += \
         Algorithms/CahnHilliardImageInpainting.cpp \
         Algorithms/NavierStokesImageInpainting.cpp \
         Algorithms/TeleaImageInpainting.cpp \
+        Algorithms/CriminisiImageInpainting.cpp \
 
 FORMS += \
         mainwindow.ui
@@ -44,6 +45,7 @@ HEADERS += \
         Algorithms/CahnHilliardImageInpainting.h \
         Algorithms/NavierStokesImageInpainting.h \
         Algorithms/TeleaImageInpainting.h \
+        Algorithms/CriminisiImageInpainting.h \
 
 RESOURCES += \
     icons.qrc

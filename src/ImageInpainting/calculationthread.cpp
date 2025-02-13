@@ -6,6 +6,7 @@
 #include "Algorithms/MaxwellHeavisideImageInpainting.h"
 #include "Algorithms/CahnHilliardImageInpainting.h"
 #include "Algorithms/BurgersViscousImageInpainting.h"
+#include "Algorithms/CriminisiImageInpainting.h"
 
 CalculationThread::CalculationThread(MainWindow* mainWindow)
     : mAlgorithmName{""}
@@ -43,6 +44,9 @@ void CalculationThread::initAlgorithm(DataManager* dataManager, ParameterSet* pa
             break;
         case kCahnHilliardImageInpainting:
             mImageInpaintingBase = new CahnHilliardImageInpainting(dataManager, parameterSet);
+            break;
+        case kCriminsiImageInpainting:
+            mImageInpaintingBase = new CriminisiImageInpainting(dataManager, parameterSet);
             break;
         default:
             break;
