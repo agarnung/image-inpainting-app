@@ -13,7 +13,7 @@ class CriminisiInpainter;
  * @class CriminisiImageInpainting
  * @brief Implementation of the exemplar based inpainting algorithm described in
  *        "Object Removal by Exemplar-Based Inpainting", A. Criminisi et. al.
- *        Based on the implementation by Christoph Heindl (https://github.com/cheind/inpaint, 2014)
+ * @see   Based on the implementation by Christoph Heindl (https://github.com/cheind/inpaint, 2014)
  */
 class CriminisiImageInpainting : public ImageInpaintingBase
 {

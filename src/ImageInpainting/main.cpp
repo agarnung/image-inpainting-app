@@ -2,8 +2,6 @@
 
 #include <QApplication>
 
-#include <opencv4/opencv2/core.hpp>
-
 int main(int argc, char* argv[])
 {
     QApplication::setStyle(QStyleFactory::create("fusion"));
@@ -12,6 +10,7 @@ int main(int argc, char* argv[])
     w.show();
 
     qRegisterMetaType<const cv::Mat&>("const cv::Mat&");
+//    qRegisterMetaType<cv::Mat>("const cv::Mat&");
 
     return a.exec();
 }

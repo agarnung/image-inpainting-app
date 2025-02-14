@@ -2,6 +2,8 @@
 
 #include <opencv4/opencv2/core.hpp>
 
+#include <QDebug>
+
 CriminisiImageInpainting::CriminisiImageInpainting(DataManager* dataManager, ParameterSet* parameterSet)
     : ImageInpaintingBase(dataManager, parameterSet)
 {
@@ -17,9 +19,9 @@ void CriminisiImageInpainting::initParameters()
                                 QString("Patch size"),
                                 true, 2, 200);
 
-    mParameterSet->setName(QString("Telea image inpainting algorithm"));
-    mParameterSet->setLabel(QString("Telea image inpainting algorithm"));
-    mParameterSet->setIntroduction(QString("Parameters settings"));
+    mParameterSet->setName(QString("Criminisi image inpainting algorithm"));
+    mParameterSet->setLabel(QString("Criminisi image inpainting algorithm"));
+    mParameterSet->setIntroduction(QString("Criminisi settings"));
 }
 
 void CriminisiImageInpainting::inpaintCriminisi(cv::InputArray image, cv::InputArray targetMask, cv::InputArray sourceMask, int patchSize)

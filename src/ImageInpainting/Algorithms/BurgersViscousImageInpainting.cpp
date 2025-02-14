@@ -1,5 +1,7 @@
 #include "BurgersViscousImageInpainting.h"
 
+#include <QDebug>
+
 BurgersViscousImageInpainting::BurgersViscousImageInpainting(DataManager* dataManager, ParameterSet* parameterSet)
     : ImageInpaintingBase(dataManager, parameterSet)
 {

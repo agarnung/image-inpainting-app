@@ -25,6 +25,7 @@ SOURCES += \
         Algorithms/NavierStokesImageInpainting.cpp \
         Algorithms/TeleaImageInpainting.cpp \
         Algorithms/CriminisiImageInpainting.cpp \
+        Algorithms/FastDigitalImageInpainting.cpp \
 
 FORMS += \
         mainwindow.ui
@@ -32,7 +33,7 @@ FORMS += \
 HEADERS += \
         calculationthread.h \
         datamanager.h \
-        imageviewer.h \
+        imageview       er.h \
         iothread.h \
         mainwindow.h \
         parameterset.h \
@@ -46,6 +47,7 @@ HEADERS += \
         Algorithms/NavierStokesImageInpainting.h \
         Algorithms/TeleaImageInpainting.h \
         Algorithms/CriminisiImageInpainting.h \
+        Algorithms/FastDigitalImageInpainting.h \
 
 RESOURCES += \
     icons.qrc

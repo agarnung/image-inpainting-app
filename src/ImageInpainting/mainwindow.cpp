@@ -101,6 +101,10 @@ void MainWindow::createActions()
     mActionCriminisiImageInpainting->setStatusTip("Inpaint image using Criminisi Image Inpainting algorithm");
     QObject::connect(mActionCriminisiImageInpainting, &QAction::triggered, this, &MainWindow::showCriminisiInpaintingWidget);
 
+    mActionFastDigitalImageInpainting = new QAction(tr("Fast Digital Image Inpainting"), this);
+    mActionFastDigitalImageInpainting->setStatusTip("Inpaint image using Fast Digital Image Inpainting algorithm");
+    QObject::connect(mActionFastDigitalImageInpainting, &QAction::triggered, this, &MainWindow::showFastDigitalInpaintingWidget);
+
     mActionAbout = new QAction(QIcon(":/icons/about.ico"), tr("About"), this);
     mActionAbout->setStatusTip("Information about this application");
     QObject::connect(mActionAbout, &QAction::triggered, this, &MainWindow::about);
@@ -173,6 +177,7 @@ void MainWindow::createMenus()
     mMenuAlgorithms->addAction(mActionTeleaImageInpainting);
     mMenuAlgorithms->addAction(mActionNavierStokesImageInpainting);
     mMenuAlgorithms->addAction(mActionCriminisiImageInpainting);
+    mMenuAlgorithms->addAction(mActionFastDigitalImageInpainting);
     mMenuAlgorithms->setEnabled(false);
 
     mMenuHelp = menuBar()->addMenu(tr("Help"));
@@ -463,6 +468,13 @@ void MainWindow::showCriminisiInpaintingWidget()
     showWidget();
 }
 
+void MainWindow::showFastDigitalInpaintingWidget()
+{
+    mCalculationThread->mAlgorithmType = CalculationThread::kFastDigitalImageInpainting;
+    closeWidget();
+    showWidget();
+}
+
 void MainWindow::setActionAndWidget(bool value1, bool value2)
 {
     setActionStatus(value1);
@@ -486,4 +498,3 @@ void MainWindow::about()
                        tr("Here goes the info. <br>"
                           "May add HTML and CSS in a Scrollable pop-up with instruction."));
 }
-

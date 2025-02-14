@@ -5,6 +5,8 @@
 #include <opencv4/opencv2/photo.hpp>
 #include <opencv4/opencv2/imgcodecs.hpp>
 
+#include <QDebug>
+
 NavierStokesImageInpainting::NavierStokesImageInpainting(DataManager* dataManager, ParameterSet* parameterSet)
     : ImageInpaintingBase(dataManager, parameterSet)
 {

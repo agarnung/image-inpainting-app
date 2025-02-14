@@ -2,6 +2,8 @@
 
 #include <opencv4/opencv2/core.hpp>
 
+#include <QDebug>
+
 CahnHilliardImageInpainting::CahnHilliardImageInpainting(DataManager* dataManager, ParameterSet* parameterSet)
     : ImageInpaintingBase(dataManager, parameterSet)
 {

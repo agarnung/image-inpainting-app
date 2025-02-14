@@ -1,5 +1,7 @@
 #include "Noise.h"
 
+#include <QDebug>
+
 Noise::Noise(DataManager* dataManager, ParameterSet* parameterSet)
 {
     if ((dataManager == nullptr) || (parameterSet == nullptr))

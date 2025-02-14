@@ -3,6 +3,8 @@
 #include <opencv4/opencv2/core.hpp>
 #include <opencv4/opencv2/imgcodecs.hpp>
 
+#include <QDebug>
+
 MaxwellHeavisideImageInpainting::MaxwellHeavisideImageInpainting(DataManager* dataManager, ParameterSet* parameterSet)
     : ImageInpaintingBase(dataManager, parameterSet)
 {
