@@ -100,6 +100,8 @@ void FastDigitalImageInpainting::inpaint()
         qWarning() << "The image is empty";
         return;
     }
+    if (image.channels() == 4)
+        cv::cvtColor(image, image, cv::COLOR_BGRA2BGR);
     image = universalConvertTo(image, CV_8UC3);
 
     cv::Mat mask = mDataManager->getMask();
@@ -108,6 +110,8 @@ void FastDigitalImageInpainting::inpaint()
         qWarning() << "The mask is empty";
         return;
     }
+    if (mask.channels() == 4)
+        cv::cvtColor(mask, mask, cv::COLOR_BGRA2BGR);
     mask = universalConvertTo(mask, CV_8UC3);
 
     int maxIters;
