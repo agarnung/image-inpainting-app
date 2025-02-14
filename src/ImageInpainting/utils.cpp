@@ -2,6 +2,8 @@
 
 #include <opencv4/opencv2/highgui.hpp>
 
+#include <QDebug>
+
 void MSE(const cv::Mat& I, const cv::Mat& u, double& mse, double& rmse)
 {
     cv::Mat error;
@@ -152,4 +154,277 @@ cv::Mat pixmapToMat(const QPixmap &pixmap)
         return cv::Mat();
 
     return mat.clone();
+}
+
+cv::Mat universalConvertTo(const cv::Mat& src, int outputType)
+{
+    if (!src.data || src.empty())
+    {
+        qCritical() << "src is not valid\n";
+        return cv::Mat();
+    }
+
+    if (outputType == CV_16S || outputType == CV_8S || outputType == CV_32S)
+    {
+        qCritical() << "CV_8S, CV_16S, CV_32S not implemented. Number of channels must be 1 or 3\n";
+        return cv::Mat();
+    }
+
+    cv::Mat outputMat;
+    int inputDataType = src.type();
+    switch (inputDataType)
+    {
+    case CV_8UC1:
+    {
+        if (outputType == CV_8UC1)
+            return src.clone();
+        else if (outputType == CV_8UC3)
+            cv::cvtColor(src, outputMat, cv::COLOR_GRAY2BGR);
+        else if (outputType == CV_16UC1)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_16U, 1), 256.0, 0.0);
+        else if (outputType == CV_16UC3)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_GRAY2BGR);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_16U, 3), 256.0, 0.0);
+        }
+        else if (outputType == CV_32FC1)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_32F, 1), 1.0 / 255.0, 0.0);
+        else if (outputType == CV_32FC3)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_GRAY2BGR);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_32F, 3), 1.0 / 255.0, 0.0);
+        }
+        else if (outputType == CV_64FC1)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_64F, 1), 1.0 / 255.0, 0.0);
+        else if (outputType == CV_64FC3)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_GRAY2BGR);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_64F, 3), 1.0 / 255.0, 0.0);
+        }
+        break;
+    }
+    case CV_8UC3:
+    {
+        if (outputType == CV_32FC1)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_BGR2GRAY);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_32F, 1), 1.0 / 255.0, 0.0);
+        }
+        else if (outputType == CV_64FC1)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_BGR2GRAY);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_64F, 1), 1.0 / 255.0, 0.0);
+        }
+        else if (outputType == CV_8UC3)
+            return src.clone();
+        else if (outputType == CV_8UC1)
+            cv::cvtColor(src, outputMat, cv::COLOR_BGR2GRAY);
+        else if (outputType == CV_32FC3)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_32F, 3), 1.0 / 255.0, 0.0);
+        else if (outputType == CV_64FC3)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_64F, 3), 1.0 / 255.0, 0.0);
+        else if (outputType == CV_16UC1)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_BGR2GRAY);
+            outputMat.convertTo(outputMat, CV_16UC1, 256.0, 0.0);
+        }
+        else if (outputType == CV_16UC3)
+            src.convertTo(outputMat, CV_16UC3, 256.0, 0.0);
+        break;
+    }
+    case CV_32FC1:
+    {
+        if (outputType == CV_8UC1)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_8U, 1), 255.0, 0.0);
+        else if (outputType == CV_8UC3)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_GRAY2BGR);
+            src.convertTo(outputMat, CV_MAKETYPE(CV_8U, 3), 255.0, 0.0);
+        }
+        else if (outputType == CV_32FC1)
+            return src.clone();
+        else if (outputType == CV_32FC3)
+            cv::cvtColor(src, outputMat, cv::COLOR_GRAY2BGR);
+        else if (outputType == CV_64FC1)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_64F, 1));
+        else if (outputType == CV_64FC3)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_GRAY2BGR);
+            src.convertTo(outputMat, CV_MAKETYPE(CV_64F, 3));
+        }
+        else if (outputType == CV_16UC1)
+            src.convertTo(outputMat, CV_16UC1, 65535.0, 0.0);
+        else if (outputType == CV_16UC3)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_GRAY2BGR);
+            outputMat.convertTo(outputMat, CV_16UC1, 65535.0, 0.0);
+        }
+        break;
+    }
+    case CV_32FC3:
+    {
+        if (outputType == CV_8UC1)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_BGR2GRAY);
+            cv::normalize(outputMat, outputMat, 0, 255, cv::NORM_MINMAX, CV_MAKETYPE(CV_8U, 1));
+        }
+        else if (outputType == CV_8UC3)
+            cv::normalize(src, outputMat, 0, 255, cv::NORM_MINMAX, CV_MAKETYPE(CV_8U, 3));
+        else if (outputType == CV_32FC1)
+            cv::cvtColor(src, outputMat, cv::COLOR_BGR2GRAY);
+        else if (outputType == CV_32FC3)
+            return src.clone();
+        else if (outputType == CV_64FC1)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_BGR2GRAY);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_64F, 1));
+        }
+        else if (outputType == CV_64FC3)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_64F, 3));
+        else if (outputType == CV_16UC1)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_BGR2GRAY);
+            cv::normalize(outputMat, outputMat, 0.0, 65535.0, cv::NORM_MINMAX, CV_MAKETYPE(CV_16U, 1));
+        }
+        else if (outputType == CV_16UC3)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_16U, 3), 65535.0, 0.0);
+        break;
+    }
+    case CV_64FC1:
+    {
+        if (outputType == CV_8UC1)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_8U, 1), 255.0, 0.0);
+        else if (outputType == CV_8UC3)
+        {
+            src.convertTo(outputMat, CV_32FC1); // cv::cvtColor No soporta CV_64F
+            cv::cvtColor(outputMat, outputMat, cv::COLOR_GRAY2BGR);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_8U, 3), 255.0, 0.0);
+        }
+        else if (outputType == CV_16UC1)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_16U, 1), 65535.0, 0.0);
+        else if (outputType == CV_16UC3)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_16U, 3), 65535.0, 0.0);
+        else if (outputType == CV_32FC1)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_32F, 1));
+        else if (outputType == CV_32FC3)
+        {
+            src.convertTo(outputMat, CV_32FC3); // cv::cvtColor No soporta CV_64F
+            cv::cvtColor(outputMat, outputMat, cv::COLOR_GRAY2BGR);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_32F, 3));
+        }
+        else if (outputType == CV_64FC1)
+            return src.clone();
+        else if (outputType == CV_64FC3)
+        {
+            src.convertTo(outputMat, CV_32FC3); // cv::cvtColor No soporta CV_64F
+            cv::cvtColor(outputMat, outputMat, cv::COLOR_GRAY2BGR);
+            outputMat.convertTo(outputMat, CV_64FC3); // cv::cvtColor No soporta CV_64F
+        }
+        break;
+    }
+    case CV_64FC3:
+    {
+        if (outputType == CV_8UC1)
+        {
+            src.convertTo(outputMat, CV_32FC1); // cv::cvtColor No soporta CV_64F
+            cv::cvtColor(outputMat, outputMat, cv::COLOR_BGR2GRAY);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_8U, 1), 1.0, 0.0);
+        }
+        else if (outputType == CV_8UC3)
+        {
+            src.convertTo(outputMat, CV_32FC3); // cv::cvtColor No soporta CV_64F
+            cv::cvtColor(outputMat, outputMat, cv::COLOR_BGR2GRAY);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_8U, 3));
+        }
+        else if (outputType == CV_32FC1)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_BGR2GRAY);
+            cv::normalize(outputMat, outputMat, 0.0, 1.0, cv::NORM_MINMAX, CV_MAKETYPE(CV_32F, 1));
+        }
+        else if (outputType == CV_32FC3)
+            cv::normalize(src, outputMat, 0.0, 1.0, cv::NORM_MINMAX, CV_MAKETYPE(CV_32F, 3));
+        else if (outputType == CV_64FC1)
+        {
+            src.convertTo(outputMat, CV_32FC3); // cv::cvtColor No soporta CV_64F
+            cv::cvtColor(outputMat, outputMat, cv::COLOR_BGR2GRAY);
+            src.convertTo(outputMat, CV_64FC1); // cv::cvtColor No soporta CV_64F
+        }
+        else if (outputType == CV_64FC3)
+            return src.clone();
+        else if (outputType == CV_16UC1)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_BGR2GRAY);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_16U, 1), 65535.0, 0.0);
+        }
+        else if (outputType == CV_16UC3)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_16U, 3), 65535.0, 0.0);
+        break;
+    }
+    case CV_16UC1:
+    {
+        if (outputType == CV_8UC1)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_8U, 1), 255.0 / 65535.0, 0.0);
+        else if (outputType == CV_8UC3)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_GRAY2BGR);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_8U, 3), 255.0 / 65535.0, 0.0);
+        }
+        else if (outputType == CV_16UC3)
+            cv::cvtColor(src, outputMat, cv::COLOR_GRAY2BGR);
+        else if (outputType == CV_16UC1)
+            return src.clone();
+        else if (outputType == CV_32FC1)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_32F, 1), 1.0 / 65535.0, 0.0);
+        else if (outputType == CV_32FC3)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_GRAY2BGR);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_32F, 3), 1.0 / 65535.0, 0.0);
+        }
+        else if (outputType == CV_64FC1)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_64F, 1), 1.0 / 65535.0, 0.0);
+        else if (outputType == CV_64FC3)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_GRAY2BGR);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_64F, 3), 1.0 / 65535.0, 0.0);
+        }
+        break;
+    }
+    case CV_16UC3:
+    {
+        if (outputType == CV_32FC1)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_BGR2GRAY);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_32F, 1), 1.0 / 65535.0, 0.0);
+        }
+        else if (outputType == CV_64FC1)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_BGR2GRAY);
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_64F, 1), 1.0 / 65535.0, 0.0);
+        }
+        else if (outputType == CV_8UC3)
+        {
+            cv::normalize(src, outputMat, 0.0, 65535.0, cv::NORM_MINMAX, CV_MAKETYPE(CV_16U, 3));
+            outputMat.convertTo(outputMat, CV_MAKETYPE(CV_8U, 3), 255.0 / 65535.0, 0.0);
+        }
+        else if (outputType == CV_32FC3)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_32F, 3), 1.0 / 65535.0, 0.0);
+        else if (outputType == CV_64FC3)
+            src.convertTo(outputMat, CV_MAKETYPE(CV_64F, 3), 1.0 / 65535.0, 0.0);
+        else if (outputType == CV_8UC1)
+        {
+            cv::cvtColor(src, outputMat, cv::COLOR_BGR2GRAY);
+            outputMat.convertTo(outputMat, CV_8UC1, 255.0 / 65535.0, 0.0);
+        }
+        else if (outputType == CV_16UC3)
+            return src.clone();
+        break;
+    }
+    default:
+    {
+        qCritical() << "Tipo de datos de entrada no compatible.\n";
+        return cv::Mat();
+    }
+    }
+
+    return outputMat;
 }

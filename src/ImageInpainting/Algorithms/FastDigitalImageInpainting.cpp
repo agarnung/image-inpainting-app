@@ -1,5 +1,7 @@
 #include "FastDigitalImageInpainting.h"
 
+#include "utils.h"
+
 FastDigitalImageInpainting::FastDigitalImageInpainting(DataManager* dataManager, ParameterSet* parameterSet)
     : ImageInpaintingBase(dataManager, parameterSet)
 {
@@ -18,12 +20,12 @@ void FastDigitalImageInpainting::initParameters()
                                 0.073235f,
                                 QString("a"),
                                 QString("a"),
-                                true, 0.000001f, 1.0);
+                                true, 0.000001f, 1.0f);
     mParameterSet->addParameter(QString("b"),
                                 0.176765f,
                                 QString("b"),
                                 QString("b"),
-                                true, 0.000001f, 1.0);
+                                true, 0.000001f, 1.0f);
 
     mParameterSet->setName(QString("Fast Digital Image Inpainting algorithm"));
     mParameterSet->setLabel(QString("Fast Digital Image Inpainting algorithm"));
@@ -65,8 +67,8 @@ void FastDigitalImageInpainting::fastInpaint(const cv::Mat& src, const cv::Mat& 
 
         for (int r = 0; r < dst.rows; ++r)
         {
-            const uchar *pMask = mask.ptr(r);
-            float *pRes = dst.ptr<float>(r);
+            const uchar* pMask = mask.ptr(r);
+            float* pRes = dst.ptr<float>(r);
             for (int c = 0; c < dst.cols; ++c)
             {
                 if (pMask[ch * c] == 0)
@@ -81,6 +83,10 @@ void FastDigitalImageInpainting::fastInpaint(const cv::Mat& src, const cv::Mat& 
                 }
             }
         }
+
+        cv::Mat sentImage;
+        dst.convertTo(sentImage, CV_8UC3);
+        emit sendImageProcess(sentImage);
     }
 
     dst.convertTo(dst, CV_8UC3);
@@ -94,35 +100,18 @@ void FastDigitalImageInpainting::inpaint()
         qWarning() << "The image is empty";
         return;
     }
+    image = universalConvertTo(image, CV_8UC3);
 
-    cv::Mat targetMask = ~mDataManager->getMask();
-    if (targetMask.empty())
+    cv::Mat mask = mDataManager->getMask();
+    if (mask.empty())
     {
         qWarning() << "The mask is empty";
         return;
     }
-
-    if (image.channels() == 4)
-        cv::cvtColor(image, image, cv::COLOR_BGRA2BGR);
-
-    if (inpainted.channels() == 1)
-        cv::cvtColor(image, image, cv::COLOR_GRAY2BGR);
-
-    if (targetMask.channels() == 4)
-        cv::cvtColor(targetMask, targetMask, cv::COLOR_BGRA2BGR);
-
-    if (targetMask.channels() == 1)
-        cv::cvtColor(targetMask, targetMask, cv::COLOR_GRAY2BGR);
-
-    int patchSize;
-    if (!mParameterSet->getValue(QString("patchSize"), patchSize))
-    {
-        qWarning() << "Did not find 'patchSize'";
-        return;
-    }
+    mask = universalConvertTo(mask, CV_8UC3);
 
     int maxIters;
-    float a, b;
+    double a, b;
     if (!mParameterSet->getValue(QString("a"), a) ||
         !mParameterSet->getValue(QString("b"), b) ||
         !mParameterSet->getValue(QString("maxIters"), maxIters))
@@ -130,13 +119,13 @@ void FastDigitalImageInpainting::inpaint()
         qWarning() << "Could not retrieve all parameters.";
         return;
     }
-
-    const cv::Mat kernel = (cv::Mat_<float>(3, 3) << a, b, a, b, 0.0f, b, a, b, a);
+    const float a_float = (float)a;
+    const float b_float = (float)b;
+    const cv::Mat kernel = (cv::Mat_<float>(3, 3) << a_float, b_float, a_float, b_float, 0.0f, b_float, a_float, b_float, a_float);
 
     cv::Mat inpainted;
-
     emit sendOtherMessage("Processing image...");
-    fastInpaint(image, targetMask, kernel, inpainted, maxIters);
+    fastInpaint(image, mask, kernel, inpainted, maxIters);
     emit sendOtherMessage("");
 
     mDataManager->setImage(image);

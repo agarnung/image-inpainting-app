@@ -10,7 +10,6 @@ int main(int argc, char* argv[])
     w.show();
 
     qRegisterMetaType<const cv::Mat&>("const cv::Mat&");
-//    qRegisterMetaType<cv::Mat>("const cv::Mat&");
 
     return a.exec();
 }

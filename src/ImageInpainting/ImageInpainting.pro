@@ -33,7 +33,7 @@ FORMS += \
 HEADERS += \
         calculationthread.h \
         datamanager.h \
-        imageview       er.h \
+        imageviewer.h \
         iothread.h \
         mainwindow.h \
         parameterset.h \

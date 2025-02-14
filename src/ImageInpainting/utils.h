@@ -15,3 +15,4 @@ double SSIM(const cv::Mat& img1, const cv::Mat& img2);
 
 QPixmap matToPixmap(const cv::Mat& mat);
 cv::Mat pixmapToMat(const QPixmap &pixmap);
+cv::Mat universalConvertTo(const cv::Mat& src, int outputType);

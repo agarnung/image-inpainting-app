@@ -221,6 +221,9 @@ void ParameterSetWidget::onDefaultClick()
 
 void ParameterSetWidget::onApplyClick()
 {
+    if (mParameterWidgetList.isEmpty())
+        return;
+
     for (int i = 0; i < (int)mParameterWidgetList.size(); i++)
         mParameterWidgetList[i]->updateParameter();
 

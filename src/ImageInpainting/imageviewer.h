@@ -22,6 +22,9 @@
 #include <QVariant>
 #include <QDialogButtonBox>
 
+class PencilSettingsDialog;
+class MaskUpdater;
+
 class PencilSettingsDialog : public QDialog
 {
     Q_OBJECT
