@@ -66,7 +66,7 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 | **NavierStokesImageInpainting** | Executes the image inpainting algorithm from OpenCV based on Navier-Stokes equations | [OpenCV Navier-Stokes](https://docs.opencv.org/3.4/d7/d8b/group__photo__inpaint.html#gga8c5f15883bd34d2537cb56526df2b5d6a05e763003a805e6c11c673a9f4ba7d07) |
 | **TeleaImageInpainting** | Uses the TELEA algorithm from OpenCV for inpainting | [Telea Inpainting](https://docs.opencv.org/3.4/d7/d8b/group__photo__inpaint.html#gga8c5f15883bd34d2537cb56526df2b5d6a892824c38e258feb5e72f308a358d52e) |
 | **CriminisiImageInpainting** | Implements Criminisi inpainting, based on [cheind](https://github.com/cheind/inpaint) | [Criminisi](https://www.irisa.fr/vista/Papers/2004_ip_criminisi.pdf) |
-| **FastDigitalImageInpainting** | Implementation of Fast Digital Image Inpainting | [Telea Inpainting](https://www.inf.ufrgs.br/~oliveira/pubs_files/inpainting.pdf) |
+| **FastDigitalImageInpainting** | Implementation of Fast Digital Image Inpainting | [paper](https://www.inf.ufrgs.br/~oliveira/pubs_files/inpainting.pdf) |
 | **...** | ... | [...]() |
 
 ---
