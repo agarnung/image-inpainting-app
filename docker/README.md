@@ -78,7 +78,7 @@ If you need to check the logs without attaching the terminal, use:
 ```bash
 docker logs -f qt_image_inpainting_app
 ```
-## How to Stop the Container**
+## How to Stop the Container?
 To stop and remove the container, run:
 ```bash
 docker-compose down
