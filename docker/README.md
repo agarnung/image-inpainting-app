@@ -17,10 +17,10 @@
    `$ sudo chmod 777 /var/run/docker.sock`
 
 4. Once the Dockerfile and docker-compose.yml are ready, build the image:  
-   `$ docker-compose build --verbose`
+   `$ docker compose build --verbose`
 
 5. Start the container:  
-   `$ docker-compose up -d`
+   `$ docker compose up -d`
 
 or...
 
