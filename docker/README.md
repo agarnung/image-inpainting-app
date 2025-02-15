@@ -34,13 +34,13 @@ or...
 
 This project allows running a Qt application inside a Docker container. Follow the steps below to download, load, and run the image.
 
-## **1 Download the Docker Image**
+## **1) Download the Docker Image**
 Download the image from the provided link:  
 ```bash
 wget https://your-link.com/my_image.tar
 ```
 
-## **2 Load the Image into Docker**
+## **2) Load the Image into Docker**
 Once downloaded, load the image into Docker:
 ```bash
 docker load -i my_image.tar
@@ -53,17 +53,16 @@ You should see something like this:
 ```nginx
 REPOSITORY                   TAG     IMAGE ID       CREATED        SIZE
 qt_image_inpainting_app      latest  abc123def456   2 hours ago    1.2GB
-
 ```
 
-## **3 Clone the Repository**
+## **3) Clone the Repository**
 Clone this repository to get the required files (docker-compose.yml and start.sh):
 ```bash
 git clone https://github.com/your-username/image-inpainting-app.git
 cd image-inpainting-app
 ```
 
-## **4 Grant Permissions and Run the Startup Script**
+## **4) Grant Permissions and Run the Startup Script**
 First, ensure that start.sh has execution permissions:
 ```bash
 chmod +x start.sh
@@ -73,7 +72,7 @@ Then, run the script to launch the container:
 ./start.sh
 ```
 
-## **5 (Optional) View Container Logs**
+## **5) (Optional) View Container Logs**
 If you need to check the logs without attaching the terminal, use:
 ```bash
 docker logs -f qt_image_inpainting_app
