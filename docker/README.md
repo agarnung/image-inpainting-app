@@ -30,11 +30,11 @@ or...
 6. Save the Docker image to a file (Export):  
    `$ docker save -o image-inpainting-app-docker-image.tar docker_qt_application`
    
-# 🚀 Instructions to Run the Container from a `.tar` Image
+# Instructions to Run the Container from a `.tar` Image
 
 This project allows running a Qt application inside a Docker container. Follow the steps below to download, load, and run the image.
 
-## **1️⃣ Download the Docker Image**
+## **1 Download the Docker Image**
 Download the image from the provided link:  
 ```bash
 wget https://your-link.com/my_image.tar
