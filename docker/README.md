@@ -24,12 +24,12 @@
 
 or...
 
-5. Para ejecutar el contenedor basado en la imagen que acabas de crear, utiliza el siguiente comando
-$ docker run -it --name image-inpainting-app-docker-image docker_qt_application
+5. To run the container based on the image you just created, use the following command:  
+   `$ docker run -it --name image-inpainting-app-docker-image docker_qt_application`
 
-6. Guardar la imagen de Docker en un archivo (Exportar)
-$ docker save -o image-inpainting-app-docker-image.tar docker_qt_application
-
+6. Save the Docker image to a file (Export):  
+   `$ docker save -o image-inpainting-app-docker-image.tar docker_qt_application`
+   
 # 🚀 Instructions to Run the Container from a `.tar` Image
 
 This project allows running a Qt application inside a Docker container. Follow the steps below to download, load, and run the image.
@@ -78,7 +78,7 @@ If you need to check the logs without attaching the terminal, use:
 ```bash
 docker logs -f qt_image_inpainting_app
 ```
-## **REJ CIRCLE How to Stop the Container**
+## How to Stop the Container**
 To stop and remove the container, run:
 ```bash
 docker-compose down
@@ -101,7 +101,7 @@ docker-compose down
 - _Error KeyError: 'ContainerConfig'_ => Remove old (orphnn) containers that may be interfering:
    `$ docker-compose down --remove-orphans
       docker system prune -af
-    `
+   `
 # Have you made changes to the source code and want them to reflect in your image?
 
 To ensure that your changes are included in the Docker image, follow these steps:
@@ -112,8 +112,7 @@ To ensure that your changes are included in the Docker image, follow these steps
 This process ensures that only the changes you made to the code are included in the new image before running the container again.
 
 # Distribute you image:
-Once you have verified that the application works correctly, you can distribute it  
-by uploading the Docker image to Docker Hub or another registry, or distribute it as a file.  
+Once you have verified that the application works correctly, you can distribute it by uploading the Docker image to Docker Hub or another registry, or distribute it as a file.  
 
 1. Log in to Docker Hub:  
    `$ docker login`
