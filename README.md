@@ -66,7 +66,8 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 | **NavierStokesImageInpainting** | Executes the image inpainting algorithm from OpenCV based on Navier-Stokes equations | [OpenCV Navier-Stokes](https://docs.opencv.org/3.4/d7/d8b/group__photo__inpaint.html#gga8c5f15883bd34d2537cb56526df2b5d6a05e763003a805e6c11c673a9f4ba7d07) |
 | **TeleaImageInpainting** | Executes the TELEA algorithm from OpenCV | [Telea Inpainting](https://docs.opencv.org/3.4/d7/d8b/group__photo__inpaint.html#gga8c5f15883bd34d2537cb56526df2b5d6a892824c38e258feb5e72f308a358d52e) |
 | **CriminisiImageInpainting** | Implements Criminisi inpainting, based on [cheind](https://github.com/cheind/inpaint) | [Criminisi](https://www.irisa.fr/vista/Papers/2004_ip_criminisi.pdf) |
-| **FastDigitalImageInpainting** | Implements of Fast Digital Image Inpainting | [Paper](https://www.inf.ufrgs.br/~oliveira/pubs_files/inpainting.pdf) |
+| **FastDigitalImageInpainting** | Implements Fast Digital Image Inpainting, based on [this](https://github.com/Mugichoko445/Fast-Digital-Image-Inpainting) | [Paper](https://www.inf.ufrgs.br/~oliveira/pubs_files/inpainting.pdf) |
+| **LaplacianImageInpainting** | Implements Laplacian Digital Image Inpainting, based on [this](https://github.com/KAIST-VCLAB/laplacianinpainting) | [Paper](http://vclab.kaist.ac.kr/cvpr2016p2/CVPR2016_LaplacianInpainting.pdf) |
 | **...** | ... | [...]() |
 
 ---
@@ -81,6 +82,7 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 * Distribuir la imagen docker de la aplicación en Docker Registry o subirla el .tar a algún lado
 * Release the app in AppImage format 
 * Implementar los algoritmos comentados en [este README](./src/ImageInpainting/Algorithms/README.md)
+* Diseñar un botón de "parar algoritmo" para abortar el procesamiento de CalculationThread
 
 # References
 * [Inspired by GuidedDenoising](https://github.com/bldeng/GuidedDenoising)
