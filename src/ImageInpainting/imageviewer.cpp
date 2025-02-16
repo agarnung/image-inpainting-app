@@ -103,6 +103,10 @@ void ImageViewer::mousePressEvent(QMouseEvent* event)
         }
 
         mLastPoint = mapToScene(event->pos()).toPoint();
+
+        if (!mPixmap.rect().contains(mLastPoint))
+            return;
+
         mPath = QPainterPath();
         mPath.moveTo(mLastPoint);
 
@@ -137,6 +141,10 @@ void ImageViewer::mouseMoveEvent(QMouseEvent* event)
     if (mDrawingActivated && mIsUserDrawing)
     {
         QPoint currentPoint = mapToScene(event->pos()).toPoint();
+
+        if (!mPixmap.rect().contains(currentPoint))
+            return;
+
         mPath.lineTo(currentPoint);
         mPathItem->setPath(mPath);
 
