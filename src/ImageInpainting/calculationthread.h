@@ -25,7 +25,7 @@ class CalculationThread: public QThread
         enum AlgorithmsType{kNone, kNoise,
                             kTeleaImageInpainting, kNavierStokesImageInpainting,
                             kMaxwellHeavisideImageInpainting, kBurgersViscousImageInpainting, kCahnHilliardImageInpainting,
-                            kCriminsiImageInpainting, kFastDigitalImageInpainting};
+                            kCriminsiImageInpainting, kFastDigitalImageInpainting, kLaplacianImageInpainting};
 
         QString mAlgorithmName;
         AlgorithmsType mAlgorithmType;

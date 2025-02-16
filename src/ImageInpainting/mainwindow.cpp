@@ -105,6 +105,10 @@ void MainWindow::createActions()
     mActionFastDigitalImageInpainting->setStatusTip("Inpaint image using Fast Digital Image Inpainting algorithm");
     QObject::connect(mActionFastDigitalImageInpainting, &QAction::triggered, this, &MainWindow::showFastDigitalInpaintingWidget);
 
+    mActionLaplacianImageInpainting = new QAction(tr("Laplacian Image Inpainting"), this);
+    mActionLaplacianImageInpainting->setStatusTip("Inpaint image using Laplacian Image Inpainting algorithm");
+    QObject::connect(mActionLaplacianImageInpainting, &QAction::triggered, this, &MainWindow::showLaplacianInpaintingWidget);
+
     mActionAbout = new QAction(QIcon(":/icons/about.ico"), tr("About"), this);
     mActionAbout->setStatusTip("Information about this application");
     QObject::connect(mActionAbout, &QAction::triggered, this, &MainWindow::about);
@@ -178,6 +182,7 @@ void MainWindow::createMenus()
     mMenuAlgorithms->addAction(mActionNavierStokesImageInpainting);
     mMenuAlgorithms->addAction(mActionCriminisiImageInpainting);
     mMenuAlgorithms->addAction(mActionFastDigitalImageInpainting);
+    mMenuAlgorithms->addAction(mActionLaplacianImageInpainting);
     mMenuAlgorithms->setEnabled(false);
 
     mMenuHelp = menuBar()->addMenu(tr("Help"));
@@ -471,6 +476,13 @@ void MainWindow::showCriminisiInpaintingWidget()
 void MainWindow::showFastDigitalInpaintingWidget()
 {
     mCalculationThread->mAlgorithmType = CalculationThread::kFastDigitalImageInpainting;
+    closeWidget();
+    showWidget();
+}
+
+void MainWindow::showLaplacianInpaintingWidget()
+{
+    mCalculationThread->mAlgorithmType = CalculationThread::kLaplacianImageInpainting;
     closeWidget();
     showWidget();
 }

@@ -8,6 +8,7 @@
 #include "Algorithms/BurgersViscousImageInpainting.h"
 #include "Algorithms/CriminisiImageInpainting.h"
 #include "Algorithms/FastDigitalImageInpainting.h"
+#include "Algorithms/LaplacianImageInpainting.h"
 
 CalculationThread::CalculationThread(MainWindow* mainWindow)
     : mAlgorithmName{""}
@@ -52,6 +53,9 @@ void CalculationThread::initAlgorithm(DataManager* dataManager, ParameterSet* pa
         case kFastDigitalImageInpainting:
             mImageInpaintingBase = new FastDigitalImageInpainting(dataManager, parameterSet);
             break;
+        case kLaplacianImageInpainting:
+            mImageInpaintingBase = new LaplacianImageInpainting(dataManager, parameterSet);
+        break;
         default:
             break;
     }

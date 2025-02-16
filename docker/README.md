@@ -95,10 +95,10 @@ docker-compose down
   `$ pip3 install requests==2.31.0`
 
 - If the docker-compose.yml has syntax errors, the following command will show you:
-   `$ docker-compose config`
+   `$ docker compose config`
 
 - _Error KeyError: 'ContainerConfig'_ => Remove old (orphnn) containers that may be interfering:
-   `$ docker-compose down --remove-orphans
+   `$ docker compose down --remove-orphans
       docker system prune -af
    `
 # Have you made changes to the source code and want them to reflect in your image?

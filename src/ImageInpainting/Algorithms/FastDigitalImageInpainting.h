@@ -9,7 +9,7 @@
  * @brief Implementation of Fast Digital Image Inpainting described in
  *        M. M. Oliveira, B. Bowen, R. McKenna, Y.-S. Chang: Fast Digital Image Inpainting,
  *        Proc. of Int. Conf. on Visualization, Imaging and Image Processing (VIIP), pp. 261-266, 2001.
- * @see   Based on the implementation by in https://github.com/Mugichoko445/Fast-Digital-Image-Inpainting
+ * @see   Based on the implementation in https://github.com/Mugichoko445/Fast-Digital-Image-Inpainting
  */
 class FastDigitalImageInpainting : public ImageInpaintingBase
 {

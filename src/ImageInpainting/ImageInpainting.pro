@@ -26,6 +26,7 @@ SOURCES += \
         Algorithms/TeleaImageInpainting.cpp \
         Algorithms/CriminisiImageInpainting.cpp \
         Algorithms/FastDigitalImageInpainting.cpp \
+        Algorithms/LaplacianImageInpainting.cpp \
 
 FORMS += \
         mainwindow.ui
@@ -48,6 +49,7 @@ HEADERS += \
         Algorithms/TeleaImageInpainting.h \
         Algorithms/CriminisiImageInpainting.h \
         Algorithms/FastDigitalImageInpainting.h \
+        Algorithms/LaplacianImageInpainting.h \
 
 RESOURCES += \
     icons.qrc

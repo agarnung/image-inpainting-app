@@ -2,6 +2,8 @@
 
 #include "utils.h"
 
+#include <QDebug>
+
 FastDigitalImageInpainting::FastDigitalImageInpainting(DataManager* dataManager, ParameterSet* parameterSet)
     : ImageInpaintingBase(dataManager, parameterSet)
 {
