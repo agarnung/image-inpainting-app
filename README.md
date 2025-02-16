@@ -28,9 +28,7 @@ This is also a _reservoir_ for image inpainting algorithms in C++ (for personal 
 
 # Installation
 
-Make sure you have Qt (https://www.qt.io) installed. Then open the file ```src/ImageInpainting.pro``` with Qt Creator, and build the source code. 
-
-This project uses [OpenCV 4](https://github.com/opencv/opencv/tree/4.10.0) (see additional packages in https://docs.opencv.org/3.4/d7/d9f/tutorial_linux_install.html)
+The application is fully packed inside a Docker container, check [these instructions](./docker) to get started.
 
 The app has been tested on the following platforms:
 
