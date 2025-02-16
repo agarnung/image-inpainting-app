@@ -51,7 +51,7 @@ void LaplacianImageInpainting::initParameters()
     mParameterSet->addParameter(QString("decreaseFactor"),
                                 10,
                                 QString("decreaseFactor"),
-                                QString("Factor by which values decrease during optimization"),
+                                QString("lambda - Distance metric parameter"),
                                 true, 1, 100);
 
     mParameterSet->addParameter(QString("minEMIter"),
@@ -128,9 +128,8 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
 
     int decrease_factor;
     int min_iter;
-    char *outputfilename, *fname, *processfilename, *dirname;
 
-    //inpainting parameter
+    // Inpainting parameters
     int num_em;
     int psz;
     int min_size;
@@ -138,10 +137,10 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
     double gamma;
     double lambda;
 
-    //pyramid
-    //gpyr - Gaussian pyramid
-    //upyr - upsampled Gaussian pyramid
-    //fpyr - Laplacian pyramid
+    // Pyramid
+    // gpyr - Gaussian pyramid
+    // upyr - upsampled Gaussian pyramid
+    // fpyr - Laplacian pyramid
     std::vector<std::pair<int,int> > pyr_size;
     std::vector<cv::Mat> mask_gpyr, color_gpyr;
     std::vector<cv::Mat> mask_upyr, color_upyr;
@@ -151,13 +150,8 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
     //Laplacian inpainting object
     LaplacianInpainting inpainting;
 
-    processfilename = (char*)malloc(sizeof(char) * 200);
-    dirname = (char*)malloc(sizeof(char) *200);
-    fname = (char*)malloc(sizeof(char) *200);
-    outputfilename = (char*)malloc(sizeof(char) *200);
-
     ////////////////////////
-    //*Step 1: read input*//
+    //*Step 1: Read input*//
     ////////////////////////
 
     psz             = patchSize;        // patch size
@@ -169,8 +163,8 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
     min_iter        = minEMIter;        // minimum iteration
     rs_iter         = randomSearchIter; // random search iteration
 
-    width = colormat.cols;  //image width
-    height = colormat.rows; //image height
+    width = colormat.cols;
+    height = colormat.rows;
 
     int tmp_width = width,tmp_height = height;
     int tmp = 1;
@@ -183,32 +177,27 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
         tmp <<= 1;
     }
 
-    if(width%tmp) width=width-(width%tmp);
-    if(height%tmp) height=height-(height%tmp);
+    if (width % tmp) width = width - (width % tmp);
+    if (height % tmp) height = height - (height % tmp);
 
     origcolormat = colormat.clone();
 
-    colormat = colormat(cv::Rect(0,0,width, height));  //crop the image
+    colormat = colormat(cv::Rect(0,0,width, height));
     maskmat = maskmat(cv::Rect(0,0,width, height));
 
-
-    colormat.convertTo(colormat, CV_32FC3);   //convert an uchar image to a float image (Input of cvtColor function should be a single precision )
-    maskmat.convertTo(maskmat,CV_64FC1);      //double mask
-
-    colormat/=255.0;	//255 -> 1.0
-    maskmat/=255.0;
-
+    colormat.convertTo(colormat, CV_32FC3, 1 / 255.0f); // Convert an uchar image to a float image (Input of cvtColor function should be a single precision)
+    maskmat.convertTo(maskmat, CV_64FC1, 1 / 255.0);    // Double precision mask
     colormat.convertTo(rgbmat, CV_64FC3);
 
-    //convert rgb to CIEL*a*b*
-    cv::cvtColor(colormat, colormat, cv::COLOR_RGB2Lab); //RGB to Lab
-    colormat.convertTo(colormat, CV_64FC3);   //single -> double
+    // Convert rgb to CIEL*a*b*
+    cv::cvtColor(colormat, colormat, cv::COLOR_RGB2Lab); // RGB to Lab
+    colormat.convertTo(colormat, CV_64FC3);   // single precision -> double precision
 
-    //values in mask region should be zero.
+    // Values in mask region should be zero.
     colorptr = (double*) colormat.data;
     maskptr = (double*) maskmat.data;
 
-    //refine mask and color image
+    // Refine mask and color image
     for(int i=0;i<height;i++){
         for(int j=0;j<width;j++){
             int ndx = i*width + j;
@@ -223,28 +212,28 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
     }
 
     ///////////////////////////////////
-    //*step 2: set parameters       *//
+    //*step 2: Set parameters       *//
     ///////////////////////////////////
-    inpainting.gamma_ = gamma;            //parameter for voting
-    inpainting.lambda_ = lambda;          //ratio between Laplacian patch distance metric and upsampled Gaussian patch distance metric.
-    inpainting.minsize_ = min_size;       //minimum scale
-    inpainting.psz_ = psz;                //patch size
-    inpainting.highconfidence_ = 1.0f;   //confidence for non-mask region
-    inpainting.patchmatch_iter_ = 10;   //EM iteration
-    inpainting.siminterval_ = 3.0f;     //parameter for voting
-    inpainting.rs_iter_ = rs_iter;      //random search itertation
+    inpainting.gamma_ = gamma;         // parameter for voting
+    inpainting.lambda_ = lambda;       // ratio between Laplacian patch distance metric and upsampled Gaussian patch distance metric.
+    inpainting.minsize_ = min_size;    // minimum scale
+    inpainting.psz_ = psz;             // patch size
+    inpainting.highconfidence_ = 1.0f; // confidence for non-mask region
+    inpainting.patchmatch_iter_ = 10;  // EM iteration
+    inpainting.siminterval_ = 3.0f;    // parameter for voting
+    inpainting.rs_iter_ = rs_iter;     // random search iterations
 
     ///////////////////////////////////
-    //*step 3: generate pyramid     *//
+    //*step 3: Generate pyramid     *//
     ///////////////////////////////////
 
     inpainting.constructLaplacianPyr(rgb_gpyr, rgb_upyr, rgb_fpyr, rgbmat);
 
-    //construct Laplacian pyramid
+    // Construct Laplacian pyramid
     inpainting.constructLaplacianPyr(color_gpyr, color_upyr, color_fpyr, colormat);
     inpainting.constructLaplacianPyr(mask_gpyr, mask_upyr, mask_fpyr, maskmat);
 
-    //reverse order (from low-res to high-res)
+    // Reverse order (from low-res to high-res)
     std::reverse(color_gpyr.begin(), color_gpyr.end());
     std::reverse(color_upyr.begin(), color_upyr.end());
     std::reverse(color_fpyr.begin(), color_fpyr.end());
@@ -252,14 +241,14 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
     std::reverse(mask_upyr.begin(), mask_upyr.end());
     std::reverse(mask_fpyr.begin(), mask_fpyr.end());
 
-    //compute pyr_size
+    // Compute pyr_size
     pyr_size.clear();
 
-    //set size
+    // Set size
     for(size_t i = 0; i < color_gpyr.size(); i++)
         pyr_size.push_back(std::pair<int,int>(color_gpyr[i].rows, color_gpyr[i].cols));
 
-    //refine mask
+    // Refine mask
     fixDownsampledMaskMatColorMat(mask_gpyr[0],color_gpyr[0]);
 
     for (size_t i = 0; i < mask_upyr.size(); i++)
@@ -272,15 +261,9 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
         fixDownsampledMaskMat(mask_upyr[i]);
         fixDownsampledMaskMatColorMat(mask_upyr[i],color_upyr[i]);
         fixDownsampledMaskMatColorMat(mask_upyr[i],color_gpyr[i+1]);
-
-//        displayMat<double>(mask_upyr[i]-mask_gpyr[i+1],"gpyr",cv::Rect(0,0,mask_gpyr[i+1].cols,mask_gpyr[i+1].rows));
-//        displayMat<double>(mask_upyr[i],"upyr",cv::Rect(0,0,mask_upyr[i].cols,mask_upyr[i].rows));
-//        cv::waitKey();
-//        if(i<mask_upyr.size()-1)
-//            cv::pyrUp(mask_upyr[i],mask_upyr[i+1],cv::Size(mask_upyr[i+1].cols,mask_upyr[i+1].rows));
     }
 
-    //dilate mask?
+    // dilate mask?...
 
     /////////////////////////////////////////////
     //*step 4: initialize the zero level image*//
@@ -306,9 +289,9 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
     mask8u.convertTo(mask8u, CV_8U);
     feature8u.convertTo(feature8u, CV_8U);
 
-    //initialization
-    //We use a Navier-Stokes based method [Navier et al. 01] only for initialization.
-    //http://www.math.ucla.edu/~bertozzi/papers/cvpr01.pdf
+    // Initialization
+    // We use a Navier-Stokes based method [Navier et al. 01] only for initialization.
+    // http://www.math.ucla.edu/~bertozzi/papers/cvpr01.pdf
     cv::inpaint(color8u, mask8u, color8u, 10, cv::INPAINT_NS);
     cv::inpaint(feature8u, mask8u, feature8u, 10, cv::INPAINT_NS);
 
@@ -318,13 +301,10 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
     color8u.convertTo(color_upyr[0],CV_64FC3);
     feature8u.convertTo(color_fpyr[0],CV_64FC3);
     color_fpyr[0] = color_fpyr[0] / 255.0 * (featuremax-featuremin) + featuremin;
-    //	depth8u.convertTo(depth_gpyr[0],CV_64FC1);
 
     trg_color = color_upyr[0].clone();
     trg_feature = color_fpyr[0].clone();
 
-    //displayMat<double>(trg_feature,"feature",cv::Rect(0,0,trg_feature.cols, trg_feature.rows));
-    //displayLABMat(trg_color,"color",cv::Rect(0,0,trg_color.cols, trg_color.rows));
     int cur_iter = num_em;
 
     /////////////////////////////////
@@ -338,32 +318,26 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
 
     nnf = cv::Mat::zeros(pyr_size[1].first, pyr_size[1].second, CV_32SC2); // H x W x 2 int
 
-    clock_t t;
-    clock_t recont,accumt;
     int f;
-    accumt=0;
-    t=clock();
 
-    for(size_t ilevel = 0; ilevel < color_upyr.size(); ilevel++)
+    // Process each scale
+    for (size_t ilevel = 0; ilevel < color_upyr.size(); ilevel++)
     {
         emit sendOtherMessage("Processing level " + QString::number(ilevel) + " of " + QString::number(color_upyr.size()) + "...");
 
-        if(ilevel){
+        if(ilevel)
+        {
+            // Resize trg_color, trg_depth, trg_feature
+            nxt_color = trg_color + trg_feature; // Gaussian = upsampled Gaussian + Laplacian
 
-            //resize trg_color, trg_depth, trg_feature
-            recont = clock();
-            nxt_color = trg_color + trg_feature; //Gaussian = upsampled Gaussian + Laplacian
-            recont = clock()-recont;
-            accumt+=recont;
-
-            cv::pyrUp(nxt_color, trg_color, cv::Size(trg_color.cols * 2, trg_color.rows * 2)); // upsample a low-level Gaussian image
-            cv::pyrUp(trg_feature, trg_feature, cv::Size(trg_feature.cols * 2, trg_feature.rows * 2)); //upsample a Laplacian image (we will reset a initial laplacian image later)
+            cv::pyrUp(nxt_color, trg_color, cv::Size(trg_color.cols * 2, trg_color.rows * 2)); // Upsample a low-level Gaussian image
+            cv::pyrUp(trg_feature, trg_feature, cv::Size(trg_feature.cols * 2, trg_feature.rows * 2)); // Upsample a Laplacian image (we will reset a initial laplacian image later)
 
             double *trgcptr = (double*) trg_color.data;
             double *trgfptr = (double*) trg_feature.data;
             double *maskptr = (double*) mask_upyr[ilevel].data;
 
-            //initialize
+            // Initialize
             for(int i = 0; i < pyr_size[ilevel+1].first; i++)
             {
                 for(int j = 0; j < pyr_size[ilevel+1].second; j++)
@@ -381,14 +355,10 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
                 }
             }
 
-            //NNF propagation
-            recont = clock();
+            // NNF propagation
             inpainting.upscaleImages(nnf, nnferr, patch_type, trg_feature, mask_upyr[ilevel-1].clone(), mask_upyr[ilevel].clone());
-            recont = clock() - recont;
-            accumt += recont;
 
-
-            //upscale NNF field
+            // Upscale NNF field
             nnf.convertTo(nnff, CV_64FC2);
             cv::resize(nnff, nnff, cv::Size(pyr_size[ilevel + 1].second, pyr_size[ilevel + 1].first),cv::INTER_LINEAR);
             nnff.convertTo(nnf, CV_32SC2);
@@ -401,10 +371,10 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
 
         nnferr = cv::Mat::zeros(pyr_size[ilevel + 1].first, pyr_size[ilevel + 1].second, CV_64FC1); // H x W x 1 double
 
-        //do EM iteration
-        inpainting.doEMIterLap(nnf, nnferr, patch_type, trg_color, trg_feature, mask_upyr[ilevel].clone(), pyr_size[ilevel+1], cur_iter, cv::Size(width, height), processfilename);
+        // Do EM iteration
+        inpainting.doEMIterLap(nnf, nnferr, patch_type, trg_color, trg_feature, mask_upyr[ilevel].clone(), pyr_size[ilevel+1], cur_iter, cv::Size(width, height));
 
-        //compute next iteration
+        // Compute next iteration
         cur_iter -= decrease_factor;
         if(cur_iter < min_iter)
             cur_iter = min_iter;
@@ -420,7 +390,7 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
         }
     }
 
-    //print final result
+    // Final result
     cv::Mat tmpimg;
 
     tmpimg = trg_color.clone() + trg_feature.clone();
@@ -428,12 +398,6 @@ cv::Mat LaplacianImageInpainting::laplacianInpaint(cv::Mat colormat, cv::Mat mas
     cv::cvtColor(tmpimg, tmpimg, cv::COLOR_Lab2RGB);
     tmpimg=255*tmpimg;
     tmpimg.convertTo(tmpimg, CV_8UC3);
-    //		displayMat<double>(tmpimg,outputfilename,cv::Rect(0,0,tmpimg.cols, tmpimg.rows));
-
-    free(processfilename);
-    free(dirname);
-    free(fname);
-    free(outputfilename);
 
     return tmpimg;
 }
@@ -854,8 +818,6 @@ void LaplacianInpainting::colorVoteLap(cv::Mat nnf, cv::Mat nnferr, bool *patch_
     nnfsqavg /= nnfcount_;
     variance = nnfsqavg - nnfavg * nnfavg;
 
-    //	std::cout << "variance: " << variance << std::endl;
-
     //Wexler's similarity function
     //cv::exp( - nnferr / (2.0 * (nnfavg + 0.68 * sqrt(variance)) * (nnfavg + 0.68 * sqrt(variance)) * siminterval_), similarity);//0.68 percentile
 
@@ -925,7 +887,6 @@ void LaplacianInpainting::colorVoteLap(cv::Mat nnf, cv::Mat nnferr, bool *patch_
         }
     }
 
-
     //normalize
     for(int i=0;i<size.first;i++){
         for(int j=0;j<size.second;j++){
@@ -940,9 +901,6 @@ void LaplacianInpainting::colorVoteLap(cv::Mat nnf, cv::Mat nnferr, bool *patch_
             }
         }
     }
-    //	cv::imshow("color", colormat);
-    //	cv::waitKey();
-
 }
 
 void LaplacianInpainting::upscaleImages(cv::Mat nnf, cv::Mat nnferr, bool *patch_type, cv::Mat colorfmat,  cv::Mat dmaskmat,  cv::Mat umaskmat){
@@ -971,7 +929,6 @@ void LaplacianInpainting::upscaleImages(cv::Mat nnf, cv::Mat nnferr, bool *patch
     nnfavg /= nnfcount_;
     nnfsqavg /= nnfcount_;
     variance = nnfsqavg - nnfavg * nnfavg;
-
 
     //Wexler's similarity function
     //cv::exp( - nnferr / (2.0 * (nnfavg + 0.68 * sqrt(variance)) * (nnfavg + 0.68 * sqrt(variance)) * siminterval_), similarity);//0.68 percentile
@@ -1051,13 +1008,13 @@ void LaplacianInpainting::upscaleImages(cv::Mat nnf, cv::Mat nnferr, bool *patch
     }
 }
 
-void LaplacianInpainting::doEMIterLap(cv::Mat nnf, cv::Mat nnferr, bool *patch_type, cv::Mat colormat, cv::Mat colorfmat, cv::Mat maskmat, std::pair<int, int> size, int num_emiter, cv::Size orig_size, char *processfilename){
+void LaplacianInpainting::doEMIterLap(cv::Mat nnf, cv::Mat nnferr, bool *patch_type, cv::Mat colormat, cv::Mat colorfmat, cv::Mat maskmat, std::pair<int, int> size, int num_emiter, cv::Size orig_size){
     double errmin, errmax;
     char *outputfilename;
 
     outputfilename = (char*) malloc(sizeof(char) * 300);
 
-    cv::Mat a, tmpimg,tmpimg2,tmpimg1;
+    cv::Mat a, tmpimg, tmpimg2, tmpimg1;
 
     for(int emiter = 0; emiter< num_emiter; emiter++){
         //compute the nearest neighbor fields

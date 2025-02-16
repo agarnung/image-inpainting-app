@@ -45,7 +45,7 @@ class LaplacianInpainting
         int nnfcount_;
         void findNearestNeighborLap(cv::Mat nnf,cv::Mat nnferr, bool *patch_type, cv::Mat colormat, cv::Mat colorfmat, cv::Mat maskmat, std::pair<int, int> size,int emiter);
         void colorVoteLap(cv::Mat nnf, cv::Mat nnferr, bool *patch_type, cv::Mat colormat, cv::Mat colorfmat, cv::Mat maskmat, std::pair<int, int> size);
-        void doEMIterLap(cv::Mat nnf, cv::Mat nnferr, bool *patch_type, cv::Mat colormat, cv::Mat featuremat, cv::Mat maskmat, std::pair<int, int> size,int num_emiter, cv::Size orig_size, char *processfilename);
+        void doEMIterLap(cv::Mat nnf, cv::Mat nnferr, bool *patch_type, cv::Mat colormat, cv::Mat featuremat, cv::Mat maskmat, std::pair<int, int> size, int num_emiter, cv::Size orig_size);
         void constructLaplacianPyr(std::vector<cv::Mat> &gpyr, std::vector<cv::Mat> &upyr, std::vector<cv::Mat> &fpyr,cv::Mat &img);
         void constructLaplacianPyrMask(std::vector<cv::Mat> &gpyr, std::vector<cv::Mat> &upyr, std::vector<cv::Mat> &fpyr,cv::Mat mask,cv::Mat &img);
         void upscaleImages(cv::Mat nnf, cv::Mat nnferr, bool *patch_type,  cv::Mat colorfmat,  cv::Mat dmaskmat,  cv::Mat umaskmat);
