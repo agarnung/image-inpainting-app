@@ -1,8 +1,6 @@
 # Introductory Instructions on Docker
 
-> **Note**: Before running the container, on the host machine, the following  
-> command should be executed to allow the Docker containers to access the X server,  
-> so that graphical applications can be displayed:  
+> **Note**: Before running the container, on the host machine, the following command should be executed to allow the Docker containers to access the X server, so that graphical applications can be displayed:  
 > `$ xhost +local:docker`
 
 # First Steps:
