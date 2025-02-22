@@ -66,6 +66,7 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 | **CriminisiImageInpainting** | Implements Criminisi inpainting, based on [cheind](https://github.com/cheind/inpaint) | [Criminisi](https://www.irisa.fr/vista/Papers/2004_ip_criminisi.pdf) |
 | **FastDigitalImageInpainting** | Implements Fast Digital Image Inpainting, based on [this](https://github.com/Mugichoko445/Fast-Digital-Image-Inpainting) | [Paper](https://www.inf.ufrgs.br/~oliveira/pubs_files/inpainting.pdf) |
 | **LaplacianImageInpainting** | Implements Laplacian Digital Image Inpainting, based on [this](https://github.com/KAIST-VCLAB/laplacianinpainting) | [Paper](http://vclab.kaist.ac.kr/cvpr2016p2/CVPR2016_LaplacianInpainting.pdf) |
+| **HarmonicInpainting** | Heat (Harmonic) Equation Image Inpainting | [Carola-Bibiane Schönlieb](https://es.mathworks.com/matlabcentral/fileexchange/34356-higher-order-total-variation-inpainting?status=SUCCESS) |
 | **...** | ... | [...]() |
 
 ---
