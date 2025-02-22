@@ -81,6 +81,7 @@ The app consists of a self-explanatory GUI and it contains a useful Help file. T
 * Release the app in AppImage format 
 * Implementar los algoritmos comentados en [este README](./src/ImageInpainting/Algorithms/README.md)
 * Diseñar un botón de "parar algoritmo" para abortar el procesamiento de CalculationThread
+* Añadir el parámetro drawWhites al tipo de ruido; no sé qué problema daba el validador con tipo booleano.
 
 # References
 * [Inspired by GuidedDenoising](https://github.com/bldeng/GuidedDenoising)

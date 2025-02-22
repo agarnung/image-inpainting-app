@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  qt_application:
+  qt_image_inpainting_app:
     build:
       context: ..  # Set the context to the parent directory (project root)
       dockerfile: docker/Dockerfile  # Specify the location of the Dockerfile
