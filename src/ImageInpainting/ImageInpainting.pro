@@ -27,6 +27,7 @@ SOURCES += \
         Algorithms/CriminisiImageInpainting.cpp \
         Algorithms/FastDigitalImageInpainting.cpp \
         Algorithms/LaplacianImageInpainting.cpp \
+        Algorithms/HarmonicImageInpainting.cpp \
 
 FORMS += \
         mainwindow.ui
@@ -50,6 +51,7 @@ HEADERS += \
         Algorithms/CriminisiImageInpainting.h \
         Algorithms/FastDigitalImageInpainting.h \
         Algorithms/LaplacianImageInpainting.h \
+        Algorithms/HarmonicImageInpainting.h \
 
 RESOURCES += \
     icons.qrc

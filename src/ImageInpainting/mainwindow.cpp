@@ -109,6 +109,10 @@ void MainWindow::createActions()
     mActionLaplacianImageInpainting->setStatusTip("Inpaint image using Laplacian Image Inpainting algorithm");
     QObject::connect(mActionLaplacianImageInpainting, &QAction::triggered, this, &MainWindow::showLaplacianInpaintingWidget);
 
+    mActionHarmonicImageInpainting = new QAction(tr("Heat (Harmonic) Equation Image Inpainting"), this);
+    mActionHarmonicImageInpainting->setStatusTip("Inpaint image using Heat (Harmonic) Equation Image Inpainting algorithm");
+    QObject::connect(mActionHarmonicImageInpainting, &QAction::triggered, this, &MainWindow::showHarmonicInpaintingWidget);
+
     mActionAbout = new QAction(QIcon(":/icons/about.ico"), tr("About"), this);
     mActionAbout->setStatusTip("Information about this application");
     QObject::connect(mActionAbout, &QAction::triggered, this, &MainWindow::about);
@@ -183,6 +187,7 @@ void MainWindow::createMenus()
     mMenuAlgorithms->addAction(mActionCriminisiImageInpainting);
     mMenuAlgorithms->addAction(mActionFastDigitalImageInpainting);
     mMenuAlgorithms->addAction(mActionLaplacianImageInpainting);
+    mMenuAlgorithms->addAction(mActionHarmonicImageInpainting);
     mMenuAlgorithms->setEnabled(false);
 
     mMenuHelp = menuBar()->addMenu(tr("Help"));
@@ -487,6 +492,13 @@ void MainWindow::showLaplacianInpaintingWidget()
     showWidget();
 }
 
+void MainWindow::showHarmonicInpaintingWidget()
+{
+    mCalculationThread->mAlgorithmType = CalculationThread::kHarmonicImageInpainting;
+    closeWidget();
+    showWidget();
+}
+
 void MainWindow::setActionAndWidget(bool value1, bool value2)
 {
     setActionStatus(value1);
@@ -510,3 +522,4 @@ void MainWindow::about()
                        tr("Here goes the info. <br>"
                           "May add HTML and CSS in a Scrollable pop-up with instruction."));
 }
+

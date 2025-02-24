@@ -51,8 +51,9 @@ class MainWindow : public QMainWindow
         QAction* mActionCahnHilliardImageInpainting = nullptr;
         QAction* mActionBurguersViscousImageInpainting = nullptr;
         QAction* mActionCriminisiImageInpainting = nullptr;
-        QAction* mActionFastDigitalImageInpainting= nullptr;
+        QAction* mActionFastDigitalImageInpainting = nullptr;
         QAction* mActionLaplacianImageInpainting= nullptr;
+        QAction* mActionHarmonicImageInpainting= nullptr;
 
         QAction* mActionAbout = nullptr;
 
@@ -118,6 +119,7 @@ class MainWindow : public QMainWindow
         void showCriminisiInpaintingWidget();
         void showFastDigitalInpaintingWidget();
         void showLaplacianInpaintingWidget();
+        void showHarmonicInpaintingWidget();
 
         void setActionAndWidget(bool value1, bool value2);
         void needToResetImage();

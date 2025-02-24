@@ -9,6 +9,7 @@
 #include "Algorithms/CriminisiImageInpainting.h"
 #include "Algorithms/FastDigitalImageInpainting.h"
 #include "Algorithms/LaplacianImageInpainting.h"
+#include "Algorithms/HarmonicImageInpainting.h"
 
 CalculationThread::CalculationThread(MainWindow* mainWindow)
     : mAlgorithmName{""}
@@ -56,6 +57,9 @@ void CalculationThread::initAlgorithm(DataManager* dataManager, ParameterSet* pa
         case kLaplacianImageInpainting:
             mImageInpaintingBase = new LaplacianImageInpainting(dataManager, parameterSet);
         break;
+        case kHarmonicImageInpainting:
+            mImageInpaintingBase = new HarmonicImageInpainting(dataManager, parameterSet);
+            break;
         default:
             break;
     }
