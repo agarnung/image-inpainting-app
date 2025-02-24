@@ -1,6 +1,6 @@
 # image-inpainting-app
 A Qt-based application to restore images with various inpainting methods.
-k
+
 This is also a _reservoir_ for image inpainting algorithms in C++ (for personal amusement).
 
 <p align="center">
