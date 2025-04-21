@@ -18,7 +18,9 @@
    `$ docker compose --verbose build`
 
 5. Start the container:  
-   `$ docker compose up -d`
+   `$ docker compose up`
+
+Optionally run `$ sudo ./start.sh`
 
 or...
 
