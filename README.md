@@ -24,6 +24,10 @@ This is also a _reservoir_ for image inpainting algorithms in C++ (for personal 
     <td><img src="./assets/input2.png" alt="input2" title="input2" style="width: 350px;" /></td>
     <td><img src="./assets/result2.png" alt="result2" title="result2" style="width: 350px;" /></td>
   </tr>
+  <tr>
+    <td><img src="./assets/vaca.png" alt="vaca" title="vaca" style="width: 350px;" /></td>
+    <td><img src="./assets/vaca_inpainted.png" alt="aca_inpainted" title="aca_inpainted" style="width: 350px;" /></td>
+  </tr>
 </table>
 
 # Installation
