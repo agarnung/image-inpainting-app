@@ -26,7 +26,15 @@ This is also a _reservoir_ for image inpainting algorithms in C++ (for personal 
   </tr>
   <tr>
     <td><img src="./assets/vaca.png" alt="vaca" title="vaca" style="width: 350px;" /></td>
-    <td><img src="./assets/vaca_inpainted.png" alt="aca_inpainted" title="aca_inpainted" style="width: 350px;" /></td>
+    <td><img src="./assets/vaca_inpainted.png" alt="vaca_inpainted" title="vaca_inpainted" style="width: 350px;" /></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/rio.png" alt="rio" title="rio" style="width: 350px;" /></td>
+    <td><img src="./assets/rio_inpainted.png" alt="rio_inpainted" title="rio_inpainted" style="width: 350px;" /></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/flor.png" alt="flor" title="flor" style="width: 350px;" /></td>
+    <td><img src="./assets/flor_inpainted.png" alt="flor_inpainted" title="flor_inpainted" style="width: 350px;" /></td>
   </tr>
 </table>
 
