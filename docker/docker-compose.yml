@@ -1,17 +1,22 @@
-version: '3.8'
+# Qt GUI app (WSLg / X11 on the host).
+# Build: DOCKER_BUILDKIT=1 docker compose build
+# Run:   docker compose run --rm app
+#
+# The ./data folder (relative to this compose file) is bind-mounted to /data
+# inside the container. That path is also the default "Import image" directory
+# (see APP_IMAGES_DIR), so images you drop in ./data appear immediately in the
+# file dialog. Exported images land there too.
 
 services:
-  qt_image_inpainting_app:
+  app:
     build:
-      context: ..  # Set the context to the parent directory (project root)
-      dockerfile: docker/Dockerfile  # Specify the location of the Dockerfile
-    container_name: qt_image_inpainting_app
-    environment:
-#      - DISPLAY=:0
-      - DISPLAY=$DISPLAY
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: image-inpainting-app:local
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix:rw # Allows access to the graphical display
-      - ./data:/data  # Shared folder between host and container
-    privileged: true # Required to run graphical applications
-    network_mode: host # Use host mode to allow graphical access
-
+      - ./data:/data
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      DISPLAY: "${DISPLAY:-:0}"
+      QT_X11_NO_MITSHM: "1"
+      APP_IMAGES_DIR: "/data"

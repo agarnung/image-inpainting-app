@@ -353,7 +353,7 @@ void MainWindow::receiveOtherMessage(const QString& msg)
 
 void MainWindow::importImage()
 {
-    QString filename = QFileDialog::getOpenFileName(this, tr("Import image"), ".", tr("Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)"));
+    QString filename = QFileDialog::getOpenFileName(this, tr("Import image"), qEnvironmentVariable("APP_IMAGES_DIR", QStringLiteral(".")), tr("Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)"));
 
     if(filename.isNull()) return;
 
@@ -364,7 +364,7 @@ void MainWindow::importImage()
 
 void MainWindow::exportImage()
 {
-    QString filename = QFileDialog::getSaveFileName(this, tr("Export image"), ".", tr("Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)"));
+    QString filename = QFileDialog::getSaveFileName(this, tr("Export image"), qEnvironmentVariable("APP_IMAGES_DIR", QStringLiteral(".")), tr("Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)"));
 
     if(filename.isNull()) return;
 

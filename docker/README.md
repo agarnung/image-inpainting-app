@@ -1,127 +1,82 @@
-# Introductory Instructions on Docker
+# Docker instructions
 
-> **Note**: Before running the container, on the host machine, the following command should be executed to allow the Docker containers to access the X server, so that graphical applications can be displayed:  
-> `$ xhost +local:docker`
+The Qt 6 app ships as a Docker image. Build once, run whenever you want.
 
-# First Steps:
-1. Install Docker Compose:  
-   `$ sudo apt install docker-compose`
-   
-2. Verify the installation:  
-   `$ docker --version`  
-   `Docker version 27.5.1, build 9f9e405`
+## Requirements
 
-3. Grant permissions:  
-   `$ sudo chmod 777 /var/run/docker.sock`
+* Docker 20.10+ with Compose v2 (`docker compose`, not `docker-compose`) and **BuildKit enabled** (default on recent Docker).
+* An X server reachable from the container:
+  * **Linux** — your session already provides one.
+  * **WSL2 (Windows)** — WSLg exposes one automatically. No extra setup.
+  * Allow local Docker clients on first run: `xhost +local:docker` (the `start.sh` script does this for you).
 
-4. Once the Dockerfile and docker-compose.yml are ready, build the image:  
-   `$ docker compose --verbose build`
+## Quick start
 
-5. Start the container:  
-   `$ docker compose up`
+From the project root:
 
-Optionally run `$ sudo ./start.sh`
-
-or...
-
-5. To run the container based on the image you just created, use the following command:  
-   `$ docker run -it --name image-inpainting-app-docker-image docker_qt_application`
-
-6. Save the Docker image to a file (Export):  
-   `$ docker save -o image-inpainting-app-docker-image.tar docker_qt_application`
-   
-# Instructions to Run the Container from a `.tar` Image
-
-This project allows running a Qt application inside a Docker container. Follow the steps below to download, load, and run the image.
-
-## **1) Download the Docker Image**
-Download the image from the provided link:  
 ```bash
-wget https://your-link.com/my_image.tar
-```
-
-## **2) Load the Image into Docker**
-Once downloaded, load the image into Docker:
-```bash
-docker load -i my_image.tar
-```
-To verify that the image was loaded correctly, run:
-```bash
-docker images
-```
-You should see something like this:
-```nginx
-REPOSITORY                   TAG     IMAGE ID       CREATED        SIZE
-qt_image_inpainting_app      latest  abc123def456   2 hours ago    1.2GB
-```
-
-## **3) Clone the Repository**
-Clone this repository to get the required files (docker-compose.yml and start.sh):
-```bash
-git clone https://github.com/your-username/image-inpainting-app.git
-cd image-inpainting-app
-```
-
-## **4) Grant Permissions and Run the Startup Script**
-First, ensure that start.sh has execution permissions:
-```bash
-chmod +x start.sh
-```
-Then, run the script to launch the container:
-```bash
+cd docker
 ./start.sh
 ```
 
-## **5) (Optional) View Container Logs**
-If you need to check the logs without attaching the terminal, use:
+That script builds the image (if needed) and launches the app. The container is removed on exit.
+
+Equivalent by hand:
+
 ```bash
-docker logs -f qt_image_inpainting_app
+cd docker
+DOCKER_BUILDKIT=1 docker compose build
+docker compose run --rm app
 ```
-## How to Stop the Container?
-To stop and remove the container, run:
+
+## Shared data folder
+
+`docker/data/` on the host is bind-mounted to `/data` inside the container. It is also the default open/save directory in the app's file dialog (via the `APP_IMAGES_DIR` env variable), so:
+
+* Drop the images you want to inpaint in `docker/data/` — they show up immediately when you click **Import image**.
+* Exported images land in the same folder and are visible from the host.
+
+## Rebuilding after code changes
+
+Thanks to BuildKit cache mounts (apt + ccache) and the layered `COPY`, incremental rebuilds recompile only the `.cpp` files you touched — typically a few seconds.
+
 ```bash
-docker-compose down
+docker compose build   # rebuilds just the changed layers
+./start.sh             # or: docker compose run --rm app
 ```
 
-# Troubleshooting:
-- Restart the Docker service:  
-   `$ sudo systemctl restart docker`
+For a fully clean build:
 
-- Check if it is active:  
-   `$ sudo systemctl status docker`
+```bash
+docker compose build --no-cache
+```
 
-- _Error while fetching server API version: Not supported URL scheme http+docker_  
-  [Solution](https://stackoverflow.com/questions/64952238/docker-errors-dockerexception-error-while-fetching-server-api-version?page=1&tab=scoredesc#tab-top):  
-  `$ pip3 install requests==2.31.0`
+## Display troubleshooting
 
-- If the docker-compose.yml has syntax errors, the following command will show you:
-   `$ docker compose config`
+The compose file sets `DISPLAY=${DISPLAY:-:0}`. If your X server listens on a different display, override it:
 
-- _Error KeyError: 'ContainerConfig'_ => Remove old (orphnn) containers that may be interfering:
-   `$ docker compose down --remove-orphans
-      docker system prune -af
-   `
-# Have you made changes to the source code and want them to reflect in your image?
+```bash
+DISPLAY=:1 docker compose run --rm app
+```
 
-To ensure that your changes are included in the Docker image, follow these steps:
-1. **Compile the application on your host** to make sure everything is up-to-date.
-2. Run `docker-compose down` to stop and remove the existing container.
-3. Run `docker-compose up -d` to recreate the container. Docker will rebuild the image considering only the changes made to the source code, and then start the container with the updated image.
+If the host's `DISPLAY` variable is set to something odd, unset it before running:
 
-This process ensures that only the changes you made to the code are included in the new image before running the container again.
+```bash
+unset DISPLAY && ./start.sh
+```
 
-# Distribute you image:
-Once you have verified that the application works correctly, you can distribute it by uploading the Docker image to Docker Hub or another registry, or distribute it as a file.  
+If Qt complains about the platform plugin, make sure the X socket is mounted (`/tmp/.X11-unix`, already in the compose file) and that `xhost +local:docker` has been run.
 
-1. Log in to Docker Hub:  
-   `$ docker login`
+## Distributing the image
 
-2. Tag the image:  
-   `$ docker tag qt_image_inpainting_app <docker_hub_user>/<repository>:<tag>`
+```bash
+# Save to a .tar for offline transfer
+docker save -o image-inpainting-app.tar image-inpainting-app:local
 
-3. Upload the image to Docker Hub:  
-   `$ docker push <docker_hub_user>/<repository>:<tag>`
+# On another machine
+docker load -i image-inpainting-app.tar
 
-4. Now anyone can download and run the application with Docker:  
-   `$ docker run -it <docker_hub_user>/<repository>:<tag>`
-
+# Or push to a registry
+docker tag image-inpainting-app:local <user>/image-inpainting-app:<tag>
+docker push <user>/image-inpainting-app:<tag>
+```
